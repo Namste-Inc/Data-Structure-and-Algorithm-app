@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:view="http://schemas.android.com/apk/res/com.example.lugdu.datastructuresandalgorithms"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -22,15 +21,92 @@
         android:textColor="@android:color/white"
         app:fontFamily="sans-serif-condensed"/>
 
-    <com.example.lugdu.datastructuresandalgorithms.MyView
-        android:layout_width="127dp"
-        android:layout_height="97dp"
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        app:hexiColor="#B41944"
+        app:hexiString="spacer" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/sort_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="92dp"
-        android:layout_marginLeft="92dp"
-        android:layout_marginTop="154dp"
-        />
+        android:layout_marginStart="146dp"
+        android:layout_marginLeft="146dp"
+        android:layout_marginTop="195dp"
+        android:layout_marginBottom="61dp"
+        app:hexiColor="#FF0000"
+        app:hexiString="Sort" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/tree_trav_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="249dp"
+        android:layout_marginLeft="249dp"
+        android:layout_marginTop="248dp"
+        app:hexiColor="#D67521"
+        app:hexiString="Tree Traversal" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/string_m_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="249dp"
+        android:layout_marginLeft="249dp"
+        android:layout_marginTop="363dp"
+        app:hexiColor="#FFEB3B"
+        app:hexiString="String Manipulation" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/hash_func_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="146dp"
+        android:layout_marginLeft="146dp"
+        android:layout_marginTop="415dp"
+        app:hexiColor="#C1F436"
+        app:hexiString="Hash Function" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/itr_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="41dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginTop="364dp"
+        app:hexiColor="#19B41C"
+        app:hexiString="Iteration" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/searching_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="42dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="247dp"
+        app:hexiColor="#1964B4"
+        app:hexiString="Searching" />
+
+
 
 </RelativeLayout>

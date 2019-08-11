@@ -13,6 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/navigation"/>
+    <com.example.lugdu.datastructuresandalgorithms.views.CustomView
+        android:layout_width="match_parent"
+        android:layout_height="150sp" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Hexagon">
+        <attr name="hexiString" format="string" />
+        <attr name="hexiDimension" format="dimension" />
+        <attr name="hexiColor" format="color" />
+        <attr name="hexiDrawable" format="color|reference" />
+    </declare-styleable>
+</resources>

@@ -20,4 +20,90 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/white"
         app:fontFamily="sans-serif-condensed"/>
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        app:hexiColor="#B41944"
+        app:hexiString="Array" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/hash_t_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="146dp"
+        android:layout_marginLeft="146dp"
+        android:layout_marginTop="195dp"
+        android:layout_marginBottom="61dp"
+        app:hexiColor="#00FFF7"
+        app:hexiString="Hash Tables" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/stacks_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="249dp"
+        android:layout_marginLeft="249dp"
+        android:layout_marginTop="248dp"
+        app:hexiColor="#00A6FF"
+        app:hexiString="Stacks" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/queues_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="249dp"
+        android:layout_marginLeft="249dp"
+        android:layout_marginTop="363dp"
+        app:hexiColor="#3B06FA"
+        app:hexiString="Queues" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/linked_l_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="146dp"
+        android:layout_marginLeft="146dp"
+        android:layout_marginTop="415dp"
+        app:hexiColor="#A708FC"
+        app:hexiString="Linked list" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/trees_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="41dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginTop="364dp"
+        app:hexiColor="#FF00DD"
+        app:hexiString="Trees" />
+
+    <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/graphs_hex_b"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="42dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="247dp"
+        app:hexiColor="#FF0000"
+        app:hexiString="Graphs" />
 </RelativeLayout>
