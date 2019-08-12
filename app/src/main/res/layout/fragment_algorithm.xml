@@ -1,118 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="266dp"
         android:layout_height="45dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="29dp"
         android:background="@drawable/shadow"
         android:elevation="10dp"
         android:gravity="center"
-        android:textStyle="bold"
         android:text="Algorithms"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/white"
-        app:fontFamily="sans-serif-condensed"/>
+        android:textStyle="bold"
+        app:fontFamily="sans-serif-condensed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
+        android:id="@+id/hexagon3"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="146dp"
-        android:layout_marginLeft="146dp"
-        android:layout_marginTop="305dp"
-        android:layout_marginBottom="61dp"
-        app:hexiColor="#B41944"
-        app:hexiString="spacer" />
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="304dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:hexiColor="#fafafa"
+        app:hexiString=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/sort_hex_b"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="146dp"
-        android:layout_marginLeft="146dp"
-        android:layout_marginTop="185dp"
-        android:layout_marginBottom="61dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="184dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:hexiColor="#FF0000"
-        app:hexiString="Sort" />
+        app:hexiString="Sort"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/tree_trav_hex_b"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="249dp"
-        android:layout_marginLeft="249dp"
-        android:layout_marginTop="248dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:hexiColor="#D67521"
-        app:hexiString="Tree Traversal" />
+        app:hexiString="Tree Traversal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.736"
+        app:layout_constraintStart_toStartOf="@+id/hexagon3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/string_m_hex_b"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="249dp"
-        android:layout_marginLeft="249dp"
-        android:layout_marginTop="363dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="364dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:hexiColor="#FFEB3B"
-        app:hexiString="String Manipulation" />
+        app:hexiString="String Manipulation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.736"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/hexagon3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/hash_func_hex_b"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="146dp"
-        android:layout_marginLeft="146dp"
-        android:layout_marginTop="425dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="424dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:hexiColor="#C1F436"
-        app:hexiString="Hash Function" />
+        app:hexiString="Hash Function"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/itr_hex_b"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="41dp"
-        android:layout_marginLeft="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="364dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:hexiColor="#19B41C"
-        app:hexiString="Iteration" />
+        app:hexiString="Iteration"
+        app:layout_constraintEnd_toEndOf="@+id/hexagon3"
+        app:layout_constraintHorizontal_bias="0.261"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/searching_hex_b"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginLeft="42dp"
-        android:layout_marginTop="247dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:hexiColor="#1964B4"
-        app:hexiString="Searching" />
+        app:hexiString="Searching"
+        app:layout_constraintEnd_toEndOf="@+id/hexagon3"
+        app:layout_constraintHorizontal_bias="0.261"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Group
+        android:id="@+id/group3"
+        android:layout_width="28dp"
+        android:layout_height="17dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
 
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
