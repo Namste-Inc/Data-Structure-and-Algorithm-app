@@ -24,7 +24,13 @@
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_centerInParent="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="146dp"
+        android:layout_marginLeft="146dp"
+        android:layout_marginTop="305dp"
+        android:layout_marginBottom="61dp"
         app:hexiColor="#B41944"
         app:hexiString="spacer" />
 
@@ -37,7 +43,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="146dp"
         android:layout_marginLeft="146dp"
-        android:layout_marginTop="195dp"
+        android:layout_marginTop="185dp"
         android:layout_marginBottom="61dp"
         app:hexiColor="#FF0000"
         app:hexiString="Sort" />
@@ -77,7 +83,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="146dp"
         android:layout_marginLeft="146dp"
-        android:layout_marginTop="415dp"
+        android:layout_marginTop="425dp"
         app:hexiColor="#C1F436"
         app:hexiString="Hash Function" />
 
