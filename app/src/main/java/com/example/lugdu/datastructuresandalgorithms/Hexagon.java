@@ -18,6 +18,7 @@ public class Hexagon extends View {
     private int mHexiColor = Color.RED; // TODO: use a default from R.color...
     private float mHexiDimension = 0; // TODO: use a default from R.dimen...
     private Drawable mHexiDrawable;
+    private boolean shadow = true;
 
     private TextPaint mTextPaint;
     private float mTextWidth;
@@ -85,21 +86,10 @@ public class Hexagon extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //canvas.drawColor(Color.RED);
-
-        paint.setAntiAlias(true);
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-        paint.setStrokeWidth(15);
-        paint.setStyle(Paint.Style.STROKE);
-
-
-
-
-        float radius = getHeight()/2;
+        float radius = (getHeight()/2) - 10;
         //canvas.drawCircle(getWidth()/2,getHeight()/2,radius,paint);
-        int x = 0;
-        int y = getHeight()/2;
+        int x = 10;
+        int y = (getHeight()/2) - 10;
 
         Path path = new Path();
         path.moveTo(x, y);
@@ -114,6 +104,7 @@ public class Hexagon extends View {
         paintH.setColor(mHexiColor);
         paintH.setStyle(Paint.Style.FILL);
         paintH.setAntiAlias(true);
+        paintH.setShadowLayer(15, 0, 0, Color.BLACK);
         canvas.drawPath(path, paintH);
         textPaint.setAntiAlias(true);
         textPaint.setTextSize(textSize);
@@ -135,6 +126,12 @@ public class Hexagon extends View {
         }
     }
 
+    public void toogleShadow(){
+        shadow = !shadow;
+    }
+    public void setShadow(boolean shadow){
+       this.shadow = shadow;
+    }
     public void setHexiText(String text){
         mHexiString = text;
     }

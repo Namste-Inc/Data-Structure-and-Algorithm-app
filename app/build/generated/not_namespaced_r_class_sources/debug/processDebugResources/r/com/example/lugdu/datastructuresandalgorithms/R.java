@@ -25,6 +25,7 @@ public final class R {
     public static final int design_bottom_sheet_slide_out=0x7f01000d;
     public static final int design_snackbar_in=0x7f01000e;
     public static final int design_snackbar_out=0x7f01000f;
+    public static final int hexi=0x7f010010;
   }
   public static final class animator {
     public static final int design_appbar_state_list_animator=0x7f020000;
@@ -5629,6 +5630,7 @@ public final class R {
     public static final int Widget_MaterialComponents_TextInputLayout_OutlinedBox_Dense=0x7f0f01ed;
     public static final int Widget_MaterialComponents_Toolbar=0x7f0f01ee;
     public static final int Widget_Support_CoordinatorLayout=0x7f0f01ef;
+    public static final int animation=0x7f0f01f0;
   }
   public static final class styleable {
     /**

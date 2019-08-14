@@ -27,6 +27,7 @@
         android:id="@+id/hexagon3"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:visibility="invisible"
         app:hexiColor="#fafafa"
         app:hexiString=""
         app:layout_constraintBottom_toBottomOf="parent"
