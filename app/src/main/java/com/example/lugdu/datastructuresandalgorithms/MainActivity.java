@@ -6,15 +6,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.algo.AlgorithmFragment;
-import com.example.lugdu.datastructuresandalgorithms.algo.SortFragment;
 import com.example.lugdu.datastructuresandalgorithms.dataS.DataStructureFragment;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,23 +44,4 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
     };
-    public void showM(View v){
-        Toast toast = Toast.makeText(getApplicationContext(), " hii there", Toast.LENGTH_LONG);
-        toast.show();
-    }
-    public void holdHexiListeners(View v){
-
-    }
-    public void touchHexiListener(View v){
-        int id = v.getId();
-        Toast toast = Toast.makeText(getApplicationContext(), id + "h", Toast.LENGTH_LONG);
-        toast.show();
-        Fragment frag = null;
-        switch (id){
-            case (R.id.sort_hex_b):
-                frag = new SortFragment();
-                break;
-        }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, frag).commit();
-    }
 }

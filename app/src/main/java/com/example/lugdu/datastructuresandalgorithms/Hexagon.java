@@ -2,10 +2,11 @@ package com.example.lugdu.datastructuresandalgorithms;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.*;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -132,5 +133,20 @@ public class Hexagon extends View {
                 canvas.drawText(words[1],xPos,yPos + 20 ,textPaint);
             }
         }
+    }
+
+    public void setHexiText(String text){
+        mHexiString = text;
+    }
+
+    public void setHexiColor(int color){
+        mHexiColor = color;
+    }
+    public String getHexiText(){
+        return mHexiString;
+    }
+
+    public int getHexiColor(){
+        return mHexiColor;
     }
 }

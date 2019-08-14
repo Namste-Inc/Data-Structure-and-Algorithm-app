@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/hexagon"
+        android:id="@+id/array_hex_b"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="8dp"
@@ -57,10 +57,10 @@
         android:foreground="?android:selectableItemBackground"
         app:hexiColor="#00FFF7"
         app:hexiString="Hash Tables"
-        app:layout_constraintBottom_toTopOf="@+id/hexagon"
-        app:layout_constraintEnd_toEndOf="@+id/hexagon"
+        app:layout_constraintBottom_toTopOf="@+id/array_hex_b"
+        app:layout_constraintEnd_toEndOf="@+id/array_hex_b"
         app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="@+id/hexagon" />
+        app:layout_constraintStart_toStartOf="@+id/array_hex_b" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/stacks_hex_b"
@@ -69,7 +69,7 @@
         android:layout_marginTop="64dp"
         app:hexiColor="#00A6FF"
         app:hexiString="Stacks"
-        app:layout_constraintStart_toEndOf="@+id/hexagon"
+        app:layout_constraintStart_toEndOf="@+id/array_hex_b"
         app:layout_constraintTop_toTopOf="@+id/hash_t_hex_b" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
@@ -80,7 +80,7 @@
         app:hexiColor="#3B06FA"
         app:hexiString="Queues"
         app:layout_constraintBottom_toBottomOf="@+id/linked_l_hex_b"
-        app:layout_constraintStart_toEndOf="@+id/hexagon" />
+        app:layout_constraintStart_toEndOf="@+id/array_hex_b" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/linked_l_hex_b"
@@ -89,10 +89,10 @@
         android:layout_marginTop="8dp"
         app:hexiColor="#A708FC"
         app:hexiString="Linked list"
-        app:layout_constraintEnd_toEndOf="@+id/hexagon"
+        app:layout_constraintEnd_toEndOf="@+id/array_hex_b"
         app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintStart_toStartOf="@+id/hexagon"
-        app:layout_constraintTop_toBottomOf="@+id/hexagon" />
+        app:layout_constraintStart_toStartOf="@+id/array_hex_b"
+        app:layout_constraintTop_toBottomOf="@+id/array_hex_b" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/trees_hex_b"
@@ -102,7 +102,7 @@
         app:hexiColor="#FF00DD"
         app:hexiString="Trees"
         app:layout_constraintBottom_toBottomOf="@+id/linked_l_hex_b"
-        app:layout_constraintEnd_toStartOf="@+id/hexagon" />
+        app:layout_constraintEnd_toStartOf="@+id/array_hex_b" />
 
     <com.example.lugdu.datastructuresandalgorithms.Hexagon
         android:id="@+id/graphs_hex_b"
@@ -111,7 +111,7 @@
         android:layout_marginTop="64dp"
         app:hexiColor="#FF0000"
         app:hexiString="Graphs"
-        app:layout_constraintEnd_toStartOf="@+id/hexagon"
+        app:layout_constraintEnd_toStartOf="@+id/array_hex_b"
         app:layout_constraintTop_toTopOf="@+id/hash_t_hex_b" />
 
     <android.support.constraint.Group
