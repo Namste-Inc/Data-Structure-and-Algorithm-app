@@ -5,4 +5,7 @@
     <dimen name="hexiHeigh">16dp</dimen>
     <dimen name="hexiWeidth">16dp</dimen>
     <dimen name="hexiDem">16dp</dimen>
+    <dimen name="appbar_padding">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 </resources>
