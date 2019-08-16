@@ -13,8 +13,13 @@ import android.view.animation.AnimationUtils;
 
 import com.example.lugdu.datastructuresandalgorithms.FragmentDialog;
 import com.example.lugdu.datastructuresandalgorithms.Hexagon;
-import com.example.lugdu.datastructuresandalgorithms.MiddleFragment;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.algo.Sort.SortFragment;
+import com.example.lugdu.datastructuresandalgorithms.algo.hashfunction.HashFunctionFragment;
+import com.example.lugdu.datastructuresandalgorithms.algo.iteration.IterationFragment;
+import com.example.lugdu.datastructuresandalgorithms.algo.searching.SearchFragment;
+import com.example.lugdu.datastructuresandalgorithms.algo.stringmanipulation.StringManipulationFragment;
+import com.example.lugdu.datastructuresandalgorithms.algo.treetraversal.TreeTraversalFragment;
 
 import java.util.ArrayList;
 
@@ -50,29 +55,24 @@ public class AlgorithmFragment extends Fragment {
             switch (v.getId()){
                 case R.id.sort_hex_b:
                     fragment = new SortFragment();
-                    bundle.putInt("color", ((Hexagon)v).getHexiColor());
                     break;
                 case R.id.tree_trav_hex_b:
-                    fragment = new MiddleFragment();
-                    bundle.putInt("inflater", R.layout.fragment_tree_traversal);
+                    fragment = new TreeTraversalFragment();
                     break;
                 case R.id.string_m_hex_b:
-                    fragment = new MiddleFragment();
-                    bundle.putInt("inflater", R.layout.fragment_string_manipulation);
+                    fragment = new StringManipulationFragment();
                     break;
                 case R.id.hash_func_hex_b:
-                    fragment = new MiddleFragment();
-                    bundle.putInt("inflater", R.layout.fragment_hash_function);
+                    fragment = new HashFunctionFragment();
                     break;
                 case R.id.itr_hex_b:
-                    fragment = new MiddleFragment();
-                    bundle.putInt("inflater", R.layout.fragment_iteration);
+                    fragment = new IterationFragment();
                     break;
                 case R.id.searching_hex_b:
-                    fragment = new MiddleFragment();
-                    bundle.putInt("inflater", R.layout.fragment_searching);
+                    fragment = new SearchFragment();
                     break;
             }
+            bundle.putInt("color", ((Hexagon)v).getHexiColor());
             fragment.setArguments(bundle);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }

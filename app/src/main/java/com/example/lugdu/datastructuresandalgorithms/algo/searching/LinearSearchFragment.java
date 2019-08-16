@@ -1,4 +1,4 @@
-package com.example.lugdu.datastructuresandalgorithms;
+package com.example.lugdu.datastructuresandalgorithms.algo.searching;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MiddleFragment extends Fragment {
+import com.example.lugdu.datastructuresandalgorithms.R;
+
+public class LinearSearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        int id = getArguments().getInt("inflater");
-        View view = inflater.inflate(id, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_heap_sort, container,false);
     }
 }
