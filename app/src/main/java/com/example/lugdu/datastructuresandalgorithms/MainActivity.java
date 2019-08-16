@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import com.example.lugdu.datastructuresandalgorithms.algo.AlgorithmFragment;
 import com.example.lugdu.datastructuresandalgorithms.dataS.DataStructureFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

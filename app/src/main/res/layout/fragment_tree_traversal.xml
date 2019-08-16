@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayoutAlgo"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/tree_trav_hex_b"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        app:hexiColor="#D67521"
-        app:hexiString="Tree Traversal"
-        tools:layout_editor_absoluteX="145dp"
-        tools:layout_editor_absoluteY="16dp" />
+    <TabLayout
+        android:id="@+id/tabview1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme">
+
+    </TabLayout>
+
+   <android.support.v4.view.ViewPager
+       android:layout_width="match_parent"
+       android:layout_height="fill_parent"
+       android:id="@+id/pager1">
+
+   </android.support.v4.view.ViewPager>
 
 
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

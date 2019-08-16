@@ -45,25 +45,31 @@ public class AlgorithmFragment extends Fragment {
     }
     private View.OnClickListener handleClick = new View.OnClickListener(){
         public void onClick(View v) {
-            Fragment fragment = new MiddleFragment();
+            Fragment fragment = null;
             Bundle bundle = new Bundle();
             switch (v.getId()){
                 case R.id.sort_hex_b:
-                    bundle.putInt("inflater", R.layout.fragment_sort);
+                    fragment = new SortFragment();
+                    bundle.putInt("color", ((Hexagon)v).getHexiColor());
                     break;
                 case R.id.tree_trav_hex_b:
+                    fragment = new MiddleFragment();
                     bundle.putInt("inflater", R.layout.fragment_tree_traversal);
                     break;
                 case R.id.string_m_hex_b:
+                    fragment = new MiddleFragment();
                     bundle.putInt("inflater", R.layout.fragment_string_manipulation);
                     break;
                 case R.id.hash_func_hex_b:
+                    fragment = new MiddleFragment();
                     bundle.putInt("inflater", R.layout.fragment_hash_function);
                     break;
                 case R.id.itr_hex_b:
+                    fragment = new MiddleFragment();
                     bundle.putInt("inflater", R.layout.fragment_iteration);
                     break;
                 case R.id.searching_hex_b:
+                    fragment = new MiddleFragment();
                     bundle.putInt("inflater", R.layout.fragment_searching);
                     break;
             }
