@@ -1,109 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayoutAlgo"
-    android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="266dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="29dp"
-        android:background="@drawable/shadow"
-        android:elevation="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="Algorithms"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:fontFamily="sans-serif-condensed"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/hexagon3"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        app:hexiColor="#fafafa"
-        app:hexiString=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/sort_hex_b"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="8dp"
-        app:hexiColor="#FF0000"
-        app:hexiString="Sort"
-        app:layout_constraintBottom_toTopOf="@+id/hexagon3"
-        app:layout_constraintEnd_toEndOf="@+id/hexagon3"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/hexagon3" />
-
-    <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/tree_trav_hex_b"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="64dp"
-        app:hexiColor="#D67521"
-        app:hexiString="Tree Traversal"
-        app:layout_constraintStart_toEndOf="@+id/hexagon3"
-        app:layout_constraintTop_toTopOf="@+id/sort_hex_b" />
-
-    <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/string_m_hex_b"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="64dp"
-        app:hexiColor="#FFEB3B"
-        app:hexiString="String Manipulation"
-        app:layout_constraintBottom_toBottomOf="@+id/hash_func_hex_b"
-        app:layout_constraintStart_toEndOf="@+id/hexagon3" />
-
-    <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/hash_func_hex_b"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="8dp"
-        app:hexiColor="#C1F436"
-        app:hexiString="Hash Function"
-        app:layout_constraintEnd_toEndOf="@+id/hexagon3"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/hexagon3"
-        app:layout_constraintTop_toBottomOf="@+id/hexagon3" />
-
-    <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/itr_hex_b"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="64dp"
-        app:hexiColor="#19B41C"
-        app:hexiString="Iteration"
-        app:layout_constraintBottom_toBottomOf="@+id/hash_func_hex_b"
-        app:layout_constraintEnd_toStartOf="@+id/hexagon3" />
-
-    <com.example.lugdu.datastructuresandalgorithms.Hexagon
-        android:id="@+id/searching_hex_b"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="64dp"
-        app:hexiColor="#1964B4"
-        app:hexiString="Searching"
-        app:layout_constraintEnd_toStartOf="@+id/hexagon3"
-        app:layout_constraintTop_toTopOf="@+id/sort_hex_b" />
-
-    <android.support.constraint.Group
-        android:id="@+id/group3"
-        android:layout_width="28dp"
-        android:layout_height="17dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
+        android:text="Trees"/>
 
 </android.support.constraint.ConstraintLayout>
