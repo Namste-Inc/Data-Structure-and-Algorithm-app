@@ -14,6 +14,6 @@ public class DFSearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_selection_sort, container, false);
+        return inflater.inflate(R.layout.fragment_depth_first_search, container, false);
     }
 }

@@ -1360,8 +1360,11 @@ layout design_navigation_menu_item
 layout design_text_input_password_icon
 layout fragment_algorithm
 layout fragment_arrays
+layout fragment_binary_search
+layout fragment_breadth_first_search
 layout fragment_bubble_sort
 layout fragment_data_s
+layout fragment_depth_first_search
 layout fragment_graphs
 layout fragment_hash_function
 layout fragment_hash_tables
@@ -1369,6 +1372,7 @@ layout fragment_heap_sort
 layout fragment_home
 layout fragment_insertion_sort
 layout fragment_iteration
+layout fragment_linear_search
 layout fragment_linked_list
 layout fragment_merge_sort
 layout fragment_queues

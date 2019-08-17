@@ -1140,6 +1140,10 @@
         "source": "C:\\Users\\lugdu\\.gradle\\caches\\transforms-2\\files-2.1\\bac42c5bb48db9873388f6450d3726e6\\res\\anim-v21\\design_bottom_sheet_slide_out.xml"
     },
     {
+        "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_depth_first_search.xml.flat",
+        "source": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\src\\main\\res\\layout\\fragment_depth_first_search.xml"
+    },
+    {
         "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\layout_design_layout_tab_icon.xml.flat",
         "source": "C:\\Users\\lugdu\\.gradle\\caches\\transforms-2\\files-2.1\\bac42c5bb48db9873388f6450d3726e6\\res\\layout\\design_layout_tab_icon.xml"
     },
@@ -1468,6 +1472,10 @@
         "source": "C:\\Users\\lugdu\\.gradle\\caches\\transforms-2\\files-2.1\\735562f910048684c14fd9086b657a29\\res\\drawable-mdpi-v4\\abc_switch_track_mtrl_alpha.9.png"
     },
     {
+        "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_linear_search.xml.flat",
+        "source": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\src\\main\\res\\layout\\fragment_linear_search.xml"
+    },
+    {
         "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_activity_chooser_view.xml.flat",
         "source": "C:\\Users\\lugdu\\.gradle\\caches\\transforms-2\\files-2.1\\735562f910048684c14fd9086b657a29\\res\\layout\\abc_activity_chooser_view.xml"
     },
@@ -1482,6 +1490,10 @@
     {
         "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\anim_abc_fade_out.xml.flat",
         "source": "C:\\Users\\lugdu\\.gradle\\caches\\transforms-2\\files-2.1\\735562f910048684c14fd9086b657a29\\res\\anim\\abc_fade_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_breadth_first_search.xml.flat",
+        "source": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\src\\main\\res\\layout\\fragment_breadth_first_search.xml"
     },
     {
         "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_action_mode_bar.xml.flat",
@@ -1682,6 +1694,10 @@
     {
         "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\layout_design_navigation_menu.xml.flat",
         "source": "C:\\Users\\lugdu\\.gradle\\caches\\transforms-2\\files-2.1\\bac42c5bb48db9873388f6450d3726e6\\res\\layout\\design_navigation_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_binary_search.xml.flat",
+        "source": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\src\\main\\res\\layout\\fragment_binary_search.xml"
     },
     {
         "merged": "C:\\Users\\lugdu\\Desktop\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_switch_track_mtrl_alpha.9.png.flat",

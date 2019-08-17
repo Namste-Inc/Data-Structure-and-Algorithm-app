@@ -14,6 +14,6 @@ public class LinearSearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_heap_sort, container,false);
+        return inflater.inflate(R.layout.fragment_linear_search, container,false);
     }
 }
