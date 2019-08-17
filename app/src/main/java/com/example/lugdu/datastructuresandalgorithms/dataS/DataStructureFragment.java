@@ -1,8 +1,10 @@
 package com.example.lugdu.datastructuresandalgorithms.dataS;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,18 +30,34 @@ public class DataStructureFragment extends Fragment {
     View view;
     Boolean released;
     View touched = null;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_data_s, container,false);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         ArrayList<View> hexA = new ArrayList<>();
-        hexA.add(view.findViewById(R.id.hash_t_hex_b));
-        hexA.add(view.findViewById(R.id.stacks_hex_b));
-        hexA.add(view.findViewById(R.id.queues_hex_b));
-        hexA.add(view.findViewById(R.id.linked_l_hex_b));
-        hexA.add(view.findViewById(R.id.trees_hex_b));
-        hexA.add(view.findViewById(R.id.graphs_hex_b));
-        hexA.add(view.findViewById(R.id.array_hex_b));
+        Hexagon hex_hash=  view.findViewById(R.id.hash_t_hex_b);
+        hex_hash.setDef("this def");
+        Hexagon hex_stacks = view.findViewById(R.id.stacks_hex_b);
+        hex_stacks.setDef("this def stacks");
+        Hexagon hex_queues = view.findViewById(R.id.queues_hex_b);
+        hex_queues.setDef("this def queues");
+        Hexagon hex_ll = view.findViewById(R.id.linked_l_hex_b);
+        hex_ll.setDef("this def linked list");
+        Hexagon hex_trees = view.findViewById(R.id.trees_hex_b);
+        hex_trees.setDef("this def trees");
+        Hexagon hex_graphs = view.findViewById(R.id.graphs_hex_b);
+        hex_graphs.setDef("this def graphs");
+        Hexagon hex_array = view.findViewById(R.id.array_hex_b);
+        hex_array.setDef("this def array");
+        hexA.add(hex_hash);
+        hexA.add(hex_stacks);
+        hexA.add(hex_queues);
+        hexA.add(hex_ll);
+        hexA.add(hex_trees);
+        hexA.add(hex_graphs);
+        hexA.add(hex_array);
         setHexListener(hexA);
         return view;
     }
@@ -143,6 +161,7 @@ public class DataStructureFragment extends Fragment {
         int color = hex.getHexiColor();
         bundle.putString("text",text);
         bundle.putInt("color",color);
+        bundle.putString("def", hex.getDef());
         fragmentDialog = new FragmentDialog();
         fragmentDialog.setArguments(bundle);
         fragmentDialog.show(getFragmentManager(),"nothing to see here");

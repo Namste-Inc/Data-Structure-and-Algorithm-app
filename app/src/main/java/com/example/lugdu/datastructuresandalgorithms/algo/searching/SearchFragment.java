@@ -1,9 +1,11 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.searching;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,10 +22,12 @@ import java.util.HashMap;
 
 public class SearchFragment extends Fragment {
     View view;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.middle_fragment, container,false);
+        getActivity().getWindow().setStatusBarColor(getArguments().getInt("color"));
         TabLayout tabLayout = view.findViewById(R.id.tabview);
         tabLayout.setBackgroundColor(getArguments().getInt("color"));
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);

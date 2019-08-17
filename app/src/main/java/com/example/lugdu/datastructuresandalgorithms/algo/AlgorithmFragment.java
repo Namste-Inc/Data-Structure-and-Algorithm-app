@@ -1,8 +1,11 @@
 package com.example.lugdu.datastructuresandalgorithms.algo;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,17 +30,31 @@ public class AlgorithmFragment extends Fragment {
     View view;
     Boolean relesed;
     View touched = null;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_algorithm, container,false);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         ArrayList<View> hexA = new ArrayList<>();
-        hexA.add(view.findViewById(R.id.sort_hex_b));
-        hexA.add(view.findViewById(R.id.tree_trav_hex_b));
-        hexA.add(view.findViewById(R.id.string_m_hex_b));
-        hexA.add(view.findViewById(R.id.hash_func_hex_b));
-        hexA.add(view.findViewById(R.id.itr_hex_b));
-        hexA.add(view.findViewById(R.id.searching_hex_b));
+        Hexagon hexSort = view.findViewById(R.id.sort_hex_b);
+        hexSort.setDef("An algorithm that puts elements of a list in a certain order");
+        Hexagon hexTreeT = view.findViewById(R.id.tree_trav_hex_b);
+        hexTreeT.setDef("A form of graph traversal referring to the process of visiting each node in a tree data structure exactly once");
+        Hexagon hexStringM = view.findViewById(R.id.string_m_hex_b);
+        hexStringM.setDef("A class of problems where a user is asked to process a given string and use/change its data");
+        Hexagon hexHashF = view.findViewById(R.id.hash_func_hex_b);
+        hexHashF.setDef("Any function that can be used to map data of arbitrary size onto data of a fixed size");
+        Hexagon hexIter = view.findViewById(R.id.itr_hex_b);
+        hexIter.setDef("The technique marking out of a block of statements within a computer program for a defined number of repetitions");
+        Hexagon hexSearching = view.findViewById(R.id.searching_hex_b);
+        hexSearching.setDef("Designed to check for an element or retrieve an element from any data structure where it is stored");
+        hexA.add(hexSort);
+        hexA.add(hexTreeT);
+        hexA.add(hexStringM);
+        hexA.add(hexHashF);
+        hexA.add(hexIter);
+        hexA.add(hexSearching);
         setHexListener(hexA);
         return view;
     }
@@ -49,6 +66,7 @@ public class AlgorithmFragment extends Fragment {
         }
     }
     private View.OnClickListener handleClick = new View.OnClickListener(){
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         public void onClick(View v) {
             Fragment fragment = null;
             Bundle bundle = new Bundle();
@@ -74,6 +92,7 @@ public class AlgorithmFragment extends Fragment {
             }
             bundle.putInt("color", ((Hexagon)v).getHexiColor());
             fragment.setArguments(bundle);
+            //getActivity().getWindow().setStatusBarColor(((Hexagon)v).getHexiColor());
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
     };
@@ -135,11 +154,12 @@ public class AlgorithmFragment extends Fragment {
     public void openDialog(int id){
         Bundle bundle = new Bundle();
         FragmentDialog fragmentDialog;
-        Hexagon hex = (Hexagon)(view.findViewById(id));
+        Hexagon hex = (view.findViewById(id));
         String text = hex.getHexiText();
         int color = hex.getHexiColor();
         bundle.putString("text",text);
         bundle.putInt("color",color);
+        bundle.putString("def", hex.getDef());
         fragmentDialog = new FragmentDialog();
         fragmentDialog.setArguments(bundle);
         fragmentDialog.show(getFragmentManager(),"nothing to see here");

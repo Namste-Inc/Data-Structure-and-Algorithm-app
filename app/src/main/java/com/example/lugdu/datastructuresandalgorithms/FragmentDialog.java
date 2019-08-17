@@ -19,11 +19,13 @@ public class FragmentDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String text = getArguments().getString("text");
         int color = getArguments().getInt("color");
+        String def = getArguments().getString("def");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_dialog, null);
         View view2 = (Hexagon)view.findViewById(R.id.hexagon);
         View vie = (TextView)view.findViewById(R.id.textView2);
+        ((TextView) vie).setText(def);
         ((Hexagon) view2).setHexiText(text);
         ((Hexagon) view2).setHexiColor(color);
         ((Hexagon) view2).toogleShadow();

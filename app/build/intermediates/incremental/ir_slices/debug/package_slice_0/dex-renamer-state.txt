@@ -1,4 +1,0 @@
-#Fri Aug 16 21:03:45 EDT 2019
-base.0=C\:\\Users\\allir\\AndroidStudioProjects\\Data-Structure-and-Algorithm-app\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-path.0=classes.dex
-renamed.0=classes.dex

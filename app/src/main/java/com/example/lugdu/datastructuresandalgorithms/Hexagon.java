@@ -19,6 +19,7 @@ public class Hexagon extends View {
     private float mHexiDimension = 0; // TODO: use a default from R.dimen...
     private Drawable mHexiDrawable;
     private boolean shadow = true;
+    private String def;
 
     private TextPaint mTextPaint;
     private float mTextWidth;
@@ -146,4 +147,6 @@ public class Hexagon extends View {
     public int getHexiColor(){
         return mHexiColor;
     }
+    public String getDef(){ return def;}
+    public void setDef(String def){ this.def = def; }
 }
