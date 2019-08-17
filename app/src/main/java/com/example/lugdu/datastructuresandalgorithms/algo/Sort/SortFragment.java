@@ -1,5 +1,6 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.Sort;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,14 +10,17 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.ActionBarContainer;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.algo.AlgorithmFragment;
 
 import java.util.HashMap;
 
@@ -32,9 +36,17 @@ public class SortFragment extends Fragment {
         tabLayout.setBackgroundColor(getArguments().getInt("color"));
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlgorithmFragment()).commit();
+            }
+        });
         toolbar.setBackgroundColor(getArguments().getInt("color"));
         TextView textView = view.findViewById(R.id.textviewtoolbar);
         textView.setText("Sort");
+
         final ViewPager viewPager = view.findViewById(R.id.pager);
 
         tabLayout.addTab(tabLayout.newTab().setText("Bubble Sort"));

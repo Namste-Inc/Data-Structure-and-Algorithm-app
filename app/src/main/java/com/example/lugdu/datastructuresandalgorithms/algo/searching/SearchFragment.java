@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.algo.AlgorithmFragment;
 
 import java.util.HashMap;
 
@@ -33,6 +34,12 @@ public class SearchFragment extends Fragment {
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getArguments().getInt("color"));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlgorithmFragment()).commit();
+            }
+        });
         TextView textView = view.findViewById(R.id.textviewtoolbar);
         textView.setText("Search");
         final ViewPager viewPager = view.findViewById(R.id.pager);

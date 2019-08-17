@@ -1026,10 +1026,13 @@ drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
 drawable gradient_backgorund
+drawable ic_arrow_back_black_24dp
+drawable ic_chevron_left_black_24dp
 drawable ic_code_black_24dp
 drawable ic_dashboard_black_24dp
 drawable ic_device_hub_black_24dp
 drawable ic_home_black_24dp
+drawable ic_keyboard_arrow_left_black_24dp
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_mtrl_chip_checked_black

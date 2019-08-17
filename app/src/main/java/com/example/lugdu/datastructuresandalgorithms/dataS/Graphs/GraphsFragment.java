@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.dataS.DataStructureFragment;
 
 public class GraphsFragment extends Fragment {
     View view;
@@ -25,6 +26,12 @@ public class GraphsFragment extends Fragment {
         getActivity().getWindow().setStatusBarColor(getArguments().getInt("color"));
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getArguments().getInt("color"));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DataStructureFragment()).commit();
+            }
+        });
         TextView textView = view.findViewById(R.id.textviewtoolbar);
         textView.setText("Graphs");
         return view;

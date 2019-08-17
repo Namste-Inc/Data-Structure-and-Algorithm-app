@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.algo.AlgorithmFragment;
+import com.example.lugdu.datastructuresandalgorithms.dataS.DataStructureFragment;
 
 import java.util.HashMap;
 
@@ -34,6 +36,12 @@ public class ArraysFragment extends Fragment {
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(getArguments().getInt("color"));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DataStructureFragment()).commit();
+            }
+        });
         TextView textView = view.findViewById(R.id.textviewtoolbar);
         textView.setText("Arrays");
         final ViewPager viewPager = view.findViewById(R.id.pager);
