@@ -14,6 +14,6 @@ public class AVLTreeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_trees, container,false);
+        return inflater.inflate(R.layout.fragment_a_v_l_tree, container,false);
     }
 }

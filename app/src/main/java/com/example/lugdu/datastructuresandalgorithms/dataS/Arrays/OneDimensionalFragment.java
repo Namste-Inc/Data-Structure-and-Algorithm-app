@@ -14,6 +14,6 @@ public class OneDimensionalFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_arrays, container,false);
+        return inflater.inflate(R.layout.fragment_one_d_array, container,false);
     }
 }

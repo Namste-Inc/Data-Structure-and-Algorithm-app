@@ -14,6 +14,6 @@ public class RedBlackTreeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_trees, container,false);
+        return inflater.inflate(R.layout.fragment_red_black_tree, container,false);
     }
 }

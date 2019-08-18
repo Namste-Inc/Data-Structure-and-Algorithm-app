@@ -14,6 +14,6 @@ public class SimpleQueueFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_queues, container,false);
+        return inflater.inflate(R.layout.fragment_simple_queue, container,false);
     }
 }
