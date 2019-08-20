@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
 import com.example.lugdu.datastructuresandalgorithms.algo.AlgorithmFragment;
@@ -28,7 +29,9 @@ public class IterationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.middle_fragment, container,false);
-        getActivity().getWindow().setStatusBarColor(getArguments().getInt("color"));
+        int color = getArguments().getInt("color");
+        int darkenColor = MainActivity.manipulateColor(color, .8f);
+        getActivity().getWindow().setStatusBarColor(darkenColor);
         TabLayout tabLayout = view.findViewById(R.id.tabview);
         tabLayout.setBackgroundColor(getArguments().getInt("color"));
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);

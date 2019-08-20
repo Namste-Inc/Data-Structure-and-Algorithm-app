@@ -31,9 +31,11 @@ public class SortFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.middle_fragment, container,false);
-        getActivity().getWindow().setStatusBarColor(getArguments().getInt("color"));
+        int color = getArguments().getInt("color");
+        int darkenColor = MainActivity.manipulateColor(color, .8f);
+        getActivity().getWindow().setStatusBarColor(darkenColor);
         TabLayout tabLayout = view.findViewById(R.id.tabview);
-        tabLayout.setBackgroundColor(getArguments().getInt("color"));
+        tabLayout.setBackgroundColor(color);
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
 
@@ -43,7 +45,7 @@ public class SortFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlgorithmFragment()).commit();
             }
         });
-        toolbar.setBackgroundColor(getArguments().getInt("color"));
+        toolbar.setBackgroundColor(color);
         TextView textView = view.findViewById(R.id.textviewtoolbar);
         textView.setText("Sort");
 

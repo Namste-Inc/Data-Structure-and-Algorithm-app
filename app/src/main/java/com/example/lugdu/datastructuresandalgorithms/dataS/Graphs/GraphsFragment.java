@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.R;
 import com.example.lugdu.datastructuresandalgorithms.dataS.DataStructureFragment;
 
@@ -23,9 +24,11 @@ public class GraphsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.middle_fragment, container,false);
-        getActivity().getWindow().setStatusBarColor(getArguments().getInt("color"));
+        int color = getArguments().getInt("color");
+        int darkenColor = MainActivity.manipulateColor(color, .8f);
+        getActivity().getWindow().setStatusBarColor(darkenColor);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(getArguments().getInt("color"));
+        toolbar.setBackgroundColor(color);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
