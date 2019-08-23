@@ -1098,6 +1098,7 @@ id beginning
 id blocking
 id bottom
 id button
+id button1
 id buttonPanel
 id cancel_action
 id center
@@ -1164,6 +1165,7 @@ id invisible
 id italic
 id item_touch_helper_previous_elevation
 id itr_hex_b
+id lView
 id labeled
 id largeLabel
 id layout_dialog

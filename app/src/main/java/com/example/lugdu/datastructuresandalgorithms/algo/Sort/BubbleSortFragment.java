@@ -1,47 +1,234 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.Sort;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.R;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Queue;
 
 public class BubbleSortFragment extends Fragment {
     View view;
+    int arr[];
+    TextView tArr[];
+    Queue<ObjectAnimator> animations;
+    boolean animating;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bubble_sort, container,false);
-        Button button = view.findViewById(R.id.button);
+        final Button button = view.findViewById(R.id.button);
+        final Button button1 = view.findViewById(R.id.button1);
         button.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onClick(View v) {
-                swap(R.id.textView6, R.id.textView7);
+                int [] a = {8,27,3,4,2,9,8};
+                arr = a;
+                initArray();
+
+            }
+        });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public void onClick(View v) {
+                Handler handler = new Handler();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        bubbleSort(button1);
+                    }
+                };
+                Thread thread = new Thread(runnable);
+                thread.start();
+
+
             }
         });
         return view;
     }
-    public void swap(int id1, int id2){
+    public void bubbleSort(Button b) {
+        for (int i = arr.length - 1; i >= 0; i--) {
+            for (int j = 0; j < i; j++) {
+                ((CircleText) tArr[j]).select();
+                tArr[j].invalidate();
+                pause(Thread.currentThread(),1000);
+                if (arr[j] > arr[j + 1]) {
+                    swapArrInt(j, j + 1);
+                    swapArrTView1(j, j+1);
+                    ((CircleText)tArr[j+1]).deselect();
+                    tArr[j + 1].invalidate();
+                    pause(Thread.currentThread(),1000);
+
+                }
+                ((CircleText)tArr[j]).deselect();
+                ((CircleText) tArr[j]).invalidate();
+
+
+            }
+        }
+    }
+    public void pause(Thread thread, int time){
+        synchronized (thread){
+            try {
+                Thread.currentThread().wait(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void swapAni(int id1, int id2){
         TextView txt1 = view.findViewById(id1);
         TextView txt2 = view.findViewById(id2);
         float x1 = txt1.getX();
         float x2 = txt2.getX();
-        View view2 = view.findViewById(R.id.button);
-        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", (x2 - x1));
+        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
         animation.setDuration(1000);
-        ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", (x1 - x2));
+        ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
         animation2.setDuration(1000);
         animation.start();
         animation2.start();
     }
-    public void ignite(int id){
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void ignite(int pos){
+        ObjectAnimator objectAnimator = ObjectAnimator.ofArgb(tArr[pos], "backgroundColor", Color.BLUE);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void extinguish(int id){
+        TextView txt = view.findViewById(id);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofArgb(txt, "backgroundColor", Color.TRANSPARENT);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void initArray(){
+        int len = arr.length;
+        //arr = new int[len];
+        tArr = new TextView[len];
+        for(int i = 0; i<len; i++){
+            TextView textView = new CircleText(getContext());
+            textView.setText(arr[i] + "");
+            tArr[i] = textView;
+            textView.setX(i * 130);
+            RelativeLayout insertPoint = view.findViewById(R.id.lView);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(120,120);
+            layoutParams.setMargins(20,0,0,25);
+            insertPoint.addView(textView, layoutParams);
+        }
+    }
+    public void swapArrTView(final int pos1, final int pos2, Button b){
+        while (animating){
 
+        }
+        float x1 = tArr[pos1].getX();
+        float x2 = tArr[pos2].getX();
+        final ObjectAnimator animation = ObjectAnimator.ofFloat(tArr[pos1], "translationX", x2);
+        animation.setDuration(200);
+        final ObjectAnimator animation2 = ObjectAnimator.ofFloat(tArr[pos2], "translationX", x1);
+        animation2.setDuration(200);
+        animation.start();
+        animation2.start();
+        animation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                animating = false;
+                System.out.println("animation Ended");
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        animating = true;
+        TextView pos = tArr[pos1];
+        tArr[pos1] = tArr[pos2];
+        tArr[pos2] = pos;
+    }
+    public void swapArrTView1(int pos1, int pos2){
+        float x1 = tArr[pos1].getX();
+        float x2 = tArr[pos2].getX();
+        float foward = x1;
+        float backwards = x2;
+        for(float i = x1; i<x2; i+=.009){
+            tArr[pos1].setX(foward);
+            tArr[pos2].setX(backwards);
+            foward += .009;
+            backwards-=.009;
+        }
+        TextView pos = tArr[pos1];
+        tArr[pos1] = tArr[pos2];
+        tArr[pos2] = pos;
+    }
+    public void swapArrInt(int pos1, int pos2){
+        int pos = arr[pos1];
+        arr[pos1] = arr[pos2];
+        arr[pos2] = pos;
+    }
+    public void parseArray(String arr){
+        String[] arr1 = arr.split(",");
+        this.arr = new int[arr1.length];
+        for(int i = 0; i<arr1.length; i++){
+            this.arr[i] = Integer.parseInt(arr1[i]);
+        }
+    }
+    final class Animation1 {
+
+        final Thread animator;
+
+        public Animation1(final int pos1, final int pos2)
+        {
+            animator = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //swapArrTView(pos1, pos2);
+                }
+            });
+
+        }
+
+        public void startAnimation()
+        {
+            animator.start();
+        }
+
+        public void awaitCompletion() throws InterruptedException
+        {
+            animator.join();
+        }
     }
 }
