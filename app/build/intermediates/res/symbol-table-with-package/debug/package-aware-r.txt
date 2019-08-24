@@ -1041,6 +1041,7 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_notifications_black_24dp
+drawable ic_play_arrow_black_24dp
 drawable mtrl_snackbar_background
 drawable mtrl_tabs_default_indicator
 drawable navigation_empty_icon
@@ -1097,7 +1098,6 @@ id barrier
 id beginning
 id blocking
 id bottom
-id button
 id button1
 id buttonPanel
 id cancel_action

@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,11 +13,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
@@ -40,17 +45,41 @@ public class BubbleSortFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bubble_sort, container,false);
-        final Button button = view.findViewById(R.id.button);
         final Button button1 = view.findViewById(R.id.button1);
-        button.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+        final EditText editText = view.findViewById(R.id.textView5);
+        editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int [] a = {8,27,3,4,2,9,8};
-                arr = a;
-                initArray();
-
+                if(!editText.isInEditMode()){
+                    String[] afterC = editText.getText().toString().split(": ");
+                    if(afterC.length > 1){
+                        editText.setText(afterC[1]);
+                    }
+                    editText.setSelection(editText.getText().length());
+                }
+            }
+        });
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    if(entryGood(editText.getText().toString())) {
+                        parseArray(editText.getText().toString());
+                        editText.setText("Original Array: " + editText.getText());
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                        editText.clearFocus();
+                        editText.setSelection(editText.getText().length());
+                        initArray();
+                        return true;
+                    }
+                    else{
+                        Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                }
+                return false;
             }
         });
         button1.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +91,7 @@ public class BubbleSortFragment extends Fragment {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        bubbleSort(button1);
+                        bubbleSort();
                     }
                 };
                 Thread thread = new Thread(runnable);
@@ -73,7 +102,9 @@ public class BubbleSortFragment extends Fragment {
         });
         return view;
     }
-    public void bubbleSort(Button b) {
+    public void bubbleSort() {
+        TextView textView = view.findViewById(R.id.textView4);
+        textView.setText("Sorted Array:");
         for (int i = arr.length - 1; i >= 0; i--) {
             for (int j = 0; j < i; j++) {
                 ((CircleText) tArr[j]).select();
@@ -85,14 +116,18 @@ public class BubbleSortFragment extends Fragment {
                     ((CircleText)tArr[j+1]).deselect();
                     tArr[j + 1].invalidate();
                     pause(Thread.currentThread(),1000);
-
                 }
                 ((CircleText)tArr[j]).deselect();
-                ((CircleText) tArr[j]).invalidate();
-
-
+                tArr[j].invalidate();
             }
         }
+        textView.setText("Sorted Array: " + arrayToString(arr));
+    }
+    public boolean entryGood(String entry){
+        if(entry.startsWith(",") || entry.endsWith(",") || entry.contains(",,")){
+            return false;
+        }
+        return true;
     }
     public void pause(Thread thread, int time){
         synchronized (thread){
@@ -129,12 +164,15 @@ public class BubbleSortFragment extends Fragment {
         int len = arr.length;
         //arr = new int[len];
         tArr = new TextView[len];
+        RelativeLayout insertPoint = view.findViewById(R.id.lView);
+        if(insertPoint.getChildCount() > 0){
+            insertPoint.removeAllViews();
+        }
         for(int i = 0; i<len; i++){
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
             tArr[i] = textView;
             textView.setX(i * 130);
-            RelativeLayout insertPoint = view.findViewById(R.id.lView);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(120,120);
             layoutParams.setMargins(20,0,0,25);
             insertPoint.addView(textView, layoutParams);
@@ -205,6 +243,18 @@ public class BubbleSortFragment extends Fragment {
         for(int i = 0; i<arr1.length; i++){
             this.arr[i] = Integer.parseInt(arr1[i]);
         }
+    }
+    public String arrayToString(int[] arr){
+        int len = arr.length;
+        String toString = "";
+        for(int i = 0; i<len; i++){
+            if(i == 0){
+                toString += arr[0];
+            }else{
+                toString += "," + arr[i];
+            }
+        }
+        return toString;
     }
     final class Animation1 {
 
