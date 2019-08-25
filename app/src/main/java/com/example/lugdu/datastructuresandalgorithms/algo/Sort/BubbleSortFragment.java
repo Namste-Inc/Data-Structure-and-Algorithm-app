@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.Queue;
 
 public class BubbleSortFragment extends Fragment {
+    public TextView explanationText;
     View view;
     int arr[];
     TextView tArr[];
@@ -104,6 +105,11 @@ public class BubbleSortFragment extends Fragment {
     }
     public void bubbleSort() {
         TextView textView = view.findViewById(R.id.textView4);
+
+        //TextView explanationText = view.findViewById(R.id.explanationText);
+        //explanationText = (TextView) view.findViewById(R.id.explanationText);
+        TextView explanationText = view.findViewById(R.id.explanationText);
+
         textView.setText("Sorted Array:");
         for (int i = arr.length - 1; i >= 0; i--) {
             for (int j = 0; j < i; j++) {
@@ -111,12 +117,16 @@ public class BubbleSortFragment extends Fragment {
                 tArr[j].invalidate();
                 pause(Thread.currentThread(),1000);
                 if (arr[j] > arr[j + 1]) {
+
+                    explanationText.setText("BeepBoop" + arr[j]);
+
                     swapArrInt(j, j + 1);
                     swapArrTView1(j, j+1);
                     ((CircleText)tArr[j+1]).deselect();
                     tArr[j + 1].invalidate();
                     pause(Thread.currentThread(),1000);
                 }
+
                 ((CircleText)tArr[j]).deselect();
                 tArr[j].invalidate();
             }
@@ -237,6 +247,8 @@ public class BubbleSortFragment extends Fragment {
         arr[pos1] = arr[pos2];
         arr[pos2] = pos;
     }
+
+
     public void parseArray(String arr){
         String[] arr1 = arr.split(",");
         this.arr = new int[arr1.length];
