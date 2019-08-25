@@ -36,10 +36,10 @@ import java.util.Iterator;
 import java.util.Queue;
 
 public class BubbleSortFragment extends Fragment {
-    public TextView explanationText;
     View view;
     int arr[];
     TextView tArr[];
+    TextView explanationText;
     Queue<ObjectAnimator> animations;
     boolean animating;
     @Nullable
@@ -48,6 +48,7 @@ public class BubbleSortFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_bubble_sort, container,false);
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.textView5);
+        explanationText = view.findViewById(R.id.explanationText);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +109,7 @@ public class BubbleSortFragment extends Fragment {
 
         //TextView explanationText = view.findViewById(R.id.explanationText);
         //explanationText = (TextView) view.findViewById(R.id.explanationText);
-        TextView explanationText = view.findViewById(R.id.explanationText);
+
 
         textView.setText("Sorted Array:");
         for (int i = arr.length - 1; i >= 0; i--) {
@@ -117,8 +118,16 @@ public class BubbleSortFragment extends Fragment {
                 tArr[j].invalidate();
                 pause(Thread.currentThread(),1000);
                 if (arr[j] > arr[j + 1]) {
-
-                    explanationText.setText("BeepBoop" + arr[j]);
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println(explanationText.getText());
+                            explanationText.setText("This is my text");
+                        }
+                    };
+                    //Handler handler = new Handler();
+                    //handler.post(runnable);
+                    getActivity().runOnUiThread(runnable);
 
                     swapArrInt(j, j + 1);
                     swapArrTView1(j, j+1);
