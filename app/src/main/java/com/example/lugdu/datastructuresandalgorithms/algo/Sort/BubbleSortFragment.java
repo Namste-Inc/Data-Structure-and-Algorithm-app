@@ -42,16 +42,18 @@ public class BubbleSortFragment extends Fragment {
     TextView explanationText;
     Queue<ObjectAnimator> animations;
     boolean animating;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bubble_sort, container,false);
         final Button button1 = view.findViewById(R.id.button1);
-        final EditText editText = view.findViewById(R.id.textView5);
+        final EditText editText = view.findViewById(R.id.topBox);
         explanationText = view.findViewById(R.id.explanationText);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(!editText.isInEditMode()){
                     String[] afterC = editText.getText().toString().split(": ");
                     if(afterC.length > 1){
@@ -67,12 +69,18 @@ public class BubbleSortFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE){
                     if(entryGood(editText.getText().toString())) {
+
+                        System.out.println(editText.getText());
+
+
                         parseArray(editText.getText().toString());
-                        editText.setText("Original Array: " + editText.getText());
+                        //editText.setText("Original Array: " + editText.getText());
+                        editText.setText(editText.getText());
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.clearFocus();
                         editText.setSelection(editText.getText().length());
+
                         initArray();
                         return true;
                     }
@@ -98,19 +106,14 @@ public class BubbleSortFragment extends Fragment {
                 };
                 Thread thread = new Thread(runnable);
                 thread.start();
-
-
             }
         });
         return view;
     }
+    int smallNumber = 0;
+    int bigNumber = 0;
     public void bubbleSort() {
         TextView textView = view.findViewById(R.id.textView4);
-
-        //TextView explanationText = view.findViewById(R.id.explanationText);
-        //explanationText = (TextView) view.findViewById(R.id.explanationText);
-
-
         textView.setText("Sorted Array:");
         for (int i = arr.length - 1; i >= 0; i--) {
             for (int j = 0; j < i; j++) {
@@ -118,15 +121,15 @@ public class BubbleSortFragment extends Fragment {
                 tArr[j].invalidate();
                 pause(Thread.currentThread(),1000);
                 if (arr[j] > arr[j + 1]) {
+                    bigNumber = arr[j];
+                    smallNumber = arr[j+1];
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            System.out.println(explanationText.getText());
-                            explanationText.setText("This is my text");
+                            explanationText.setText(bigNumber + " is bigger than " + smallNumber + ". Switch their positions.");
                         }
                     };
-                    //Handler handler = new Handler();
-                    //handler.post(runnable);
+
                     getActivity().runOnUiThread(runnable);
 
                     swapArrInt(j, j + 1);
@@ -135,6 +138,15 @@ public class BubbleSortFragment extends Fragment {
                     tArr[j + 1].invalidate();
                     pause(Thread.currentThread(),1000);
                 }
+
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("No changes to be made.");
+                    }
+                };
+
+                getActivity().runOnUiThread(runnable);
 
                 ((CircleText)tArr[j]).deselect();
                 tArr[j].invalidate();
@@ -181,7 +193,6 @@ public class BubbleSortFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void initArray(){
         int len = arr.length;
-        //arr = new int[len];
         tArr = new TextView[len];
         RelativeLayout insertPoint = view.findViewById(R.id.lView);
         if(insertPoint.getChildCount() > 0){
