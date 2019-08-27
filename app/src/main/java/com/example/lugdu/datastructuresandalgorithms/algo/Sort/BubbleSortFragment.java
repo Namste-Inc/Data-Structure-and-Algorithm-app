@@ -2,7 +2,6 @@ package com.example.lugdu.datastructuresandalgorithms.algo.Sort;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
@@ -69,19 +68,15 @@ public class BubbleSortFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE){
                     if(entryGood(editText.getText().toString())) {
-
-                        System.out.println(editText.getText());
-
-
-                        parseArray(editText.getText().toString());
-                        //editText.setText("Original Array: " + editText.getText());
+                        if(!editText.getText().toString().equals("")){
+                            parseArray(editText.getText().toString());
+                            initArray();
+                        }
                         editText.setText(editText.getText());
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.clearFocus();
                         editText.setSelection(editText.getText().length());
-
-                        initArray();
                         return true;
                     }
                     else{
@@ -101,7 +96,17 @@ public class BubbleSortFragment extends Fragment {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        bubbleSort();
+                        if(arr == null || arr.length == 0){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(),"Must enter an array", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                        else {
+                            bubbleSort();
+                        }
                     }
                 };
                 Thread thread = new Thread(runnable);
@@ -272,6 +277,10 @@ public class BubbleSortFragment extends Fragment {
     public void parseArray(String arr){
         String[] arr1 = arr.split(",");
         this.arr = new int[arr1.length];
+        if(arr.equals("")){
+            this.arr = null;
+            return;
+        }
         for(int i = 0; i<arr1.length; i++){
             this.arr[i] = Integer.parseInt(arr1[i]);
         }
