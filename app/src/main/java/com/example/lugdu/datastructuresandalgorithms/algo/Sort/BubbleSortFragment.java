@@ -5,6 +5,9 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -39,8 +43,8 @@ public class BubbleSortFragment extends Fragment {
     int arr[];
     TextView tArr[];
     TextView explanationText;
-    Queue<ObjectAnimator> animations;
     boolean animating;
+    public static int color = Color.parseColor("#FF0000");
 
     @Nullable
     @Override
@@ -48,7 +52,16 @@ public class BubbleSortFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_bubble_sort, container,false);
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.topBox);
+        TextView def = view.findViewById(R.id.textView7);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setCornerRadius(50);
+        int[] colors = {Color.GRAY,color};
+        gradientDrawable.setColors(colors);
+        def.setBackground(gradientDrawable);
         explanationText = view.findViewById(R.id.explanationText);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        animation.setDuration(1000);
+        def.setAnimation(animation);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -296,30 +309,5 @@ public class BubbleSortFragment extends Fragment {
             }
         }
         return toString;
-    }
-    final class Animation1 {
-
-        final Thread animator;
-
-        public Animation1(final int pos1, final int pos2)
-        {
-            animator = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    //swapArrTView(pos1, pos2);
-                }
-            });
-
-        }
-
-        public void startAnimation()
-        {
-            animator.start();
-        }
-
-        public void awaitCompletion() throws InterruptedException
-        {
-            animator.join();
-        }
     }
 }

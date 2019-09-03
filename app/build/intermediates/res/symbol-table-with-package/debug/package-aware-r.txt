@@ -1120,6 +1120,7 @@ id custom
 id customPanel
 id decor_content_parent
 id default_activity_button
+id definitionText
 id design_bottom_sheet
 id design_menu_item_action_area
 id design_menu_item_action_area_stub
@@ -1209,6 +1210,7 @@ id progress_circular
 id progress_horizontal
 id queues_hex_b
 id radio
+id resultText
 id right
 id right_icon
 id right_side

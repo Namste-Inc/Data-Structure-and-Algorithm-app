@@ -39,6 +39,8 @@ public class SortFragment extends Fragment {
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
 
+        Bundle bundle = new Bundle();
+        bundle.putInt("Color", color);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +61,6 @@ public class SortFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Selection Sort"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-
         HashMap<Integer, Fragment> sort = new HashMap<>();
         sort.put(0,new BubbleSortFragment());
         sort.put(1,new HeapSortFragment());

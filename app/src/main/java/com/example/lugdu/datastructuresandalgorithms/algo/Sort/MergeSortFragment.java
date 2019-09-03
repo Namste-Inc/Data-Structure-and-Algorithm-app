@@ -18,7 +18,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -30,9 +32,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.R;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,12 +45,18 @@ import java.util.Queue;
 import java.util.Set;
 
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.Square;
 
 public class MergeSortFragment extends Fragment {
     View view;
     int arr[];
     TextView tArr[];
     TextView explanationText;
+    int h,w;
+    RelativeLayout relativeLayout;
+    final int squareSize = 100;
+
+    ArrayList<ArrayList<Square>> squares = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,6 +64,9 @@ public class MergeSortFragment extends Fragment {
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.topBox);
         explanationText = view.findViewById(R.id.explanationText);
+        relativeLayout = view.findViewById(R.id.lView);
+        h = relativeLayout.getLayoutParams().height;
+        w = MainActivity.width;
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,13 +110,12 @@ public class MergeSortFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onClick(View v) {
-                Runnable runnable = new Runnable() {
+                final Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        //int arr[] = {5,3,4,7,6,10,2,13,8};
-
-                        mergeSort(arr, arr.length);
-
+                        position();
+                        splitAni(0);
+                        //mergeSort(arr, arr.length);
                     }
                 };
                 Thread thread = new Thread(runnable);
@@ -191,18 +203,90 @@ public class MergeSortFragment extends Fragment {
     public void initArray(){
         int len = arr.length;
         tArr = new TextView[len];
-        RelativeLayout insertPoint = view.findViewById(R.id.lView);
-        if(insertPoint.getChildCount() > 0){
-            insertPoint.removeAllViews();
+        ArrayList<Square> squareArr = new ArrayList<>();
+        squares.clear();
+        if(relativeLayout.getChildCount() > 0){
+            relativeLayout.removeAllViews();
         }
         for(int i = 0; i<len; i++){
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
             tArr[i] = textView;
-            textView.setX(i * 130);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(120,120);
-            layoutParams.setMargins(20,0,0,25);
-            insertPoint.addView(textView, layoutParams);
+            textView.setX(i * 105);
+            Square square = new Square(getContext());
+            square.setX(i * 105);
+            squareArr.add(square);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize,squareSize);
+            layoutParams.setMargins(20,25,0,0);
+            relativeLayout.addView(square, layoutParams);
+            relativeLayout.addView(textView, layoutParams);
+            Toast.makeText(getContext(),relativeLayout.getHeight() + "",Toast.LENGTH_LONG).show();
+        }
+        squares.add(squareArr);
+    }
+    public void mergeAni() {
+
+    }
+    public ArrayList<Square> copyLayer(int layer){
+        ArrayList<Square> temp = new ArrayList<>();
+        for(Square square: squares.get(layer)){
+            temp.add(square);
+        }
+        return temp;
+    }
+    public void splitAni(int layer1){
+        final int layer = layer1;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Square> temp = copyLayer(layer);
+                int len = temp.size();
+                int half = len /2;
+                for(int i = 0; i<len; i++){
+                    Square square = new Square(getContext());
+                    square.setX(temp.get(i).getX());
+                    square.setY(temp.get(i).getY() + 100);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize,squareSize);
+                    layoutParams.setMargins(0,5,0,0);
+                    relativeLayout.addView(square, layoutParams);
+                }
+
+            }
+        });
+
+    }
+
+    public int getTreeHeight(double num){
+        int count = 0;
+        while(num > 1){
+            double half = (double)num/2;
+            num = Math.ceil(half);
+            count ++;
+        }
+        return count + 1;
+    }
+
+    public void position(){
+        int treeHeight = tArr.length;
+        ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
+        double layers = getTreeHeight((double)treeHeight);
+        params.height = (int)layers * (130) + 40;
+        int totalLength = treeHeight * (5 + squareSize);
+        int totalSpace = w - totalLength;
+        int space  = totalSpace / 2;
+        int toGo = (w - space) - (int)squares.get(0).get(tArr.length-1).getX() - squareSize - 20;
+        System.out.println(toGo + " Space");
+        for(int i = tArr.length - 1; i>-1; i--){
+            for(int j = 0; j<toGo; j+=10){
+                squares.get(0).get(i).setX(squares.get(0).get(i).getX() + 10);
+                tArr[i].setX(tArr[i].getX() + 10);
+                try {
+                    Thread.currentThread().sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
     }
 

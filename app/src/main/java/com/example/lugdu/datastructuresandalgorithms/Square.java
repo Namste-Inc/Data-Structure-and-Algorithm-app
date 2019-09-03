@@ -10,22 +10,33 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class CircleText extends android.support.v7.widget.AppCompatTextView {
-    int num;
+public class Square extends View {
     int color;
+    boolean single;
+    int numBoxes;
+    TextView[] circleTexts;
+    int side;
 
-    public CircleText(Context context) {
+    public Square(Context context) {
         super(context);
-        setGravity(Gravity.CENTER);
+        color = Color.BLUE;
+    }
+    public Square(Context context,int numBoxes, TextView[] circleTexts, int side) {
+        super(context);
+        color = Color.BLUE;
+        this.circleTexts = circleTexts;
+        this.numBoxes = numBoxes;
+        this.side = side;
+    }
+
+    public Square(Context context, AttributeSet attrs) {
+        super(context, attrs);
         color = Color.BLUE;
     }
 
-    public CircleText(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public CircleText(Context context, AttributeSet attrs, int defStyleAttr) {
+    public Square(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -34,19 +45,11 @@ public class CircleText extends android.support.v7.widget.AppCompatTextView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Paint paint = new Paint();
-        Paint textPaint = new Paint();
-        textPaint.setColor(Color.RED);
-        int mid = getWidth() / 2 ;
-        textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setTextSize(64);
+        paint.setColor(color);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setAntiAlias(true);
-        paint.setColor(color);
-        paint.setStrokeWidth(10);
-        canvas.drawCircle(mid, mid, (getHeight()/2) - 12, paint);
-
-        //canvas.drawText("" + num, xPos,yPos,textPaint);
+        paint.setStrokeWidth(7);
+        canvas.drawRect(0,0,getWidth(),getHeight(),paint);
     }
     public void select(){
         color = Color.GREEN;
