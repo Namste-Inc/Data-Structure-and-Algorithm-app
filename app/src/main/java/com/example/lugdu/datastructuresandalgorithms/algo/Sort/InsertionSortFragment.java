@@ -38,6 +38,11 @@ public class InsertionSortFragment extends Fragment {
     RelativeLayout relativeLayout;
     final int squareSize = 100;
     int h,w;
+    int circleSize = 120;
+    int leftMargin = 20;
+    int rightMargin = 0;
+    int topMargin = 25;
+    int bottomMargin = 0;
     ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
 
     @Nullable
@@ -124,7 +129,7 @@ public class InsertionSortFragment extends Fragment {
                     moveDownAni(finalJ);
                 }
             });
-            pause(Thread.currentThread(),1000);
+            pause(Thread.currentThread(),2000);
 
             //while i is greater than negative 1 and while the element at position i is greater than what's in front of it
             while ((i> -1) && (array[i] > key)) {
@@ -141,7 +146,7 @@ public class InsertionSortFragment extends Fragment {
                         swapHorizontally(finalI +1, finalI);
                     }
                 });
-                pause(Thread.currentThread(),1000);
+                pause(Thread.currentThread(),2000);
 
                 i--;
                 System.out.println("in the while: " + Arrays.toString(array));
@@ -150,7 +155,7 @@ public class InsertionSortFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("We got here");
+                    System.out.println("We got here " + tArr[finalJ].getY());
                     moveUp(finalJ);
                 }
             });
@@ -195,21 +200,20 @@ public class InsertionSortFragment extends Fragment {
         for(int i = 0; i<len; i++){
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
-            tArr[i] = textView;
             textView.setX(i * 130);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(120,120);
-            layoutParams.setMargins(20,0,0,150);
-//            layoutParams.setMargins(20,0,0,25);
+            tArr[i] = textView;
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
+            layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
             insertPoint.addView(textView, layoutParams);
+
         }
     }
 
-    public void moveDownAni(int firstPos) {
-        final int pos1 = firstPos;
-        TextView txt1 = tArr[pos1];
+    public void moveDownAni(int pos) {
+        TextView txt1 = tArr[pos];
 
         System.out.println("initial height: " + txt1.getY());
-        float x1 = (float) (txt1.getY() - .1);
+        float x1 = (txt1.getY() + circleSize + 10);
         System.out.println("initial x1: " + x1);
 
 
@@ -240,16 +244,16 @@ public class InsertionSortFragment extends Fragment {
         tArr[pos2] = pos;
     }
 
-    public void moveUp(int firstPos) {
-        final int pos1 = firstPos;
-        TextView txt1 = tArr[pos1];
+    public void moveUp(int pos) {
+        TextView txt1 = tArr[pos];
 
-        float x1 = (float) (txt1.getY() + .1);
+        System.out.println("1 " + txt1.getY());
+        float x1 = (txt1.getY() - (circleSize + 10)) - topMargin * 2;
+        System.out.println("2 " + x1);
 
-        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", -x1);
+        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
 
         animation.setDuration(1000);
-
 
         animation.start();
     }

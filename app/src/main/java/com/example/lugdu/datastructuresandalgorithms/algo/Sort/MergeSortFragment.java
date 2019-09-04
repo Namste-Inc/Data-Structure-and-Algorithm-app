@@ -218,10 +218,9 @@ public class MergeSortFragment extends Fragment {
             square.setX(i * 105);
             squareArr.add(square);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize,squareSize);
-            layoutParams.setMargins(20,25,0,0);
+            layoutParams.setMargins(20,0,0,0);
             relativeLayout.addView(square, layoutParams);
             relativeLayout.addView(textView, layoutParams);
-            Toast.makeText(getContext(),relativeLayout.getHeight() + "",Toast.LENGTH_LONG).show();
         }
         ArrayList<ArrayList<Square>> tempArr = new ArrayList<>();
         tempArr.add(squareArr);
