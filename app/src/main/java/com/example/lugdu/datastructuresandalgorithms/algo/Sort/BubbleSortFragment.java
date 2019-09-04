@@ -15,6 +15,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +37,7 @@ import android.widget.Toast;
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.R;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
@@ -44,6 +48,11 @@ public class BubbleSortFragment extends Fragment {
     TextView tArr[];
     TextView explanationText;
     boolean animating;
+    final int circleSize = 120;
+    final int leftMargin = 20;
+    final int rightMargin = 0;
+    final int topMargin = 0;
+    final int bottomMargin = 25;
     public static int color = Color.parseColor("#FF0000");
 
     @Nullable
@@ -65,11 +74,11 @@ public class BubbleSortFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(!editText.isInEditMode()){
-                    String[] afterC = editText.getText().toString().split(": ");
+                    String delimeter = ": \\[ ";
+                    String[] afterC = editText.getText().toString().split(delimeter);
                     if(afterC.length > 1){
-                        editText.setText(afterC[1]);
+                        editText.setText(arrayToString(arr,false));
                     }
                     editText.setSelection(editText.getText().length());
                 }
@@ -85,7 +94,7 @@ public class BubbleSortFragment extends Fragment {
                             parseArray(editText.getText().toString());
                             initArray();
                         }
-                        editText.setText(editText.getText());
+                        editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.clearFocus();
@@ -206,7 +215,7 @@ public class BubbleSortFragment extends Fragment {
             @Override
             public void run() {
                 TextView textView = view.findViewById(R.id.textView4);
-                textView.setText("Sorted Array: " + arrayToString(arr));
+                textView.setText("Sorted Array: [ " + arrayToString(arr,true) + " ]");
             }
         });
 
@@ -233,36 +242,13 @@ public class BubbleSortFragment extends Fragment {
         final int pos2 = secondPos;
         TextView txt1 = tArr[pos1];
         TextView txt2 = tArr[pos2];
-        float x1 = txt1.getX();
-        float x2 = txt2.getX();
+        float x1 = txt1.getX() - leftMargin;
+        float x2 = txt2.getX() - leftMargin;
         System.out.println(x2);
         ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
         animation.setDuration(1000);
         ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
         animation2.setDuration(1000);
-//        animation2.addListener(new Animator.AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animation) {
-//                System.out.println("before x1 " + tArr[pos1].getX());
-//                System.out.println("before x2 " + tArr[pos2].getX());
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                System.out.println("after x1 " + tArr[pos1].getX());
-//                System.out.println("after x2 " + tArr[pos2].getX());
-//            }
-//
-//            @Override
-//            public void onAnimationCancel(Animator animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animator animation) {
-//
-//            }
-//        });
         animation.start();
         animation2.start();
         TextView pos = tArr[pos1];
@@ -291,8 +277,8 @@ public class BubbleSortFragment extends Fragment {
             textView.setText(arr[i] + "");
             tArr[i] = textView;
             textView.setX(i * 130);
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(120,120);
-            layoutParams.setMargins(20,0,0,25);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
+            layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
             insertPoint.addView(textView, layoutParams);
         }
     }
@@ -367,9 +353,8 @@ public class BubbleSortFragment extends Fragment {
         arr[pos2] = pos;
     }
 
-
     public void parseArray(String arr){
-        String[] arr1 = arr.split(",");
+        String[] arr1 = arr.split("-");
         this.arr = new int[arr1.length];
         if(arr.equals("")){
             this.arr = null;
@@ -379,14 +364,15 @@ public class BubbleSortFragment extends Fragment {
             this.arr[i] = Integer.parseInt(arr1[i]);
         }
     }
-    public String arrayToString(int[] arr){
+    public String arrayToString(int[] arr, boolean comma){
+        String separator = comma?",":"-";
         int len = arr.length;
         String toString = "";
         for(int i = 0; i<len; i++){
             if(i == 0){
                 toString += arr[0];
             }else{
-                toString += "," + arr[i];
+                toString += separator + arr[i];
             }
         }
         return toString;

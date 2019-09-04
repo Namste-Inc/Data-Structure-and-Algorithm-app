@@ -74,7 +74,7 @@ public class MergeSortFragment extends Fragment {
                 if(!editText.isInEditMode()){
                     String[] afterC = editText.getText().toString().split(": ");
                     if(afterC.length > 1){
-                        editText.setText(afterC[1]);
+                        editText.setText(arrayToString(arr, false));
                     }
                     editText.setSelection(editText.getText().length());
                 }
@@ -90,7 +90,7 @@ public class MergeSortFragment extends Fragment {
                             parseArray(editText.getText().toString());
                             initArray();
                         }
-                        editText.setText(editText.getText());
+                        editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.clearFocus();
@@ -183,7 +183,7 @@ public class MergeSortFragment extends Fragment {
         System.out.println("Here's the current array: " + Arrays.toString(array));
     }
     public void parseArray(String arr){
-        String[] arr1 = arr.split(",");
+        String[] arr1 = arr.split("-");
         this.arr = new int[arr1.length];
         if(arr.equals("")){
             this.arr = null;
@@ -334,5 +334,19 @@ public class MergeSortFragment extends Fragment {
         TextView pos = tArr[pos1];
         tArr[pos1] = tArr[pos2];
         tArr[pos2] = pos;
+    }
+
+    public String arrayToString(int[] arr, boolean comma){
+        String separator = comma?",":"-";
+        int len = arr.length;
+        String toString = "";
+        for(int i = 0; i<len; i++){
+            if(i == 0){
+                toString += arr[0];
+            }else{
+                toString += separator + arr[i];
+            }
+        }
+        return toString;
     }
 }
