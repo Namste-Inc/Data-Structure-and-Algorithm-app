@@ -105,7 +105,7 @@ public class Hexagon extends View {
         paintH.setColor(mHexiColor);
         paintH.setStyle(Paint.Style.FILL);
         paintH.setAntiAlias(true);
-        paintH.setShadowLayer(15, 0, 0, Color.BLACK);
+        paintH.setShadowLayer(5, 0, 0, Color.BLACK);
         canvas.drawPath(path, paintH);
         textPaint.setAntiAlias(true);
         textPaint.setTextSize(textSize);

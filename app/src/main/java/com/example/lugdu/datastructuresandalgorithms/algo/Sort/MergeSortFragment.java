@@ -56,7 +56,7 @@ public class MergeSortFragment extends Fragment {
     RelativeLayout relativeLayout;
     final int squareSize = 100;
 
-    ArrayList<ArrayList<Square>> squares = new ArrayList<>();
+    ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,6 +115,7 @@ public class MergeSortFragment extends Fragment {
                     public void run() {
                         position();
                         splitAni(0);
+                        splitAni(1);
                         //mergeSort(arr, arr.length);
                     }
                 };
@@ -222,14 +223,17 @@ public class MergeSortFragment extends Fragment {
             relativeLayout.addView(textView, layoutParams);
             Toast.makeText(getContext(),relativeLayout.getHeight() + "",Toast.LENGTH_LONG).show();
         }
-        squares.add(squareArr);
+        ArrayList<ArrayList<Square>> tempArr = new ArrayList<>();
+        tempArr.add(squareArr);
+        squares.add(tempArr);
     }
+
     public void mergeAni() {
 
     }
-    public ArrayList<Square> copyLayer(int layer){
-        ArrayList<Square> temp = new ArrayList<>();
-        for(Square square: squares.get(layer)){
+    public ArrayList<ArrayList<Square>> copyLayer(int layer){
+        ArrayList<ArrayList<Square>> temp = new ArrayList<>();
+        for(ArrayList<Square> square: squares.get(layer)){
             temp.add(square);
         }
         return temp;
@@ -239,20 +243,46 @@ public class MergeSortFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<Square> temp = copyLayer(layer);
+                ArrayList<ArrayList<Square>> temp = copyLayer(layer);
                 int len = temp.size();
                 int half = len /2;
+                ArrayList<Square> temp2 = new ArrayList<>();
+                ArrayList<ArrayList<Square>> temp3 = new ArrayList<>();
                 for(int i = 0; i<len; i++){
-                    Square square = new Square(getContext());
-                    square.setX(temp.get(i).getX());
-                    square.setY(temp.get(i).getY() + 100);
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize,squareSize);
-                    layoutParams.setMargins(0,5,0,0);
-                    relativeLayout.addView(square, layoutParams);
+                    for(int j = 0; j<temp.get(i).size(); j++) {
+                        Square square = new Square(getContext());
+                        square.setX(temp.get(i).get(j).getX());
+                        square.setY(temp.get(i).get(j).getY() + 100);
+                        temp2.add(square);
+                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize, squareSize);
+                        layoutParams.setMargins(0, 5, 0, 0);
+                        relativeLayout.addView(square, layoutParams);
+                    }
+                }
+                temp3.add(temp2);
+                squares.add(temp3);
+                ArrayList<ArrayList<Square>> tempAni = squares.get(layer + 1);
+                for(int i = 0; i<tempAni.size(); i++){
+                    ArrayList<Square>tempAni2 = tempAni.get(i);
+                    int low = 0;
+                    int high = tempAni2.size() -1;
+                    while(low<=high){
+                        tempAni2.get(high).setX(tempAni2.get(high).getX() + 25);
+                        if(low == high){
+                            break;
+                        }else{
+                            System.out.println("low " + low + "high " + high);
+                            tempAni2.get(low).setX(tempAni2.get(low).getX() - 25);
+                        }
+                        low++;
+                        high--;
+                    }
+
                 }
 
             }
         });
+
 
     }
 
@@ -274,11 +304,11 @@ public class MergeSortFragment extends Fragment {
         int totalLength = treeHeight * (5 + squareSize);
         int totalSpace = w - totalLength;
         int space  = totalSpace / 2;
-        int toGo = (w - space) - (int)squares.get(0).get(tArr.length-1).getX() - squareSize - 20;
+        int toGo = (w - space) - (int)squares.get(0).get(0).get(tArr.length-1).getX() - squareSize - 20;
         System.out.println(toGo + " Space");
         for(int i = tArr.length - 1; i>-1; i--){
             for(int j = 0; j<toGo; j+=10){
-                squares.get(0).get(i).setX(squares.get(0).get(i).getX() + 10);
+                squares.get(0).get(0).get(i).setX(squares.get(0).get(0).get(i).getX() + 10);
                 tArr[i].setX(tArr[i].getX() + 10);
                 try {
                     Thread.currentThread().sleep(1);

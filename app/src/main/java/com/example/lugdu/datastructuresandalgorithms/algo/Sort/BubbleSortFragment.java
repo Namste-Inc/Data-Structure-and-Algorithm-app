@@ -131,12 +131,26 @@ public class BubbleSortFragment extends Fragment {
     int smallNumber = 0;
     int bigNumber = 0;
     public void bubbleSort() {
+        pause(Thread.currentThread(), 1000);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
         TextView textView = view.findViewById(R.id.textView4);
         textView.setText("Sorted Array:");
+            }
+        });
         for (int i = arr.length - 1; i >= 0; i--) {
             for (int j = 0; j < i; j++) {
-                ((CircleText) tArr[j]).select();
-                tArr[j].invalidate();
+                final int m = j;
+                final CircleText cText = ((CircleText) tArr[j]);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        cText.select();
+                        cText.invalidate();
+                    }
+                });
                 pause(Thread.currentThread(),1000);
                 if (arr[j] > arr[j + 1]) {
                     bigNumber = arr[j];
@@ -150,10 +164,23 @@ public class BubbleSortFragment extends Fragment {
 
                     getActivity().runOnUiThread(runnable);
 
-                    swapArrInt(j, j + 1);
-                    swapArrTView1(j, j+1);
-                    ((CircleText)tArr[j+1]).deselect();
-                    tArr[j + 1].invalidate();
+
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            swapArrInt(m, m + 1);
+                            System.out.println("before x1 " + tArr[m].getX());
+                            System.out.println("before x2 " + tArr[m + 1].getX());
+                            swapAni(m, m+1);
+                            System.out.println("after x1 " + tArr[m].getX());
+                            System.out.println("after x2 " + tArr[m + 1].getX());
+
+                            ((CircleText)tArr[m+1]).deselect();
+                            tArr[m + 1].invalidate();
+                        }
+                    });
+
                     pause(Thread.currentThread(),1000);
                 }
 
@@ -165,12 +192,24 @@ public class BubbleSortFragment extends Fragment {
                 };
 
                 getActivity().runOnUiThread(runnable);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText)tArr[m]).deselect();
+                        tArr[m].invalidate();
+                    }
+                });
 
-                ((CircleText)tArr[j]).deselect();
-                tArr[j].invalidate();
             }
         }
-        textView.setText("Sorted Array: " + arrayToString(arr));
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView textView = view.findViewById(R.id.textView4);
+                textView.setText("Sorted Array: " + arrayToString(arr));
+            }
+        });
+
     }
     public boolean entryGood(String entry){
         if(entry.startsWith(",") || entry.endsWith(",") || entry.contains(",,")){
@@ -178,6 +217,7 @@ public class BubbleSortFragment extends Fragment {
         }
         return true;
     }
+
     public void pause(Thread thread, int time){
         synchronized (thread){
             try {
@@ -187,17 +227,47 @@ public class BubbleSortFragment extends Fragment {
             }
         }
     }
-    public void swapAni(int id1, int id2){
-        TextView txt1 = view.findViewById(id1);
-        TextView txt2 = view.findViewById(id2);
+
+    public void swapAni(int firstPos, int secondPos){
+        final int pos1 = firstPos;
+        final int pos2 = secondPos;
+        TextView txt1 = tArr[pos1];
+        TextView txt2 = tArr[pos2];
         float x1 = txt1.getX();
         float x2 = txt2.getX();
+        System.out.println(x2);
         ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
         animation.setDuration(1000);
         ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
         animation2.setDuration(1000);
+//        animation2.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                System.out.println("before x1 " + tArr[pos1].getX());
+//                System.out.println("before x2 " + tArr[pos2].getX());
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                System.out.println("after x1 " + tArr[pos1].getX());
+//                System.out.println("after x2 " + tArr[pos2].getX());
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animation) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animation) {
+//
+//            }
+//        });
         animation.start();
         animation2.start();
+        TextView pos = tArr[pos1];
+        tArr[pos1] = tArr[pos2];
+        tArr[pos2] = pos;
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void ignite(int pos){
@@ -265,14 +335,25 @@ public class BubbleSortFragment extends Fragment {
         tArr[pos1] = tArr[pos2];
         tArr[pos2] = pos;
     }
-    public void swapArrTView1(int pos1, int pos2){
+    public void swapArrTView1(int first, int second){
+        final int pos1 = first;
+        final int pos2 = second;
         float x1 = tArr[pos1].getX();
         float x2 = tArr[pos2].getX();
         float foward = x1;
         float backwards = x2;
         for(float i = x1; i<x2; i+=.009){
-            tArr[pos1].setX(foward);
-            tArr[pos2].setX(backwards);
+            final int pos = pos1;
+            final float back = backwards;
+            final float forth = foward;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tArr[pos1].setX(forth);
+                    tArr[pos2].setX(back);
+                }
+            });
+
             foward += .009;
             backwards-=.009;
         }
