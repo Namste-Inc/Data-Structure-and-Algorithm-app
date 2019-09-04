@@ -18,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.R;
 
 import java.text.DecimalFormat;
@@ -53,6 +55,7 @@ public class BubbleSortFragment extends Fragment {
     final int rightMargin = 0;
     final int topMargin = 0;
     final int bottomMargin = 25;
+    int w;
     public static int color = Color.parseColor("#FF0000");
 
     @Nullable
@@ -71,6 +74,7 @@ public class BubbleSortFragment extends Fragment {
         Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         animation.setDuration(1000);
         def.setAnimation(animation);
+        w = MainActivity.width;
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,8 +269,18 @@ public class BubbleSortFragment extends Fragment {
         ObjectAnimator objectAnimator = ObjectAnimator.ofArgb(txt, "backgroundColor", Color.TRANSPARENT);
     }
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public int middleStart(){
+        int len = arr.length;
+        int totalLength = len * (20 + circleSize);
+        int totalSpace = w - totalLength;
+        int startSpace  = totalSpace / 2;
+        return startSpace;
+    }
     public void initArray(){
         int len = arr.length;
+        int totalLength = (len * (circleSize + leftMargin + rightMargin)) - leftMargin;
+        int totalSpace = w - totalLength;
+        int startSpace  = (totalSpace / 2);
         tArr = new TextView[len];
         RelativeLayout insertPoint = view.findViewById(R.id.lView);
         if(insertPoint.getChildCount() > 0){
@@ -276,7 +290,7 @@ public class BubbleSortFragment extends Fragment {
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
             tArr[i] = textView;
-            textView.setX(i * 130);
+            textView.setX((i * 130) + startSpace);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
             insertPoint.addView(textView, layoutParams);
