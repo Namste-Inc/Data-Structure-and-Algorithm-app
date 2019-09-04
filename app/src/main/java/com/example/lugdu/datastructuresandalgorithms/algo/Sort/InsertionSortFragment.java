@@ -123,6 +123,8 @@ public class InsertionSortFragment extends Fragment {
             int i = j-1;
 
             final int finalJ = j;
+            final int[] updatedKey = new int[1];
+
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -130,12 +132,11 @@ public class InsertionSortFragment extends Fragment {
                 }
             });
             pause(Thread.currentThread(),2000);
+            boolean elementsSwapped = false;
 
             //while i is greater than negative 1 and while the element at position i is greater than what's in front of it
             while ((i> -1) && (array[i] > key)) {
-                //make the element in front of i equal to i
-
-
+                elementsSwapped = true;
                 //swap the i and the element that key represents
                 swapArrInt(i+1, i);
 
@@ -144,6 +145,10 @@ public class InsertionSortFragment extends Fragment {
                     @Override
                     public void run() {
                         swapHorizontally(finalI +1, finalI);
+                        //Since the elements were swapped, the key's position is changed
+                        //Therefore it has to be updated
+                        updatedKey[0] = finalI;
+
                     }
                 });
                 pause(Thread.currentThread(),2000);
@@ -152,11 +157,19 @@ public class InsertionSortFragment extends Fragment {
                 System.out.println("in the while: " + Arrays.toString(array));
             }
 
+            final boolean finalElementsSwapped = elementsSwapped;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("We got here " + tArr[finalJ].getY());
-                    moveUp(finalJ);
+
+                    //If the elements were swapped, then move upwards the key that was swapped
+                    if(finalElementsSwapped == true) {
+                        moveUp(updatedKey[0]);
+                    } else {
+                        //if the elements weren't swapped, then the key remains in the same position, therefore just move that one up
+                        moveUp(finalJ);
+                    }
+
                 }
             });
             pause(Thread.currentThread(),1000);
