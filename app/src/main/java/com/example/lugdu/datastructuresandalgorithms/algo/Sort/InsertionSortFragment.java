@@ -1,5 +1,6 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.Sort;
 
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -22,7 +23,9 @@ import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.Square;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class InsertionSortFragment extends Fragment {
@@ -31,6 +34,12 @@ public class InsertionSortFragment extends Fragment {
     int arr[];
     TextView tArr[];
     TextView explanationText;
+
+    RelativeLayout relativeLayout;
+    final int squareSize = 100;
+    int h,w;
+    ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,6 +95,7 @@ public class InsertionSortFragment extends Fragment {
                     public void run() {
 
                         System.out.println("Original array: " + Arrays.toString(arr));
+
                         insertionSort(arr);
                         System.out.println("Sorted array: " + Arrays.toString(arr));
 
@@ -107,17 +117,44 @@ public class InsertionSortFragment extends Fragment {
             int key = array[j];
             int i = j-1;
 
+            final int finalJ = j;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    moveDownAni(finalJ);
+                }
+            });
+            pause(Thread.currentThread(),1000);
+
             //while i is greater than negative 1 and while the element at position i is greater than what's in front of it
             while ((i> -1) && (array[i] > key)) {
                 //make the element in front of i equal to i
 
 
-                //NOTE: instead of overwriting, maybe do a swap
-                //array[i+1] = array[i];
+                //swap the i and the element that key represents
                 swapArrInt(i+1, i);
+
+                final int finalI = i;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        swapHorizontally(finalI +1, finalI);
+                    }
+                });
+                pause(Thread.currentThread(),1000);
+
                 i--;
                 System.out.println("in the while: " + Arrays.toString(array));
             }
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("We got here");
+                    moveUp(finalJ);
+                }
+            });
+            pause(Thread.currentThread(),1000);
             //make the first element in the array equal to the current key
             array[i+1] = key;
         }
@@ -161,8 +198,104 @@ public class InsertionSortFragment extends Fragment {
             tArr[i] = textView;
             textView.setX(i * 130);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(120,120);
-            layoutParams.setMargins(20,0,0,25);
+            layoutParams.setMargins(20,0,0,150);
+//            layoutParams.setMargins(20,0,0,25);
             insertPoint.addView(textView, layoutParams);
         }
+    }
+
+    public void moveDownAni(int firstPos) {
+        final int pos1 = firstPos;
+        TextView txt1 = tArr[pos1];
+
+        System.out.println("initial height: " + txt1.getY());
+        float x1 = (float) (txt1.getY() - .1);
+        System.out.println("initial x1: " + x1);
+
+
+        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
+        animation.setDuration(1000);
+
+
+        animation.start();
+    }
+
+    public void swapHorizontally(int firstPos, int secondPos) {
+        final int pos1 = firstPos;
+        final int pos2 = secondPos;
+        TextView txt1 = tArr[pos1];
+        TextView txt2 = tArr[pos2];
+        float x1 = txt1.getX();
+        float x2 = txt2.getX();
+        System.out.println(x2);
+        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
+        animation.setDuration(1000);
+        ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
+        animation2.setDuration(1000);
+
+        animation.start();
+        animation2.start();
+        TextView pos = tArr[pos1];
+        tArr[pos1] = tArr[pos2];
+        tArr[pos2] = pos;
+    }
+
+    public void moveUp(int firstPos) {
+        final int pos1 = firstPos;
+        TextView txt1 = tArr[pos1];
+
+        float x1 = (float) (txt1.getY() + .1);
+
+        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", -x1);
+
+        animation.setDuration(1000);
+
+
+        animation.start();
+    }
+
+    public void pause(Thread thread, int time){
+        synchronized (thread){
+            try {
+                Thread.currentThread().wait(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void position(){
+        int treeHeight = tArr.length;
+        ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
+        double layers = getTreeHeight((double)treeHeight);
+        params.height = (int)layers * (130) + 40;
+        int totalLength = treeHeight * (5 + squareSize);
+        int totalSpace = w - totalLength;
+        int space  = totalSpace / 2;
+        int toGo = (w - space) - (int)squares.get(0).get(0).get(tArr.length-1).getX() - squareSize - 20;
+        System.out.println(toGo + " Space");
+        for(int i = tArr.length - 1; i>-1; i--){
+
+            for(int j = 0; j<toGo; j+=10){
+                squares.get(0).get(0).get(i).setX(squares.get(0).get(0).get(i).getX() + 10);
+                tArr[i].setX(tArr[i].getX() + 10);
+                try {
+                    Thread.currentThread().sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    public int getTreeHeight(double num){
+        int count = 0;
+        while(num > 1){
+            double half = (double)num/2;
+            num = Math.ceil(half);
+            count ++;
+        }
+        return count + 1;
     }
 }
