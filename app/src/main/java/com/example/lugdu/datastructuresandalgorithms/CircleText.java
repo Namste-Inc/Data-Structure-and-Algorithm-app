@@ -48,8 +48,8 @@ public class CircleText extends android.support.v7.widget.AppCompatTextView {
 
         //canvas.drawText("" + num, xPos,yPos,textPaint);
     }
-    public void select(){
-        color = Color.GREEN;
+    public void select(boolean i){
+        color = i?Color.GREEN:Color.YELLOW;
     }
     public void deselect(){
         color = Color.BLUE;

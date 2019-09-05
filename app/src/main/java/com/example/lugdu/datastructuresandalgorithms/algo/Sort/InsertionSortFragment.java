@@ -117,61 +117,53 @@ public class InsertionSortFragment extends Fragment {
         int arrayLength = array.length;
 
         for (int j = 1; j < arrayLength; j++) {
+            final int finalJ = j;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[finalJ]).select(true);
+                    tArr[finalJ].invalidate();
+                }
+            });
             System.out.println("beginning here: " + Arrays.toString(array));
 
             int key = array[j];
             int i = j-1;
 
-            final int finalJ = j;
             final int[] updatedKey = new int[1];
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    moveDownAni(finalJ);
-                }
-            });
+            moveDownAni(j);
+
             pause(Thread.currentThread(),2000);
             boolean elementsSwapped = false;
 
             //while i is greater than negative 1 and while the element at position i is greater than what's in front of it
             while ((i> -1) && (array[i] > key)) {
+                ((CircleText) tArr[i]).select(false);
+                tArr[i].invalidate();
                 elementsSwapped = true;
                 //swap the i and the element that key represents
                 swapArrInt(i+1, i);
-
-                final int finalI = i;
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        swapHorizontally(finalI +1, finalI);
-                        //Since the elements were swapped, the key's position is changed
-                        //Therefore it has to be updated
-                        updatedKey[0] = finalI;
-
-                    }
-                });
+                swapHorizontally(i +1, i);
+                updatedKey[0] = i;
                 pause(Thread.currentThread(),2000);
-
+                ((CircleText) tArr[i + 1]).deselect();
+                tArr[i + 1].invalidate();
                 i--;
-                System.out.println("in the while: " + Arrays.toString(array));
             }
 
-            final boolean finalElementsSwapped = elementsSwapped;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            if(elementsSwapped == true) {
+                moveUp(updatedKey[0]);
+            } else {
+                //if the elements weren't swapped, then the key remains in the same position, therefore just move that one up
+                moveUp(finalJ);
+            }
+            pause(Thread.currentThread(), 2000);
+            ((CircleText) tArr[updatedKey[0]]).deselect();
+            tArr[updatedKey[0]].invalidate();
+            ((CircleText) tArr[finalJ]).deselect();
+            tArr[finalJ].invalidate();
 
-                    //If the elements were swapped, then move upwards the key that was swapped
-                    if(finalElementsSwapped == true) {
-                        moveUp(updatedKey[0]);
-                    } else {
-                        //if the elements weren't swapped, then the key remains in the same position, therefore just move that one up
-                        moveUp(finalJ);
-                    }
-
-                }
-            });
             pause(Thread.currentThread(),1000);
             //make the first element in the array equal to the current key
             array[i+1] = key;
@@ -222,53 +214,70 @@ public class InsertionSortFragment extends Fragment {
         }
     }
 
-    public void moveDownAni(int pos) {
-        TextView txt1 = tArr[pos];
+    public void moveDownAni(int pos1) {
+        final int pos = pos1;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView txt1 = tArr[pos];
 
-        System.out.println("initial height: " + txt1.getY());
-        float x1 = (txt1.getY() + circleSize + 10);
-        System.out.println("initial x1: " + x1);
+                System.out.println("initial height: " + txt1.getY());
+                float x1 = (txt1.getY() + circleSize + 10);
+                System.out.println("initial x1: " + x1);
 
+                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
+                animation.setDuration(1000);
 
-        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
-        animation.setDuration(1000);
-
-
-        animation.start();
+                animation.start();
+            }
+        });
     }
 
-    public void swapHorizontally(int firstPos, int secondPos) {
-        final int pos1 = firstPos;
-        final int pos2 = secondPos;
-        TextView txt1 = tArr[pos1];
-        TextView txt2 = tArr[pos2];
-        float x1 = txt1.getX();
-        float x2 = txt2.getX();
-        System.out.println(x2);
-        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
-        animation.setDuration(1000);
-        ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
-        animation2.setDuration(1000);
+    public void swapHorizontally(int firstPos1, int secondPos1) {
+        final int firstPos = firstPos1;
+        final int secondPos = secondPos1;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final int pos1 = firstPos;
+                final int pos2 = secondPos;
+                TextView txt1 = tArr[pos1];
+                TextView txt2 = tArr[pos2];
+                float x1 = txt1.getX() - leftMargin;
+                float x2 = txt2.getX() - leftMargin;
+                System.out.println(x2);
+                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
+                animation.setDuration(1000);
+                ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
+                animation2.setDuration(1000);
 
-        animation.start();
-        animation2.start();
-        TextView pos = tArr[pos1];
-        tArr[pos1] = tArr[pos2];
-        tArr[pos2] = pos;
+                animation.start();
+                animation2.start();
+                TextView pos = tArr[pos1];
+                tArr[pos1] = tArr[pos2];
+                tArr[pos2] = pos;
+            }
+        });
     }
 
-    public void moveUp(int pos) {
-        TextView txt1 = tArr[pos];
+    public void moveUp(int pos1) {
+        final int pos = pos1;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView txt1 = tArr[pos];
 
-        System.out.println("1 " + txt1.getY());
-        float x1 = (txt1.getY() - (circleSize + 10)) - topMargin * 2;
-        System.out.println("2 " + x1);
+                System.out.println("1 " + txt1.getY());
+                float x1 = (txt1.getY() - (circleSize + 10)) - topMargin * 2;
+                System.out.println("2 " + x1);
 
-        ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
+                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
 
-        animation.setDuration(1000);
+                animation.setDuration(1000);
 
-        animation.start();
+                animation.start();
+            }
+        });
     }
 
     public void pause(Thread thread, int time){

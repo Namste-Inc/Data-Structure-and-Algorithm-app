@@ -116,7 +116,6 @@ public class MergeSortFragment extends Fragment {
                         position();
                         splitAni(0);
                         splitAni(1);
-                        //mergeSort(arr, arr.length);
                     }
                 };
                 Thread thread = new Thread(runnable);
