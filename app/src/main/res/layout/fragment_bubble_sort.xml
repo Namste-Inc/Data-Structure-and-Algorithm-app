@@ -52,7 +52,7 @@
         android:layout_marginBottom="12dp"
         android:paddingLeft="10dp"
         android:background="@drawable/border"
-        android:digits=" 0123456789,-"
+        android:digits="0123456789-"
         android:gravity="left|center"
         android:hint="Add new array {1-2-3...}"
         android:imeOptions="actionDone"

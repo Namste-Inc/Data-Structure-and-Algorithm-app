@@ -118,7 +118,6 @@ public class BubbleSortFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onClick(View v) {
-                Handler handler = new Handler();
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {

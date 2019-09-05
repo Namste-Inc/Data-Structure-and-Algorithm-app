@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.R;
 import com.example.lugdu.datastructuresandalgorithms.Square;
 
@@ -52,6 +53,7 @@ public class InsertionSortFragment extends Fragment {
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.topBox);
         explanationText = view.findViewById(R.id.explanationText);
+        w = MainActivity.width;
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +127,6 @@ public class InsertionSortFragment extends Fragment {
                     tArr[finalJ].invalidate();
                 }
             });
-            System.out.println("beginning here: " + Arrays.toString(array));
 
             int key = array[j];
             int i = j-1;
@@ -197,6 +198,11 @@ public class InsertionSortFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void initArray(){
         int len = arr.length;
+
+        int totalLength = (len * (circleSize + leftMargin + rightMargin)) - leftMargin;
+        int totalSpace = w - totalLength;
+        int startSpace  = (totalSpace / 2);
+        System.out.println("start space " + w);
         tArr = new TextView[len];
         RelativeLayout insertPoint = view.findViewById(R.id.lView);
         if(insertPoint.getChildCount() > 0){
@@ -205,7 +211,7 @@ public class InsertionSortFragment extends Fragment {
         for(int i = 0; i<len; i++){
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
-            textView.setX(i * 130);
+            textView.setX((i * 130) + startSpace);
             tArr[i] = textView;
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
@@ -286,31 +292,6 @@ public class InsertionSortFragment extends Fragment {
                 Thread.currentThread().wait(time);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    public void position(){
-        int treeHeight = tArr.length;
-        ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
-        double layers = getTreeHeight((double)treeHeight);
-        params.height = (int)layers * (130) + 40;
-        int totalLength = treeHeight * (5 + squareSize);
-        int totalSpace = w - totalLength;
-        int space  = totalSpace / 2;
-        int toGo = (w - space) - (int)squares.get(0).get(0).get(tArr.length-1).getX() - squareSize - 20;
-        System.out.println(toGo + " Space");
-        for(int i = tArr.length - 1; i>-1; i--){
-
-            for(int j = 0; j<toGo; j+=10){
-                squares.get(0).get(0).get(i).setX(squares.get(0).get(0).get(i).getX() + 10);
-                tArr[i].setX(tArr[i].getX() + 10);
-                try {
-                    Thread.currentThread().sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
             }
         }
     }
