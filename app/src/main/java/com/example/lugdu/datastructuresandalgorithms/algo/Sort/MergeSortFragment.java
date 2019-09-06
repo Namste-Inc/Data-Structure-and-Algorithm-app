@@ -60,7 +60,7 @@ public class MergeSortFragment extends Fragment {
     int topMargin = 20;
     int bottomMargin = 0;
     RelativeLayout relativeLayout;
-    final int squareSize = 100;
+    final int squareSize = 80;
 
     ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
     @Nullable
@@ -121,10 +121,7 @@ public class MergeSortFragment extends Fragment {
                     public void run() {
                         pause(Thread.currentThread(), 500);
                         position();
-                        splitAni(0);
-                        System.out.println(squares.get(1).size()+ " Size");
-                        splitAni(1);
-                        splitAni(2);
+                        mergeSort(arr,arr.length,0);
                     }
                 };
                 Thread thread = new Thread(runnable);
@@ -134,7 +131,7 @@ public class MergeSortFragment extends Fragment {
         return view;
     }
 
-    public void mergeSort(int[] array, int sizeOfArray) {
+    public void mergeSort(int[] array, int sizeOfArray, int layer) {
         TextView resultText = view.findViewById(R.id.resultText);
         if (sizeOfArray < 2) {
             return;
@@ -149,9 +146,10 @@ public class MergeSortFragment extends Fragment {
         for (int i = mid; i < sizeOfArray; i++) {
             secondHalf[i - mid] = array[i];
         }
-        mergeSort(firstHalf, mid);
+        splitAni(layer);
+        mergeSort(firstHalf, mid, layer ++);
 
-        mergeSort(secondHalf, sizeOfArray - mid);
+        mergeSort(secondHalf, sizeOfArray - mid, layer ++);
 
         merge(array, firstHalf, secondHalf, mid, sizeOfArray - mid);
         //System.out.println(Arrays.toString(a));
@@ -224,9 +222,9 @@ public class MergeSortFragment extends Fragment {
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
             tArr[i] = textView;
-            textView.setX((i * 105) + startSpace);
+            textView.setX((i * 85) + startSpace);
             Square square = new Square(getContext());
-            square.setX((i * 105) + startSpace);
+            square.setX((i * 85) + startSpace);
             squareArr.add(square);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize,squareSize);
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
@@ -257,7 +255,7 @@ public class MergeSortFragment extends Fragment {
             @Override
             public void run() {
                 for(int i = 0; i < tArr.length; i++){
-                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(tArr[i], "translationY", squareSize + 5);
+                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(tArr[i], "translationY", (layer + 1) * (squareSize + 5));
                     objectAnimator.setDuration(1000);
                     objectAnimator.start();
                 }
@@ -312,16 +310,17 @@ public class MergeSortFragment extends Fragment {
                 squares.add(temp3);
             }
         });
-
-        //split boxes//needs work
+        //split boxes
         pause(Thread.currentThread(), 1000);
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ArrayList<ArrayList<Square>> layerArr = squares.get(layer + 1);
                 boolean moveRight = true;
+                int circleIndex = 0;
                 for(int i = 0; i<layerArr.size(); i++){
                     ArrayList<Square> pairs = layerArr.get(i);
+
                     for(int j = 0; j < pairs.size(); j++){
                         String sign;
                         if(moveRight){
@@ -330,14 +329,19 @@ public class MergeSortFragment extends Fragment {
                         else{
                             sign = "+";
                         }
-                        int parse = Integer.parseInt(sign + "100");
+                        int space = (layer == 0)?80:(80 / (layer * 2));
+                        int parse = Integer.parseInt(sign + space);
                         Float toMove = pairs.get(j).getX() + parse;
                         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(pairs.get(j), "translationX", toMove);
                         objectAnimator.setDuration(1000);
+                        ObjectAnimator objectAnimatorC = ObjectAnimator.ofFloat(tArr[circleIndex], "translationX", toMove);
+                        objectAnimatorC.setDuration(1000);
 
                         objectAnimator.start();
 
+                        objectAnimatorC.start();
 
+                        circleIndex ++;
                     }
                     moveRight = !moveRight;
 
@@ -346,6 +350,7 @@ public class MergeSortFragment extends Fragment {
 
             }
         });
+        pause(Thread.currentThread(), 1000);
 
     }
 
