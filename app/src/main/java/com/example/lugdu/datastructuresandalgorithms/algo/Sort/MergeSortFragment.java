@@ -65,7 +65,7 @@ public class MergeSortFragment extends Fragment {
     ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState)  {
         view = inflater.inflate(R.layout.fragment_merge_sort, container,false);
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.topBox);
@@ -122,7 +122,9 @@ public class MergeSortFragment extends Fragment {
                         pause(Thread.currentThread(), 500);
                         position();
                         splitAni(0);
-                        //splitAni(1);
+                        System.out.println(squares.get(1).size()+ " Size");
+                        splitAni(1);
+                        splitAni(2);
                     }
                 };
                 Thread thread = new Thread(runnable);
@@ -250,6 +252,7 @@ public class MergeSortFragment extends Fragment {
 
     public void splitAni(int layer1){
         final int layer = layer1;
+        //drop number down
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -260,17 +263,24 @@ public class MergeSortFragment extends Fragment {
                 }
             }
         });
+
         pause(Thread.currentThread(), 1000);
+        //make new boxes
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ArrayList<ArrayList<Square>> temp = copyLayer(layer);
                 int len = temp.size();
-                int half = len / 2;
-                ArrayList<Square> temp2 = new ArrayList<>();
+
                 ArrayList<ArrayList<Square>> temp3 = new ArrayList<>();
+                //for all sublayers
                 for (int i = 0; i < len; i++) {
-                    for (int j = 0; j < temp.get(i).size(); j++) {
+                    int half = temp.get(i).size() / 2;
+                    int endPoint = half - 1;
+                    ArrayList<Square> temp2 = new ArrayList<>();
+                    ArrayList<Square> temp2o = new ArrayList<>();
+                    //for all boxes in sublayers
+                    for (int j = 0; j < half; j++) {
                         Square square = new Square(getContext());
                         square.setX(temp.get(i).get(j).getX());
                         square.setY(temp.get(i).get(j).getY() + squareSize + 5);
@@ -283,28 +293,57 @@ public class MergeSortFragment extends Fragment {
                         layoutParams.setMargins(0, 0, 0, 0);
                         relativeLayout.addView(square, layoutParams);
                     }
+                    temp3.add(temp2);
+                    for(int k = half; k < temp.get(i).size(); k ++){
+                        Square square = new Square(getContext());
+                        square.setX(temp.get(i).get(k).getX());
+                        square.setY(temp.get(i).get(k).getY() + squareSize + 5);
+                        Animation fadeIn = new AlphaAnimation(0, 1);
+                        fadeIn.setInterpolator(new DecelerateInterpolator());
+                        fadeIn.setDuration(1000);
+                        square.setAnimation(fadeIn);
+                        temp2o.add(square);
+                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize, squareSize);
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        relativeLayout.addView(square, layoutParams);
+                    }
+                    temp3.add(temp2o);
                 }
-                temp3.add(temp2);
                 squares.add(temp3);
+            }
+        });
 
-        ArrayList<ArrayList<Square>> tempAni = squares.get(layer + 1);
-//        for(int i = 0; i<tempAni.size(); i++){
-//            ArrayList<Square>tempAni2 = tempAni.get(i);
-//            int low = 0;
-//            int high = tempAni2.size() -1;
-//            while(low<=high){
-//                tempAni2.get(high).setX(tempAni2.get(high).getX() + 25);
-//                if(low == high){
-//                    break;
-//                }else{
-//                    System.out.println("low " + low + "high " + high);
-//                    tempAni2.get(low).setX(tempAni2.get(low).getX() - 25);
-//                }
-//                low++;
-//                high--;
-//            }
-//
-//        }
+        //split boxes//needs work
+        pause(Thread.currentThread(), 1000);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<ArrayList<Square>> layerArr = squares.get(layer + 1);
+                boolean moveRight = true;
+                for(int i = 0; i<layerArr.size(); i++){
+                    ArrayList<Square> pairs = layerArr.get(i);
+                    for(int j = 0; j < pairs.size(); j++){
+                        String sign;
+                        if(moveRight){
+                            sign = "-";
+                        }
+                        else{
+                            sign = "+";
+                        }
+                        int parse = Integer.parseInt(sign + "100");
+                        Float toMove = pairs.get(j).getX() + parse;
+                        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(pairs.get(j), "translationX", toMove);
+                        objectAnimator.setDuration(1000);
+
+                        objectAnimator.start();
+
+
+                    }
+                    moveRight = !moveRight;
+
+
+                }
+
             }
         });
 
