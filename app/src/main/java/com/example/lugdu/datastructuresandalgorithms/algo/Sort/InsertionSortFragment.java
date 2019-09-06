@@ -30,20 +30,18 @@ import java.util.Arrays;
 
 public class InsertionSortFragment extends Fragment {
     View view;
-//    int arr[] = {5,3,4,7,6,10,2,13,8};
     int arr[];
     TextView tArr[];
     TextView explanationText;
 
     RelativeLayout relativeLayout;
-    final int squareSize = 100;
     int h,w;
     int circleSize = 120;
     int leftMargin = 20;
     int rightMargin = 0;
     int topMargin = 25;
     int bottomMargin = 0;
-    ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
+    boolean isRunning;
 
     @Nullable
     @Override
@@ -52,6 +50,7 @@ public class InsertionSortFragment extends Fragment {
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.topBox);
         explanationText = view.findViewById(R.id.explanationText);
+        isRunning = false;
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,11 +97,45 @@ public class InsertionSortFragment extends Fragment {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
+                        if(arr == null || arr.length == 0){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(),"Must enter an array", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                        else {
+                            if(isRunning){
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getContext(),"Animation running, please wait", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                            else{
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        editText.setEnabled(false);
+                                    }
+                                });
+                                insertionSort(arr);
 
-                        System.out.println("Original array: " + Arrays.toString(arr));
-
-                        insertionSort(arr);
-                        System.out.println("Sorted array: " + Arrays.toString(arr));
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        editText.setEnabled(true);
+                                    }
+                                });
+                            }
+                        }
+//                        System.out.println("Original array: " + Arrays.toString(arr));
+//
+//                        insertionSort(arr);
+//
+//                        System.out.println("Sorted array: " + Arrays.toString(arr));
 
                     }
                 };
@@ -114,6 +147,8 @@ public class InsertionSortFragment extends Fragment {
     }
 
     public void insertionSort(int[] array) {
+
+        isRunning = true;
         int arrayLength = array.length;
 
         for (int j = 1; j < arrayLength; j++) {
@@ -139,16 +174,30 @@ public class InsertionSortFragment extends Fragment {
 
             //while i is greater than negative 1 and while the element at position i is greater than what's in front of it
             while ((i> -1) && (array[i] > key)) {
-                ((CircleText) tArr[i]).select(false);
-                tArr[i].invalidate();
+                final int finalI = i;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalI]).select(false);
+                        tArr[finalI].invalidate();
+                    }
+                });
+
                 elementsSwapped = true;
                 //swap the i and the element that key represents
                 swapArrInt(i+1, i);
                 swapHorizontally(i +1, i);
                 updatedKey[0] = i;
                 pause(Thread.currentThread(),2000);
-                ((CircleText) tArr[i + 1]).deselect();
-                tArr[i + 1].invalidate();
+                final int finalI1 = i;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalI1 + 1]).deselect();
+                        tArr[finalI1 + 1].invalidate();
+                    }
+                });
+
                 i--;
             }
 
@@ -159,15 +208,36 @@ public class InsertionSortFragment extends Fragment {
                 moveUp(finalJ);
             }
             pause(Thread.currentThread(), 2000);
-            ((CircleText) tArr[updatedKey[0]]).deselect();
-            tArr[updatedKey[0]].invalidate();
-            ((CircleText) tArr[finalJ]).deselect();
-            tArr[finalJ].invalidate();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[updatedKey[0]]).deselect();
+                    tArr[updatedKey[0]].invalidate();
+                }
+            });
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[finalJ]).deselect();
+                    tArr[finalJ].invalidate();
+                }
+            });
+
+
 
             pause(Thread.currentThread(),1000);
             //make the first element in the array equal to the current key
             array[i+1] = key;
         }
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView textView = view.findViewById(R.id.textView4);
+                textView.setText("Sorted Array: [ " + arrayToString(arr,true) + " ]");
+            }
+        });
+        isRunning = false;
     }
     public void swapArrInt(int pos1, int pos2){
         int pos = arr[pos1];
@@ -176,7 +246,7 @@ public class InsertionSortFragment extends Fragment {
     }
 
     public boolean entryGood(String entry){
-        if(entry.startsWith(",") || entry.endsWith(",") || entry.contains(",,")){
+        if(entry.startsWith("-") || entry.endsWith("-") || entry.contains("--")){
             return false;
         }
         return true;
@@ -290,38 +360,17 @@ public class InsertionSortFragment extends Fragment {
         }
     }
 
-    public void position(){
-        int treeHeight = tArr.length;
-        ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
-        double layers = getTreeHeight((double)treeHeight);
-        params.height = (int)layers * (130) + 40;
-        int totalLength = treeHeight * (5 + squareSize);
-        int totalSpace = w - totalLength;
-        int space  = totalSpace / 2;
-        int toGo = (w - space) - (int)squares.get(0).get(0).get(tArr.length-1).getX() - squareSize - 20;
-        System.out.println(toGo + " Space");
-        for(int i = tArr.length - 1; i>-1; i--){
-
-            for(int j = 0; j<toGo; j+=10){
-                squares.get(0).get(0).get(i).setX(squares.get(0).get(0).get(i).getX() + 10);
-                tArr[i].setX(tArr[i].getX() + 10);
-                try {
-                    Thread.currentThread().sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+    public String arrayToString(int[] arr, boolean comma){
+        String separator = comma?",":"-";
+        int len = arr.length;
+        String toString = "";
+        for(int i = 0; i<len; i++){
+            if(i == 0){
+                toString += arr[0];
+            }else{
+                toString += separator + arr[i];
             }
         }
-    }
-
-    public int getTreeHeight(double num){
-        int count = 0;
-        while(num > 1){
-            double half = (double)num/2;
-            num = Math.ceil(half);
-            count ++;
-        }
-        return count + 1;
+        return toString;
     }
 }

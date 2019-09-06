@@ -76,7 +76,7 @@ public class BubbleSortFragment extends Fragment {
         animation.setDuration(1000);
         def.setAnimation(animation);
         w = MainActivity.width;
-        isRunning = false;
+
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +139,21 @@ public class BubbleSortFragment extends Fragment {
                                 });
                             }
                             else{
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        editText.setEnabled(false);
+                                    }
+                                });
+
                                 bubbleSort();
+
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        editText.setEnabled(true);
+                                    }
+                                });
                             }
                         }
                     }
@@ -227,7 +241,7 @@ public class BubbleSortFragment extends Fragment {
 
     }
     public boolean entryGood(String entry){
-        if(entry.startsWith(",") || entry.endsWith(",") || entry.contains(",,")){
+        if(entry.startsWith("-") || entry.endsWith("-") || entry.contains("--")){
             return false;
         }
         return true;
@@ -394,7 +408,10 @@ public class BubbleSortFragment extends Fragment {
 
     public String arrayToString(int[] arr, boolean comma){
         String separator = comma?",":"-";
-        int len = arr.length;
+        int len = 0;
+        if (arr != null) {
+            len = arr.length;
+        }
         String toString = "";
         for(int i = 0; i<len; i++){
             if(i == 0){
