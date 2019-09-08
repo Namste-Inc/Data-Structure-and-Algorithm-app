@@ -131,11 +131,6 @@ public class InsertionSortFragment extends Fragment {
                                 });
                             }
                         }
-//                        System.out.println("Original array: " + Arrays.toString(arr));
-//
-//                        insertionSort(arr);
-//
-//                        System.out.println("Sorted array: " + Arrays.toString(arr));
 
                     }
                 };
@@ -291,9 +286,9 @@ public class InsertionSortFragment extends Fragment {
             public void run() {
                 TextView txt1 = tArr[pos];
 
-                System.out.println("initial height: " + txt1.getY());
+
                 float x1 = (txt1.getY() + circleSize + 10);
-                System.out.println("initial x1: " + x1);
+
 
                 ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
                 animation.setDuration(1000);

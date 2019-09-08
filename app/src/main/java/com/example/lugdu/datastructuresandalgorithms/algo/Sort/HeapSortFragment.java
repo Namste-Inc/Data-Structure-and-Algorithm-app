@@ -36,11 +36,9 @@ public class HeapSortFragment extends Fragment {
     View view;
     int arr[];
     TextView tArr[];
-    TextView tArrTest[];
+    TextView tArrLinear[];
     TextView explanationText;
 
-    RelativeLayout relativeLayout;
-    int h,w;
     int circleSize = 120;
     int leftMargin = 20;
     int rightMargin = 0;
@@ -71,6 +69,7 @@ public class HeapSortFragment extends Fragment {
             }
         });
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -78,8 +77,8 @@ public class HeapSortFragment extends Fragment {
                     if(entryGood(editText.getText().toString())) {
                         if(!editText.getText().toString().equals("")){
                             parseArray(editText.getText().toString());
-                            initArray();
-                            //createTree();
+                                initArray();
+                                linearInitArray();
                         }
                         editText.setText(editText.getText());
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -104,46 +103,48 @@ public class HeapSortFragment extends Fragment {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-//                        if(arr == null || arr.length == 0){
-//                            getActivity().runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    Toast.makeText(getContext(),"Must enter an array", Toast.LENGTH_LONG).show();
-//                                }
-//                            });
-//                        }
-//                        else {
-//                            if(isRunning){
-//                                getActivity().runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        Toast.makeText(getContext(),"Animation running, please wait", Toast.LENGTH_LONG).show();
-//                                    }
-//                                });
-//                            }
-//                            else{
-//                                getActivity().runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        editText.setEnabled(false);
-//                                    }
-//                                });
-//                                int arr[] = {3, 44, 38, 5, 7};
-//                                quickSort(arr, 3, 7);
-//                                System.out.println(arr);
-//
-//                                getActivity().runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        editText.setEnabled(true);
-//                                    }
-//                                });
-//                            }
-//                        }
-                        //int array[] = {4,10,3,5,1};
-                        heapSort(arr);
+                        if(arr == null || arr.length == 0){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(),"Must enter an array", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } else if(arr.length > 7) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(),"Array must be size 7(max)", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                        else {
+                            if(isRunning){
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getContext(),"Animation running, please wait", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                            else{
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        editText.setEnabled(false);
+                                    }
+                                });
 
+                                heapSort(arr);
 
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        editText.setEnabled(true);
+                                    }
+                                });
+                            }
+                        }
                     }
                 };
                 Thread thread = new Thread(runnable);
@@ -183,12 +184,20 @@ public class HeapSortFragment extends Fragment {
         int height = size.y;
 
         int len = arr.length;
+
+
+
         tArr = new TextView[len];
         RelativeLayout insertPoint = view.findViewById(R.id.lView);
         if(insertPoint.getChildCount() > 0){
             insertPoint.removeAllViews();
         }
         for(int i = 0; i<len; i++){
+            //if input reaches more than 7 numbers
+            //do not initialize the rest
+            if (i == 7) {
+                break;
+            }
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
 
@@ -229,9 +238,6 @@ public class HeapSortFragment extends Fragment {
                     textView.setY(((i-4)*150) + testSpace);
                     break;
             }
-            //textView.setX((i * 130) + testSpace);
-
-            System.out.println("Here it is: " + textView.getY());
 
             tArr[i] = textView;
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
@@ -240,13 +246,45 @@ public class HeapSortFragment extends Fragment {
         }
     }
 
-    public void heapSort(int[] arr) {
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void linearInitArray() {
+        int linearLen = arr.length;
+        tArrLinear = new TextView[linearLen];
+        RelativeLayout insertPointLinear = view.findViewById(R.id.linearAnimation);
+        if(insertPointLinear.getChildCount() > 0){
+            insertPointLinear.removeAllViews();
+        }
+        for(int i = 0; i<linearLen; i++){
+            //if input reaches more than 7 numbers
+            //do not initialize the remaining numbers
+            if (i == 7) {
+                break;
+            }
+            TextView textViewLinear = new CircleText(getContext());
+            textViewLinear.setText(arr[i] + "");
+            textViewLinear.setX(i * 130);
+            System.out.println("Here is y: " + textViewLinear.getY());
+            textViewLinear.setY(-20);
+            tArrLinear[i] = textViewLinear;
+            RelativeLayout.LayoutParams layoutParamsLinear = new RelativeLayout.LayoutParams(circleSize,circleSize);
+            layoutParamsLinear.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+            insertPointLinear.addView(textViewLinear, layoutParamsLinear);
+        }
+    }
+
+    public void heapSort(final int[] arr) {
+        isRunning=true;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView textView = view.findViewById(R.id.textView4);
+                textView.setText("Sorted Array:");
+            }
+        });
         int n = arr.length;
-        System.out.println("Here is n: " + n);
 
         // Build heap (rearrange array)
         for (int i = n / 2 - 1; i >= 0; i--) {
-            System.out.println("Here is i: " + i);
             heapify(arr, n, i);
         }
 
@@ -262,15 +300,24 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            moveDownAni(i);
+            //removeCircle(i+100, i);
+
+            //pause(Thread.currentThread(), 1000);
 
             // call max heapify on the reduced heap
             heapify(arr, i, 0);
         }
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView textView = view.findViewById(R.id.textView4);
+                textView.setText("Sorted Array: [ " + arrayToString(arr,true) + " ]");
+            }
+        });
+        isRunning = false;
     }
 
     public void heapify(int arr[], int n, int i) {
-        System.out.println("Before heapify: " + Arrays.toString(arr));
 
         int largest = i; // Initialize largest as root
         int l = 2*i + 1; // left = 2*i + 1
@@ -297,7 +344,6 @@ public class HeapSortFragment extends Fragment {
             arr[i] = arr[largest];
             arr[largest] = swap;
 
-            System.out.println("After first animation: " + Arrays.toString(arr));
             pause(Thread.currentThread(),1000);
 
 
@@ -306,26 +352,6 @@ public class HeapSortFragment extends Fragment {
 
 
         }
-        System.out.println("After heapify: " + Arrays.toString(arr));
-    }
-
-    public void moveDownAni(int pos1) {
-        final int pos = pos1;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView txt1 = tArr[pos];
-
-                System.out.println("initial height: " + txt1.getY());
-                float x1 = (txt1.getY() + circleSize + 10);
-                System.out.println("initial x1: " + x1);
-
-                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
-                animation.setDuration(1000);
-
-                animation.start();
-            }
-        });
     }
 
     public void swapAni(int firstPos, int secondPos){
@@ -334,12 +360,45 @@ public class HeapSortFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                ((CircleText) tArr[pos1]).select(true);
+                tArr[pos1].invalidate();
+
+                ((CircleText) tArrLinear[pos1]).select(true);
+                tArrLinear[pos1].invalidate();
+
+            }
+        });
+        pause(Thread.currentThread(),1000);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((CircleText) tArr[pos2]).select(true);
+                tArr[pos2].invalidate();
+
+                ((CircleText) tArrLinear[pos2]).select(true);
+                tArrLinear[pos2].invalidate();
+            }
+        });
+        pause(Thread.currentThread(),1000);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 TextView txt1 = tArr[pos1];
+                TextView txt1Linear = tArrLinear[pos1];
+
                 TextView txt2 = tArr[pos2];
-                float x1 = txt1.getX();
-                float y1 = txt1.getY();
-                float x2 = txt2.getX();
-                float y2 = txt2.getY();
+                TextView txt2Linear = tArrLinear[pos2];
+
+                float x1 = txt1.getX() - leftMargin;
+                float y1 = txt1.getY() - topMargin;
+                float x2 = txt2.getX() - leftMargin;
+                float y2 = txt2.getY() - topMargin;
+
+                float x1Linear = txt1Linear.getX() - leftMargin;
+                float y1Linear = txt1Linear.getY() - topMargin;
+                float x2Linear = txt2Linear.getX() - leftMargin;
+                float y2Linear = txt2Linear.getY() - topMargin;
+
                 ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
                 ObjectAnimator animationY1 = ObjectAnimator.ofFloat(txt1, "translationY", y2);
                 animation.setDuration(1000);
@@ -350,32 +409,81 @@ public class HeapSortFragment extends Fragment {
                 animation2.setDuration(1000);
                 animationY2.setDuration(1000);
 
+                ObjectAnimator animationX1Linear = ObjectAnimator.ofFloat(txt1Linear, "translationX", x2Linear);
+                ObjectAnimator animationY1Linear = ObjectAnimator.ofFloat(txt1Linear, "translationY", y2Linear);
+                animationX1Linear.setDuration(1000);
+                animationY1Linear.setDuration(1000);
+
+                ObjectAnimator animationX2Linear = ObjectAnimator.ofFloat(txt2Linear, "translationX", x1Linear);
+                ObjectAnimator animationY2Linear = ObjectAnimator.ofFloat(txt2Linear, "translationY", y1Linear);
+                animationX2Linear.setDuration(1000);
+                animationY2Linear.setDuration(1000);
+
                 animation.start();
                 animation2.start();
                 animationY1.start();
                 animationY2.start();
+
+                animationX1Linear.start();
+                animationY1Linear.start();
+                animationX2Linear.start();
+                animationY2Linear.start();
+
                 TextView pos = tArr[pos1];
                 tArr[pos1] = tArr[pos2];
                 tArr[pos2] = pos;
+
+                TextView posLinear = tArrLinear[pos1];
+                tArrLinear[pos1] = tArrLinear[pos2];
+                tArrLinear[pos2] = posLinear;
+
+            }
+        });
+        pause(Thread.currentThread(),1000);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((CircleText) tArr[pos1]).deselect();
+                tArr[pos1].invalidate();
+                ((CircleText) tArr[pos2]).deselect();
+                tArr[pos2].invalidate();
+
+                ((CircleText) tArrLinear[pos1]).deselect();
+                tArrLinear[pos1].invalidate();
+                ((CircleText) tArrLinear[pos2]).deselect();
+                tArrLinear[pos2].invalidate();
             }
         });
     }
 
-    public void removeCircle(int pos1) {
-        final int pos = pos1;
+    public void removeCircle(int posX, int posY) {
+        final int xPos = posX;
+        final int yPos = posY;
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView txt1 = tArr[pos];
+                TextView txt1 = tArr[yPos];
 
-                System.out.println("initial height: " + txt1.getY());
-                float x1 = (txt1.getY() + circleSize + 10000);
-                System.out.println("initial x1: " + x1);
+//                float y1 = (txt1.getY() + circleSize);
+//
+//                //float y1 = (txt1.getY() + circleSize + 2);
+//                float x1 = (txt1.getX() + circleSize + xPos);
+//
+//                ObjectAnimator animationY = ObjectAnimator.ofFloat(txt1, "translationY", 475);
+//                ObjectAnimator animationX = ObjectAnimator.ofFloat(txt1, "translationX", x1);
+//
+//
+//
+//                animationY.setDuration(1000);
+//                animationX.setDuration(1000);
+//
+//                animationY.start();
+//                animationX.start();
+//                System.out.println("Position of 10: " + txt1.getY());
+//                System.out.println("Position of X: " + txt1.getX());
 
-                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
-                animation.setDuration(1000);
-
-                animation.start();
+                txt1.setVisibility(View.GONE);
             }
         });
     }
@@ -388,5 +496,22 @@ public class HeapSortFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    public String arrayToString(int[] arr, boolean comma){
+        String separator = comma?",":"-";
+        int len = 0;
+        if (arr != null) {
+            len = arr.length;
+        }
+        String toString = "";
+        for(int i = 0; i<len; i++){
+            if(i == 0){
+                toString += arr[0];
+            }else{
+                toString += separator + arr[i];
+            }
+        }
+        return toString;
     }
 }
