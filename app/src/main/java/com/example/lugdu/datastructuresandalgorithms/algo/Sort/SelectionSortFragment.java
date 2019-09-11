@@ -151,11 +151,12 @@ public class SelectionSortFragment extends Fragment {
 
     public void selectionSort(int arr[]) {
         int n = arr.length;
+        int min_idx =0;
 
         // One by one move boundary of unsorted subarray
         for (int i = 0; i < n-1; i++) {
             // Find the minimum element in unsorted array
-            int min_idx = i;
+            min_idx = i;
 
             for (int j = i+1; j < n; j++) {
                 if (arr[j] < arr[min_idx]) {
@@ -171,6 +172,16 @@ public class SelectionSortFragment extends Fragment {
             arr[min_idx] = arr[i];
             arr[i] = temp;
         }
+        final int finalMin_idx = min_idx;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((CircleText) tArr[finalMin_idx +1]).select(true);
+                tArr[finalMin_idx+1].invalidate();
+            }
+        });
+        pause(Thread.currentThread(),1000);
+
     }
     public boolean entryGood(String entry){
         if(entry.startsWith("-") || entry.endsWith("-") || entry.contains("--")){

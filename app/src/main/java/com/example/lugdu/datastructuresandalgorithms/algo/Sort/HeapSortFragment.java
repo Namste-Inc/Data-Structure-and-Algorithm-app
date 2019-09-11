@@ -318,9 +318,14 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            //removeCircle(i+100, i);
+            ((CircleText) tArr[i]).select(true);
+            tArr[i].invalidate();
 
-            //pause(Thread.currentThread(), 1000);
+            ((CircleText) tArrLinear[i]).select(true);
+            tArrLinear[i].invalidate();
+
+            pause(Thread.currentThread(),1000);
+
 
             // call max heapify on the reduced heap
             heapify(arr, i, 0);
