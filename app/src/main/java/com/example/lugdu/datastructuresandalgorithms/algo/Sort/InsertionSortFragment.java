@@ -3,6 +3,8 @@ package com.example.lugdu.datastructuresandalgorithms.algo.Sort;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +15,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -22,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.R;
 import com.example.lugdu.datastructuresandalgorithms.Square;
 
@@ -43,6 +48,8 @@ public class InsertionSortFragment extends Fragment {
     int bottomMargin = 0;
     boolean isRunning;
 
+    public static int color = Color.parseColor("#FF0000");
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,6 +57,19 @@ public class InsertionSortFragment extends Fragment {
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.topBox);
         explanationText = view.findViewById(R.id.explanationText);
+
+        TextView def = view.findViewById(R.id.textView7);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setCornerRadius(50);
+        int[] colors = {Color.GRAY,color};
+        gradientDrawable.setColors(colors);
+        def.setBackground(gradientDrawable);
+        explanationText = view.findViewById(R.id.explanationText);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        animation.setDuration(1000);
+        def.setAnimation(animation);
+        w = MainActivity.width;
+
         isRunning = false;
         editText.setOnClickListener(new View.OnClickListener() {
             @Override

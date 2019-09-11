@@ -1174,6 +1174,7 @@ id layout_dialog
 id left
 id line1
 id line3
+id linearAnimation
 id linked_l_hex_b
 id listMode
 id list_item

@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.R;
 
 import java.lang.reflect.Array;
@@ -46,6 +50,10 @@ public class HeapSortFragment extends Fragment {
     int bottomMargin = 0;
     boolean isRunning;
 
+    int w;
+
+    public static int color = Color.parseColor("#FF0000");
+
 
     @Nullable
     @Override
@@ -53,19 +61,26 @@ public class HeapSortFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_heap_sort, container,false);
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.topBox);
+
+        TextView def = view.findViewById(R.id.textView7);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setCornerRadius(50);
+        int[] colors = {Color.GRAY,color};
+        gradientDrawable.setColors(colors);
+        def.setBackground(gradientDrawable);
         explanationText = view.findViewById(R.id.explanationText);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        animation.setDuration(1000);
+        def.setAnimation(animation);
+        w = MainActivity.width;
+
         isRunning = false;
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(!editText.isInEditMode()){
-                    String[] afterC = editText.getText().toString().split(": ");
-                    if(afterC.length > 1){
-                        editText.setText(afterC[1]);
-                    }
-                    editText.setSelection(editText.getText().length());
-                }
+                editText.setText(arrayToString(arr,false));
+                editText.setSelection(editText.getText().length());
             }
         });
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -77,10 +92,13 @@ public class HeapSortFragment extends Fragment {
                     if(entryGood(editText.getText().toString())) {
                         if(!editText.getText().toString().equals("")){
                             parseArray(editText.getText().toString());
-                                initArray();
-                                linearInitArray();
+                            initArray();
+                            linearInitArray();
+                            editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
+                        } else {
+                            editText.setText("");
                         }
-                        editText.setText(editText.getText());
+
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.clearFocus();

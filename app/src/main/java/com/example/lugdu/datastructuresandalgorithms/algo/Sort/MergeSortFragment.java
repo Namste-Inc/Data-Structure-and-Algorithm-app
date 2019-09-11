@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +65,8 @@ public class MergeSortFragment extends Fragment {
     final int squareSize = 80;
     int treeHeight;
 
+    public static int color = Color.parseColor("#FF0000");
+
     ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
     @Nullable
     @Override
@@ -75,17 +78,13 @@ public class MergeSortFragment extends Fragment {
         relativeLayout = view.findViewById(R.id.lView);
         h = relativeLayout.getLayoutParams().height;
         w = MainActivity.width;
+
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(!editText.isInEditMode()){
-                    String[] afterC = editText.getText().toString().split(": ");
-                    if(afterC.length > 1){
-                        editText.setText(arrayToString(arr, false));
-                    }
-                    editText.setSelection(editText.getText().length());
-                }
+                editText.setText(arrayToString(arr,false));
+                editText.setSelection(editText.getText().length());
             }
         });
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -97,8 +96,9 @@ public class MergeSortFragment extends Fragment {
                         if(!editText.getText().toString().equals("")){
                             parseArray(editText.getText().toString());
                             initArray();
+                            editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
                         }
-                        editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
+
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.clearFocus();
@@ -258,7 +258,7 @@ public class MergeSortFragment extends Fragment {
     }
 
     public void mergeAni(final int layer) {
-        ArrayList<ArrayList<Square>> temp = squares.get(layer);
+        final ArrayList<ArrayList<Square>> temp = squares.get(layer);
         TextView[] tempTArr = new TextView[tArr.length];
         int len = temp.size();
         int incrementer = (layer == treeHeight - 2)?1:2;
@@ -310,15 +310,7 @@ public class MergeSortFragment extends Fragment {
                     final int finalJ = j;
                     final int fFirst = first;
                     final int fSecond = second;
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            ((CircleText)tArr[fFirst]).select(true);
-//                            tArr[fFirst].invalidate();
-//                            ((CircleText)tArr[fSecond ]).select(true);
-//                            tArr[fSecond].invalidate();
-//                        }
-//                    });
+
                     pause(Thread.currentThread(), 1000);
                         if (first < firstSize && second < secondSize) {
                             if (tempArr[first] < tempArr[second]) {
@@ -395,7 +387,16 @@ public class MergeSortFragment extends Fragment {
                 fadeOut.setInterpolator(new DecelerateInterpolator());
                 fadeOut.setDuration(1000);
                 fadeOut.setFillAfter(true);
-                temp.get(i).get(j).clearAnimation();
+
+                final int finalI = i;
+                final int finalJ = j;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        temp.get(finalI).get(finalJ).clearAnimation();
+                    }
+                });
+
                 temp.get(i).get(j).setAnimation(fadeOut);
                 fadeOut.start();
                 circleIndex++;

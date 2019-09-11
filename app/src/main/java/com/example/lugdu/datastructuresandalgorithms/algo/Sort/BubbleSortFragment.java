@@ -128,6 +128,13 @@ public class BubbleSortFragment extends Fragment {
                                     Toast.makeText(getContext(),"Must enter an array", Toast.LENGTH_LONG).show();
                                 }
                             });
+                        } else if (arr.length > 8) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getContext(),"Array must be size 8(max)", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                         else {
                             if(isRunning){
