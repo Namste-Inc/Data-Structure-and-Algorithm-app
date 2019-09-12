@@ -258,10 +258,10 @@ public class MergeSortFragment extends Fragment {
     }
 
     public void mergeAni(final int layer) {
+        System.out.println(layer + " layer");
         final ArrayList<ArrayList<Square>> temp = squares.get(layer);
-        TextView[] tempTArr = new TextView[tArr.length];
+        final TextView[] tempTArr = new TextView[tArr.length];
         int[] tempOfTemp = new int[tempArr.length];
-        int len = temp.size();
         int incrementer = (layer == treeHeight - 2)?1:2;
         int circleIndex = 0;
         if(incrementer == 1) {
@@ -306,9 +306,6 @@ public class MergeSortFragment extends Fragment {
                 //for all the boxes that will recieve a number
                 for (int j = 0; j < temp.get(i).size(); j++) {
                     final int finalJ = j;
-                    final int fFirst = first;
-                    final int fSecond = second;
-
                     pause(Thread.currentThread(), 1000);
                         if (first < firstSize && second < secondSize) {
                             if (tempArr[first] < tempArr[second]) {
@@ -376,6 +373,16 @@ public class MergeSortFragment extends Fragment {
                             second ++;
                         }
                     circleIndex++;
+                        final int finalIndex = circleIndex -1;
+                    if(layer == 0){
+                        pause(Thread.currentThread(), 1000);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((CircleText) tempTArr[finalIndex]).sorted();
+                            }
+                        });
+                    }
                 }
             }
             tArr = tempTArr;
@@ -385,23 +392,20 @@ public class MergeSortFragment extends Fragment {
 
         //fadeOut boxes
         for(int i = 0; i < temp.size(); i++){
+            final int finalI = i;
             for(int j = 0; j < temp.get(i).size(); j++){
-                Animation fadeOut = new AlphaAnimation(1, 0);
-                fadeOut.setInterpolator(new DecelerateInterpolator());
-                fadeOut.setDuration(1000);
-                fadeOut.setFillAfter(true);
-
-                final int finalI = i;
                 final int finalJ = j;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                Animation fadeOut = new AlphaAnimation(1, 0);
+                fadeOut.setInterpolator(new DecelerateInterpolator());
+                fadeOut.setDuration(1000);
+                fadeOut.setFillAfter(true);
                         temp.get(finalI).get(finalJ).clearAnimation();
+                        temp.get(finalI).get(finalJ).startAnimation(fadeOut);
                     }
                 });
-
-                temp.get(i).get(j).setAnimation(fadeOut);
-                fadeOut.start();
                 circleIndex++;
             }
         }
