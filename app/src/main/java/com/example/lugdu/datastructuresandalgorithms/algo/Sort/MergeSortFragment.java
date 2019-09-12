@@ -65,6 +65,8 @@ public class MergeSortFragment extends Fragment {
     final int squareSize = 80;
     int treeHeight;
 
+    boolean isSorted = false;
+
     public static int color = Color.parseColor("#FF0000");
 
     ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
@@ -131,6 +133,9 @@ public class MergeSortFragment extends Fragment {
                                 resultText.setText("Sorted array: " + arrayToString(arr, true));
                             }
                         });
+                        isSorted = true;
+
+                        position();
                     }
                 };
                 Thread thread = new Thread(runnable);
@@ -546,16 +551,32 @@ public class MergeSortFragment extends Fragment {
     }
 
     public void position(){
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int treeHeight = tArr.length;
-                ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
-                double layers = getTreeHeight((double)treeHeight);
-                params.height = (int)layers * (130) + 40;
-                relativeLayout.setLayoutParams(params);
-            }
-        });
+        if (!isSorted) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int treeHeight = tArr.length;
+                    ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
+                    double layers = getTreeHeight((double)treeHeight);
+                    params.height = (int)layers * (130) + 40;
+                    relativeLayout.setLayoutParams(params);
+                }
+            });
+        } else {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int treeHeight = tArr.length;
+                    ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
+                    double layers = getTreeHeight((double)treeHeight);
+                    params.height = (int)layers * (65) + 0;
+                    relativeLayout.setLayoutParams(params);
+                }
+            });
+        }
+
+
+
     }
 
     public String arrayToString(int[] arr, boolean comma){
