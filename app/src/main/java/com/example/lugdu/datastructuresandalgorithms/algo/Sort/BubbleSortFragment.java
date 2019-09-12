@@ -184,6 +184,7 @@ public class BubbleSortFragment extends Fragment {
             }
         });
         for (int i = arr.length - 1; i >= 0; i--) {
+            final int k = i;
             for (int j = 0; j < i; j++) {
                 final int m = j;
                 final CircleText cText = ((CircleText) tArr[j]);
@@ -193,8 +194,6 @@ public class BubbleSortFragment extends Fragment {
                     public void run() {
                         cText.select(true);
                         cText2.select(false);
-                        cText.invalidate();
-                        cText2.invalidate();
                     }
                 });
                 pause(Thread.currentThread(),1000);
@@ -212,30 +211,36 @@ public class BubbleSortFragment extends Fragment {
 
                     swapArrInt(m, m + 1);
                     swapAni(m, m+1);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((CircleText)tArr[m]).deselect();
+                        }
+                    });
 
                     pause(Thread.currentThread(),1000);
                 }
+                else{
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((CircleText)tArr[m + 1]).deselect();
+                            ((CircleText)tArr[m]).deselect();
+                        }
+                    });
+                }
 
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        explanationText.setText("No changes to be made.");
-                    }
-                };
 
-                getActivity().runOnUiThread(runnable);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((CircleText)tArr[m]).deselect();
-                        tArr[m].invalidate();
-                        ((CircleText)tArr[m + 1]).deselect();
-                        tArr[m + 1].invalidate();
-                    }
-                });
                 pause(Thread.currentThread(), 1000);
 
             }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText)tArr[k]).sorted();
+                }
+            });
+
         }
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -326,73 +331,6 @@ public class BubbleSortFragment extends Fragment {
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
             insertPoint.addView(textView, layoutParams);
         }
-    }
-
-    public void swapArrTView(final int pos1, final int pos2, Button b){
-        while (animating){
-
-        }
-        float x1 = tArr[pos1].getX();
-        float x2 = tArr[pos2].getX();
-        final ObjectAnimator animation = ObjectAnimator.ofFloat(tArr[pos1], "translationX", x2);
-        animation.setDuration(200);
-        final ObjectAnimator animation2 = ObjectAnimator.ofFloat(tArr[pos2], "translationX", x1);
-        animation2.setDuration(200);
-        animation.start();
-        animation2.start();
-        animation.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                animating = false;
-                System.out.println("animation Ended");
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        animating = true;
-        TextView pos = tArr[pos1];
-        tArr[pos1] = tArr[pos2];
-        tArr[pos2] = pos;
-    }
-
-    public void swapArrTView1(int first, int second){
-        final int pos1 = first;
-        final int pos2 = second;
-        float x1 = tArr[pos1].getX();
-        float x2 = tArr[pos2].getX();
-        float foward = x1;
-        float backwards = x2;
-        for(float i = x1; i<x2; i+=.009){
-            final int pos = pos1;
-            final float back = backwards;
-            final float forth = foward;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    tArr[pos1].setX(forth);
-                    tArr[pos2].setX(back);
-                }
-            });
-
-            foward += .009;
-            backwards-=.009;
-        }
-        TextView pos = tArr[pos1];
-        tArr[pos1] = tArr[pos2];
-        tArr[pos2] = pos;
     }
 
     public void swapArrInt(int pos1, int pos2){

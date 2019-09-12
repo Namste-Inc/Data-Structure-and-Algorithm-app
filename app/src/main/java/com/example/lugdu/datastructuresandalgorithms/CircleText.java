@@ -18,7 +18,7 @@ public class CircleText extends android.support.v7.widget.AppCompatTextView {
     public CircleText(Context context) {
         super(context);
         setGravity(Gravity.CENTER);
-        color = Color.BLUE;
+        color = Color.RED;
     }
 
     public CircleText(Context context, AttributeSet attrs) {
@@ -45,13 +45,18 @@ public class CircleText extends android.support.v7.widget.AppCompatTextView {
         paint.setColor(color);
         paint.setStrokeWidth(10);
         canvas.drawCircle(mid, mid, (getHeight()/2) - 12, paint);
-
         //canvas.drawText("" + num, xPos,yPos,textPaint);
     }
     public void select(boolean i){
-        color = i?Color.GREEN:Color.YELLOW;
+        color = i?Color.BLUE:Color.YELLOW;
+        invalidate();
     }
     public void deselect(){
-        color = Color.BLUE;
+        color = Color.RED;
+        invalidate();
+    }
+    public void sorted(){
+        color = Color.GREEN;
+        invalidate();
     }
 }
