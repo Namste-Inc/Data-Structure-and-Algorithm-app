@@ -194,7 +194,6 @@ public class InsertionSortFragment extends Fragment {
                     @Override
                     public void run() {
                         ((CircleText) tArr[finalI]).select(false);
-                        tArr[finalI].invalidate();
                     }
                 });
 
@@ -209,7 +208,6 @@ public class InsertionSortFragment extends Fragment {
                     @Override
                     public void run() {
                         ((CircleText) tArr[finalI1 + 1]).deselect();
-                        tArr[finalI1 + 1].invalidate();
                     }
                 });
 
@@ -218,9 +216,14 @@ public class InsertionSortFragment extends Fragment {
 
             if(elementsSwapped == true) {
                 moveUp(updatedKey[0]);
+
+
             } else {
                 //if the elements weren't swapped, then the key remains in the same position, therefore just move that one up
                 moveUp(finalJ);
+
+
+
             }
             pause(Thread.currentThread(), 2000);
             getActivity().runOnUiThread(new Runnable() {
@@ -252,6 +255,7 @@ public class InsertionSortFragment extends Fragment {
                 textView.setText("Sorted Array: [ " + arrayToString(arr,true) + " ]");
             }
         });
+        setSortedAll();
         isRunning = false;
     }
     public void swapArrInt(int pos1, int pos2){
@@ -282,6 +286,9 @@ public class InsertionSortFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void initArray(){
         int len = arr.length;
+        int totalLength = (len * (circleSize + leftMargin + rightMargin)) - leftMargin;
+        int totalSpace = w - totalLength;
+        int startSpace  = (totalSpace / 2);
         tArr = new TextView[len];
         RelativeLayout insertPoint = view.findViewById(R.id.lView);
         if(insertPoint.getChildCount() > 0){
@@ -290,7 +297,7 @@ public class InsertionSortFragment extends Fragment {
         for(int i = 0; i<len; i++){
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
-            textView.setX(i * 130);
+            textView.setX((i * 130) + startSpace);
             tArr[i] = textView;
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
@@ -372,6 +379,17 @@ public class InsertionSortFragment extends Fragment {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void setSortedAll(){
+        for(final TextView T: tArr){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) T).sorted();
+                }
+            });
         }
     }
 

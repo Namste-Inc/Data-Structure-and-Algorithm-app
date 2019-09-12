@@ -80,7 +80,6 @@ public class SelectionSortFragment extends Fragment {
                             editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
                         }
                         else{
-
                             editText.setText("");
                         }
 
@@ -155,34 +154,48 @@ public class SelectionSortFragment extends Fragment {
 
         // One by one move boundary of unsorted subarray
         for (int i = 0; i < n-1; i++) {
+            final int finalI = i;
             // Find the minimum element in unsorted array
             min_idx = i;
 
             for (int j = i+1; j < n; j++) {
+                final int finalJ = j;
                 if (arr[j] < arr[min_idx]) {
                     min_idx = j;
                 }
             }
+            final int final_min = min_idx;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[final_min]).sorted();
+                }
+            });
+            pause(Thread.currentThread(), 2000);
 
             // Swap the found minimum element with the first
             // element
+            swapArrInt(min_idx, i);
             swapAni(min_idx, i);
             pause(Thread.currentThread(),1000);
-            int temp = arr[min_idx];
-            arr[min_idx] = arr[i];
-            arr[i] = temp;
         }
-        final int finalMin_idx = min_idx;
+        final int last = n - 1;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((CircleText) tArr[finalMin_idx +1]).select(true);
-                tArr[finalMin_idx+1].invalidate();
+                ((CircleText) tArr[last]).sorted();
             }
         });
         pause(Thread.currentThread(),1000);
 
     }
+
+    public void swapArrInt(int pos1, int pos2){
+        int pos = arr[pos1];
+        arr[pos1] = arr[pos2];
+        arr[pos2] = pos;
+    }
+
     public boolean entryGood(String entry){
         if(entry.startsWith("-") || entry.endsWith("-") || entry.contains("--")){
             return false;
@@ -207,24 +220,6 @@ public class SelectionSortFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((CircleText) tArr[pos1]).select(false);
-                tArr[pos1].invalidate();
-            }
-        });
-        pause(Thread.currentThread(),1000);
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((CircleText) tArr[pos2]).select(false);
-                tArr[pos2].invalidate();
-            }
-        });
-        pause(Thread.currentThread(),1000);
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
                 TextView txt1 = tArr[pos1];
                 TextView txt2 = tArr[pos2];
                 float x1 = txt1.getX() - leftMargin;
@@ -242,18 +237,6 @@ public class SelectionSortFragment extends Fragment {
                 tArr[pos2] = pos;
             }
         });
-        pause(Thread.currentThread(),1000);
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((CircleText) tArr[pos1]).deselect();
-                tArr[pos1].invalidate();
-                ((CircleText) tArr[pos2]).select(true);
-                tArr[pos2].invalidate();
-            }
-        });
-        pause(Thread.currentThread(),1000);
     }
 
     public void initArray(){

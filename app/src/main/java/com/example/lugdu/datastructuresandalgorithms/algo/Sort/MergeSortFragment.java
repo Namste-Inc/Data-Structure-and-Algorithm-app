@@ -260,6 +260,7 @@ public class MergeSortFragment extends Fragment {
     public void mergeAni(final int layer) {
         final ArrayList<ArrayList<Square>> temp = squares.get(layer);
         TextView[] tempTArr = new TextView[tArr.length];
+        int[] tempOfTemp = new int[tempArr.length];
         int len = temp.size();
         int incrementer = (layer == treeHeight - 2)?1:2;
         int circleIndex = 0;
@@ -297,12 +298,9 @@ public class MergeSortFragment extends Fragment {
             for(int i = 0; i < temp.size(); i++) {
                 final int finalI = i;
                 int sizeOfCurrent = temp.get(i).size()/2;
-                System.out.println("current " + sizeOfCurrent);
                 int sizeOfAdjacent = temp.get(i).size() - (temp.get(i).size()/2);
                 int first = circleIndex;
-                System.out.println("CIrcle index " + circleIndex );
-                int second = circleIndex + temp2.get(0).size();
-                System.out.println(layer + " Second");
+                int second = circleIndex + temp2.get(i * 2).size();
                 int firstSize = circleIndex + sizeOfCurrent;
                 int secondSize = circleIndex + sizeOfCurrent + sizeOfAdjacent;
                 //for all the boxes that will recieve a number
@@ -315,6 +313,7 @@ public class MergeSortFragment extends Fragment {
                         if (first < firstSize && second < secondSize) {
                             if (tempArr[first] < tempArr[second]) {
                                 tempTArr[circleIndex] = tArr[first];
+                                tempOfTemp[circleIndex] = tempArr[first];
                                 final ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(tArr[first], "translationX", squares.get(layer).get(finalI).get(finalJ).getX());
                                 final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[first], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                                 objectAnimatorX.setDuration(1000);
@@ -329,6 +328,7 @@ public class MergeSortFragment extends Fragment {
                                 first ++;
                             } else {
                                 tempTArr[circleIndex] = tArr[second];
+                                tempOfTemp[circleIndex] = tempArr[second];
                                 final ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(tArr[second], "translationX", squares.get(layer).get(finalI).get(finalJ).getX());
                                 final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[second], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                                 objectAnimatorX.setDuration(1000);
@@ -344,6 +344,7 @@ public class MergeSortFragment extends Fragment {
                             }
                         }else if(first < firstSize){
                             tempTArr[circleIndex] = tArr[first];
+                            tempOfTemp[circleIndex] = tempArr[first];
                             final ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(tArr[first], "translationX", squares.get(layer).get(finalI).get(finalJ).getX());
                             final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[first], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                             objectAnimatorX.setDuration(1000);
@@ -360,6 +361,7 @@ public class MergeSortFragment extends Fragment {
                         }
                         else if(second < secondSize){
                             tempTArr[circleIndex] = tArr[second];
+                            tempOfTemp[circleIndex] = tempArr[second];
                             final ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(tArr[second], "translationX", squares.get(layer).get(finalI).get(finalJ).getX());
                             final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[second], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                             objectAnimatorX.setDuration(1000);
@@ -377,6 +379,7 @@ public class MergeSortFragment extends Fragment {
                 }
             }
             tArr = tempTArr;
+            tempArr = tempOfTemp;
             pause(Thread.currentThread(), 2000);
         }
 
@@ -402,6 +405,7 @@ public class MergeSortFragment extends Fragment {
                 circleIndex++;
             }
         }
+        System.out.println(arrayToString(tempOfTemp, true));
     }
 
     public ArrayList<ArrayList<Square>> copyLayer(int layer){
