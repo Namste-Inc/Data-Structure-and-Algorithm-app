@@ -35,6 +35,7 @@ import com.example.lugdu.datastructuresandalgorithms.R;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.TreeMap;
 
 public class HeapSortFragment extends Fragment {
     View view;
@@ -199,7 +200,6 @@ public class HeapSortFragment extends Fragment {
         Point size = new Point();
         display.getSize(size);
         int width = size.x - 200;
-        int height = size.y;
 
         int len = arr.length;
 
@@ -256,7 +256,6 @@ public class HeapSortFragment extends Fragment {
                     textView.setY(((i-4)*150) + testSpace);
                     break;
             }
-
             tArr[i] = textView;
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
@@ -281,7 +280,6 @@ public class HeapSortFragment extends Fragment {
             TextView textViewLinear = new CircleText(getContext());
             textViewLinear.setText(arr[i] + "");
             textViewLinear.setX(i * 130);
-            System.out.println("Here is y: " + textViewLinear.getY());
             textViewLinear.setY(-20);
             tArrLinear[i] = textViewLinear;
             RelativeLayout.LayoutParams layoutParamsLinear = new RelativeLayout.LayoutParams(circleSize,circleSize);
@@ -302,14 +300,53 @@ public class HeapSortFragment extends Fragment {
         int n = arr.length;
 
         // Build heap (rearrange array)
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                explanationText.setText("Build heap.");
+            }
+        };
+        getActivity().runOnUiThread(runnable);
         for (int i = n / 2 - 1; i >= 0; i--) {
+
+            pause(Thread.currentThread(),1000);
+
             heapify(arr, n, i);
         }
 
         // One by one extract an element from heap
         for (int i=n-1; i>=0; i--)
         {
+
             // Move current root to end
+            final int finalI  = i;
+            final int currentRoot = arr[0];
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    explanationText.setText("Now that the largest node '" + currentRoot + "' is the root, swap it with the node " +
+                            "at the end of the tree/array that is unsorted.");
+                }
+            };
+            pause(Thread.currentThread(),1000);
+
+            getActivity().runOnUiThread(runnable);
+            ((CircleText) tArr[0]).select(true);
+            tArr[i].invalidate();
+
+            ((CircleText) tArrLinear[0]).select(true);
+            tArr[i].invalidate();
+
+            pause(Thread.currentThread(),1000);
+
+            ((CircleText) tArr[i]).select(true);
+            tArr[i].invalidate();
+
+            ((CircleText) tArrLinear[i]).select(true);
+            tArr[i].invalidate();
+
+            pause(Thread.currentThread(),1000);
 
             swapAni(0,i);
             int temp = arr[0];
@@ -318,18 +355,40 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            ((CircleText) tArr[i]).select(true);
+            ((CircleText) tArr[0]).deselect();
             tArr[i].invalidate();
 
-            ((CircleText) tArrLinear[i]).select(true);
-            tArrLinear[i].invalidate();
+            ((CircleText) tArrLinear[0]).deselect();
+            tArr[i].invalidate();
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    explanationText.setText(currentRoot + " is sorted!");
+                }
+            };
+            getActivity().runOnUiThread(runnable);
+
+            ((CircleText) tArr[i]).sorted();
+            tArr[i].invalidate();
+
+            ((CircleText) tArrLinear[i]).sorted();
+            tArr[i].invalidate();
 
             pause(Thread.currentThread(),1000);
-
 
             // call max heapify on the reduced heap
             heapify(arr, i, 0);
         }
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                explanationText.setText("Array has been sorted!");
+            }
+        };
+        getActivity().runOnUiThread(runnable);
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -346,6 +405,14 @@ public class HeapSortFragment extends Fragment {
         int l = 2*i + 1; // left = 2*i + 1
         int r = 2*i + 2; // right = 2*i + 2
 
+
+
+        final int finalI = i;
+        System.out.println("Here is i: " + i);
+
+
+
+
         // If left child is larger than root
         if (l < n && arr[l] > arr[largest]) {
             largest = l;
@@ -357,10 +424,55 @@ public class HeapSortFragment extends Fragment {
             largest = r;
         }
 
-
+        final int finalLargest = largest;
+        final int parent = arr[i];
+        final int child = arr[largest];
         // If largest is not root
         if (largest != i) {
             pause(Thread.currentThread(),1000);
+
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+
+                    explanationText.setText("Parent '" + parent + "' is larger than child '" + child + "'.");
+                }
+            };
+            getActivity().runOnUiThread(runnable);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[finalI]).select(true);
+                    tArr[finalI].invalidate();
+
+                    ((CircleText) tArrLinear[finalI]).select(true);
+                    tArr[finalI].invalidate();
+                }
+            });
+            pause(Thread.currentThread(),1000);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[finalLargest]).select(true);
+                    tArr[finalLargest].invalidate();
+
+                    ((CircleText) tArrLinear[finalLargest]).select(true);
+                    tArr[finalLargest].invalidate();
+                }
+            });
+            pause(Thread.currentThread(),1000);
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    explanationText.setText("Swap parent '" + parent + "' and child '" + child + "'.");
+                }
+            };
+            getActivity().runOnUiThread(runnable);
+            pause(Thread.currentThread(),1000);
+
             swapAni(i,largest);
 
             int swap = arr[i];
@@ -369,40 +481,57 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[finalI]).deselect();
+                    tArr[finalI].invalidate();
+
+                    ((CircleText) tArrLinear[finalI]).deselect();
+                    tArr[finalI].invalidate();
+
+                    ((CircleText) tArr[finalLargest]).deselect();
+                    tArr[finalLargest].invalidate();
+
+                    ((CircleText) tArrLinear[finalLargest]).deselect();
+                    tArr[finalLargest].invalidate();
+                }
+            });
+
+            pause(Thread.currentThread(),1000);
 
             // Recursively heapify the affected sub-tree
             heapify(arr, n, largest);
-
-
         }
     }
 
     public void swapAni(int firstPos, int secondPos){
         final int pos1 = firstPos;
         final int pos2 = secondPos;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((CircleText) tArr[pos1]).select(true);
-                tArr[pos1].invalidate();
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                ((CircleText) tArr[pos1]).select(true);
+//                tArr[pos1].invalidate();
+//
+//                ((CircleText) tArrLinear[pos1]).select(true);
+//                tArrLinear[pos1].invalidate();
+//
+//            }
+//        });
+        //pause(Thread.currentThread(),1000);
 
-                ((CircleText) tArrLinear[pos1]).select(true);
-                tArrLinear[pos1].invalidate();
-
-            }
-        });
-        pause(Thread.currentThread(),1000);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((CircleText) tArr[pos2]).select(true);
-                tArr[pos2].invalidate();
-
-                ((CircleText) tArrLinear[pos2]).select(true);
-                tArrLinear[pos2].invalidate();
-            }
-        });
-        pause(Thread.currentThread(),1000);
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                ((CircleText) tArr[pos2]).select(true);
+//                tArr[pos2].invalidate();
+//
+//                ((CircleText) tArrLinear[pos2]).select(true);
+//                tArrLinear[pos2].invalidate();
+//            }
+//        });
+        //pause(Thread.currentThread(),1000);
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -463,52 +592,20 @@ public class HeapSortFragment extends Fragment {
             }
         });
         pause(Thread.currentThread(),1000);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((CircleText) tArr[pos1]).deselect();
-                tArr[pos1].invalidate();
-                ((CircleText) tArr[pos2]).deselect();
-                tArr[pos2].invalidate();
-
-                ((CircleText) tArrLinear[pos1]).deselect();
-                tArrLinear[pos1].invalidate();
-                ((CircleText) tArrLinear[pos2]).deselect();
-                tArrLinear[pos2].invalidate();
-            }
-        });
-    }
-
-    public void removeCircle(int posX, int posY) {
-        final int xPos = posX;
-        final int yPos = posY;
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView txt1 = tArr[yPos];
-
-//                float y1 = (txt1.getY() + circleSize);
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                ((CircleText) tArr[pos1]).deselect();
+//                tArr[pos1].invalidate();
+//                ((CircleText) tArr[pos2]).deselect();
+//                tArr[pos2].invalidate();
 //
-//                //float y1 = (txt1.getY() + circleSize + 2);
-//                float x1 = (txt1.getX() + circleSize + xPos);
-//
-//                ObjectAnimator animationY = ObjectAnimator.ofFloat(txt1, "translationY", 475);
-//                ObjectAnimator animationX = ObjectAnimator.ofFloat(txt1, "translationX", x1);
-//
-//
-//
-//                animationY.setDuration(1000);
-//                animationX.setDuration(1000);
-//
-//                animationY.start();
-//                animationX.start();
-//                System.out.println("Position of 10: " + txt1.getY());
-//                System.out.println("Position of X: " + txt1.getX());
-
-                txt1.setVisibility(View.GONE);
-            }
-        });
+//                ((CircleText) tArrLinear[pos1]).deselect();
+//                tArrLinear[pos1].invalidate();
+//                ((CircleText) tArrLinear[pos2]).deselect();
+//                tArrLinear[pos2].invalidate();
+//            }
+//        });
     }
 
     public void pause(Thread thread, int time){
