@@ -38,9 +38,7 @@ public class InsertionSortFragment extends Fragment {
     int arr[];
     TextView tArr[];
     TextView explanationText;
-
-    RelativeLayout relativeLayout;
-    int h,w;
+    int w;
     int circleSize = 120;
     int leftMargin = 20;
     int rightMargin = 0;
@@ -166,8 +164,29 @@ public class InsertionSortFragment extends Fragment {
         isRunning = true;
         int arrayLength = array.length;
 
+        final int secondElement = arr[1];
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                explanationText.setText("Start at the second element: " + secondElement);
+            }
+        };
+        getActivity().runOnUiThread(runnable);
+
+        pause(Thread.currentThread(),1000);
+
         for (int j = 1; j < arrayLength; j++) {
             final int finalJ = j;
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    explanationText.setText("Select: " + arr[finalJ]);
+                }
+            };
+            getActivity().runOnUiThread(runnable);
+
+            pause(Thread.currentThread(),1000);
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -175,7 +194,6 @@ public class InsertionSortFragment extends Fragment {
                     tArr[finalJ].invalidate();
                 }
             });
-            System.out.println("beginning here: " + Arrays.toString(array));
 
             int key = array[j];
             int i = j-1;
@@ -189,13 +207,38 @@ public class InsertionSortFragment extends Fragment {
 
             //while i is greater than negative 1 and while the element at position i is greater than what's in front of it
             while ((i> -1) && (array[i] > key)) {
+
                 final int finalI = i;
+                final int finalKey = key;
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("Check: " + arr[finalI]);
+                    }
+                };
+                getActivity().runOnUiThread(runnable);
+
+                pause(Thread.currentThread(),1000);
+
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         ((CircleText) tArr[finalI]).select(false);
                     }
                 });
+
+                pause(Thread.currentThread(),1000);
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("Since '" + finalKey + "' is greater than '" + arr[finalI] + "', swap them.");
+                    }
+                };
+                getActivity().runOnUiThread(runnable);
+
+                pause(Thread.currentThread(),1000);
 
                 elementsSwapped = true;
                 //swap the i and the element that key represents
@@ -221,9 +264,6 @@ public class InsertionSortFragment extends Fragment {
             } else {
                 //if the elements weren't swapped, then the key remains in the same position, therefore just move that one up
                 moveUp(finalJ);
-
-
-
             }
             pause(Thread.currentThread(), 2000);
             getActivity().runOnUiThread(new Runnable() {
@@ -242,8 +282,6 @@ public class InsertionSortFragment extends Fragment {
                 }
             });
 
-
-
             pause(Thread.currentThread(),1000);
             //make the first element in the array equal to the current key
             array[i+1] = key;
@@ -255,6 +293,16 @@ public class InsertionSortFragment extends Fragment {
                 textView.setText("Sorted Array: [ " + arrayToString(arr,true) + " ]");
             }
         });
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                explanationText.setText("The array is sorted!");
+            }
+        };
+        getActivity().runOnUiThread(runnable);
+
+        pause(Thread.currentThread(),1000);
         setSortedAll();
         isRunning = false;
     }
@@ -297,7 +345,7 @@ public class InsertionSortFragment extends Fragment {
         for(int i = 0; i<len; i++){
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
-            textView.setX((i * 130) + startSpace);
+            textView.setX((i * 130) + startSpace-28);
             tArr[i] = textView;
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
@@ -315,8 +363,6 @@ public class InsertionSortFragment extends Fragment {
 
 
                 float x1 = (txt1.getY() + circleSize + 10);
-
-
                 ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
                 animation.setDuration(1000);
 
@@ -337,7 +383,6 @@ public class InsertionSortFragment extends Fragment {
                 TextView txt2 = tArr[pos2];
                 float x1 = txt1.getX() - leftMargin;
                 float x2 = txt2.getX() - leftMargin;
-                System.out.println(x2);
                 ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
                 animation.setDuration(1000);
                 ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
@@ -359,9 +404,7 @@ public class InsertionSortFragment extends Fragment {
             public void run() {
                 TextView txt1 = tArr[pos];
 
-                System.out.println("1 " + txt1.getY());
                 float x1 = (txt1.getY() - (circleSize + 10)) - topMargin * 2;
-                System.out.println("2 " + x1);
 
                 ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
 

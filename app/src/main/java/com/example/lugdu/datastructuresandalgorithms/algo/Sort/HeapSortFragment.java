@@ -508,30 +508,6 @@ public class HeapSortFragment extends Fragment {
     public void swapAni(int firstPos, int secondPos){
         final int pos1 = firstPos;
         final int pos2 = secondPos;
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                ((CircleText) tArr[pos1]).select(true);
-//                tArr[pos1].invalidate();
-//
-//                ((CircleText) tArrLinear[pos1]).select(true);
-//                tArrLinear[pos1].invalidate();
-//
-//            }
-//        });
-        //pause(Thread.currentThread(),1000);
-
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                ((CircleText) tArr[pos2]).select(true);
-//                tArr[pos2].invalidate();
-//
-//                ((CircleText) tArrLinear[pos2]).select(true);
-//                tArrLinear[pos2].invalidate();
-//            }
-//        });
-        //pause(Thread.currentThread(),1000);
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -592,20 +568,6 @@ public class HeapSortFragment extends Fragment {
             }
         });
         pause(Thread.currentThread(),1000);
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                ((CircleText) tArr[pos1]).deselect();
-//                tArr[pos1].invalidate();
-//                ((CircleText) tArr[pos2]).deselect();
-//                tArr[pos2].invalidate();
-//
-//                ((CircleText) tArrLinear[pos1]).deselect();
-//                tArrLinear[pos1].invalidate();
-//                ((CircleText) tArrLinear[pos2]).deselect();
-//                tArrLinear[pos2].invalidate();
-//            }
-//        });
     }
 
     public void pause(Thread thread, int time){
