@@ -15,6 +15,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
@@ -29,6 +31,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
@@ -37,10 +40,13 @@ import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.MainActivity;
+import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.StepsFragment;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Queue;
 
@@ -56,6 +62,8 @@ public class BubbleSortFragment extends Fragment {
     final int topMargin = 0;
     final int bottomMargin = 25;
     int w;
+    private ImageView[] dots;
+    ViewPager viewPager;
     boolean isRunning;
     public static int color = Color.parseColor("#FF0000");
 
@@ -76,6 +84,7 @@ public class BubbleSortFragment extends Fragment {
         animation.setDuration(1000);
         def.setAnimation(animation);
         w = MainActivity.width;
+        setUpViewPager();
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -366,5 +375,51 @@ public class BubbleSortFragment extends Fragment {
             }
         }
         return toString;
+    }
+
+    public void setUpViewPager(){
+        LinearLayout dotsView = view.findViewById(R.id.sliderDots);
+        HashMap<Integer, Fragment> steps = new HashMap<>();
+        StepsFragment stepsFragment = new StepsFragment();
+        steps.put(0,stepsFragment);
+        StepsFragment stepsFragment1 = new StepsFragment();
+        steps.put(1,stepsFragment1);
+        viewPager = view.findViewById(R.id.viewpager);
+        dots = new ImageView[steps.size()];
+        for(int i = 0; i < dots.length; i++){
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(8, 0, 8, 0);
+
+            dotsView.addView(dots[i], params);
+        }
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
+
+        PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),2,steps);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                for(int j = 0; j< dots.length; j++){
+                    dots[j].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
+                }
+
+                dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 }
