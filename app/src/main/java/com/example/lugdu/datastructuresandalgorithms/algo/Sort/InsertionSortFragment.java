@@ -62,10 +62,10 @@ public class InsertionSortFragment extends Fragment {
         int[] colors = {Color.GRAY,color};
         gradientDrawable.setColors(colors);
         def.setBackground(gradientDrawable);
-        explanationText = view.findViewById(R.id.explanationText);
         Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         animation.setDuration(1000);
         def.setAnimation(animation);
+
         w = MainActivity.width;
 
         isRunning = false;
@@ -164,20 +164,23 @@ public class InsertionSortFragment extends Fragment {
         isRunning = true;
         int arrayLength = array.length;
 
-        final int secondElement = arr[1];
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                explanationText.setText("Start at the second element: " + secondElement);
-            }
-        };
-        getActivity().runOnUiThread(runnable);
 
-        pause(Thread.currentThread(),1000);
+        pause(Thread.currentThread(),2000);
 
         for (int j = 1; j < arrayLength; j++) {
             final int finalJ = j;
+
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    explanationText.setText("Key is at index " + finalJ);
+                }
+            };
+            getActivity().runOnUiThread(runnable);
+
+            pause(Thread.currentThread(),2000);
+
             runnable = new Runnable() {
                 @Override
                 public void run() {
@@ -294,7 +297,7 @@ public class InsertionSortFragment extends Fragment {
             }
         });
 
-        runnable = new Runnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 explanationText.setText("The array is sorted!");

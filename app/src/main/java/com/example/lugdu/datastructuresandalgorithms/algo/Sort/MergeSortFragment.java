@@ -77,6 +77,18 @@ public class MergeSortFragment extends Fragment {
         final Button button1 = view.findViewById(R.id.button1);
         final EditText editText = view.findViewById(R.id.topBox);
         explanationText = view.findViewById(R.id.explanationText);
+
+        TextView def = view.findViewById(R.id.definitionText);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setCornerRadius(50);
+        int[] colors = {Color.GRAY,color};
+        gradientDrawable.setColors(colors);
+        def.setBackground(gradientDrawable);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        animation.setDuration(1000);
+        def.setAnimation(animation);
+
+
         relativeLayout = view.findViewById(R.id.lView);
         h = relativeLayout.getLayoutParams().height;
         w = MainActivity.width;
