@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/textView7"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="110dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -16,6 +16,7 @@
         android:layout_marginRight="8dp"
         android:gravity="center"
         android:text="Definition: sorts an array by repeatedly finding the minimum element from unsorted part and putting it at the beginning; in every iteration of selection sort, the minimum element from the unsorted subarray is picked and moved to the sorted array"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
