@@ -96,7 +96,6 @@ public class MergeSortFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 editText.setText(arrayToString(arr,false));
                 editText.setSelection(editText.getText().length());
             }
@@ -136,7 +135,17 @@ public class MergeSortFragment extends Fragment {
                     @Override
                     public void run() {
                         pause(Thread.currentThread(), 500);
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                explanationText.setText("Split the array.");
+                            }
+                        };
+                        getActivity().runOnUiThread(runnable);
+                        pause(Thread.currentThread(),2000);
                         position();
+
+
                         mergeSort(arr,arr.length,0);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -146,6 +155,14 @@ public class MergeSortFragment extends Fragment {
                             }
                         });
                         isSorted = true;
+
+                        runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                explanationText.setText("Array has been sorted!");
+                            }
+                        };
+                        getActivity().runOnUiThread(runnable);
 
                         position();
                     }
@@ -215,7 +232,6 @@ public class MergeSortFragment extends Fragment {
         }
         while (i < left) {
             array[k++] = firstHalf[i++];
-
         }
         while (j < right) {
             array[k++] = secondHalf[j++];
@@ -287,6 +303,7 @@ public class MergeSortFragment extends Fragment {
                     System.out.println();
                     if (tempArr[circleIndex] > tempArr[circleIndex + 1]) {
                         System.out.println(" size 2" + temp.size());
+                        //
                         swapAni(circleIndex, circleIndex + 1);
                         swapArrInt(tempArr, circleIndex, circleIndex + 1);
                         pause(Thread.currentThread(), 1000);
@@ -586,9 +603,6 @@ public class MergeSortFragment extends Fragment {
                 }
             });
         }
-
-
-
     }
 
     public String arrayToString(int[] arr, boolean comma){
@@ -606,6 +620,15 @@ public class MergeSortFragment extends Fragment {
     }
 
     public void swapAni(int firstPos, int secondPos){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                explanationText.setText("Sort the numbers as you move them to the top layer.");
+            }
+        };
+        getActivity().runOnUiThread(runnable);
+        pause(Thread.currentThread(),2000);
+
         final int pos1 = firstPos;
         final int pos2 = secondPos;
         getActivity().runOnUiThread(new Runnable() {

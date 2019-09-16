@@ -51,7 +51,6 @@ public class QuickSortFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(!editText.isInEditMode()){
                     String[] afterC = editText.getText().toString().split(": ");
                     if(afterC.length > 1){
@@ -119,6 +118,14 @@ public class QuickSortFragment extends Fragment {
                                     }
                                 });
                                 quickSort(arr, 0, arr.length - 1);
+
+                                Runnable runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        explanationText.setText("Array is sorted!");
+                                    }
+                                };
+                                getActivity().runOnUiThread(runnable);
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
@@ -195,6 +202,16 @@ public class QuickSortFragment extends Fragment {
     }
 
     private int partition(int arr[], int begin, int end) {
+        pause(Thread.currentThread(),1000);
+        final int pivotFinal = arr[end];
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                explanationText.setText("Select the rightmost unsorted element '" + pivotFinal + "' as the pivot.");
+            }
+        };
+        getActivity().runOnUiThread(runnable);
+        pause(Thread.currentThread(),3000);
         final int finalEnd = end;
         int pivot = arr[end];
         int i = (begin-1);
@@ -205,6 +222,15 @@ public class QuickSortFragment extends Fragment {
             }
         });
 
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                explanationText.setText("All numbers that are less than " + pivotFinal + " go to its left, and all numbers that are greater go to its right.");
+            }
+        };
+        getActivity().runOnUiThread(runnable);
+        pause(Thread.currentThread(),2000);
+
         for (int j = begin; j < end; j++) {
             if (arr[j] <= pivot) {
                 i++;
@@ -212,7 +238,7 @@ public class QuickSortFragment extends Fragment {
                 swapArrInt(arr, i, j);
                 swapAni(i, j);
             }
-            pause(Thread.currentThread(), 1000);
+            pause(Thread.currentThread(), 2000);
         }
 
         final int finalI = i + 1;
