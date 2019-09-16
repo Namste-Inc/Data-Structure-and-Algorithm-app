@@ -384,6 +384,8 @@ public class BubbleSortFragment extends Fragment {
         steps.put(0,stepsFragment);
         StepsFragment stepsFragment1 = new StepsFragment();
         steps.put(1,stepsFragment1);
+        StepsFragment stepsFragment2 = new StepsFragment();
+        steps.put(2,stepsFragment2);
         viewPager = view.findViewById(R.id.viewpager);
         dots = new ImageView[steps.size()];
         for(int i = 0; i < dots.length; i++){
@@ -395,10 +397,11 @@ public class BubbleSortFragment extends Fragment {
             params.setMargins(8, 0, 8, 0);
 
             dotsView.addView(dots[i], params);
+
         }
         dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),2,steps);
+        PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),steps.size(),steps);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -411,7 +414,6 @@ public class BubbleSortFragment extends Fragment {
                 for(int j = 0; j< dots.length; j++){
                     dots[j].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
                 }
-
                 dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
 
             }
