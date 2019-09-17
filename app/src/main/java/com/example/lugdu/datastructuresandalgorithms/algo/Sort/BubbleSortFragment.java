@@ -170,6 +170,14 @@ public class BubbleSortFragment extends Fragment {
                                         editText.setEnabled(true);
                                     }
                                 });
+
+                                Runnable runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        explanationText.setText("Array is sorted!");
+                                    }
+                                };
+                                getActivity().runOnUiThread(runnable);
                             }
                         }
                     }
@@ -198,14 +206,23 @@ public class BubbleSortFragment extends Fragment {
                 final int m = j;
                 final CircleText cText = ((CircleText) tArr[j]);
                 final CircleText cText2 = ((CircleText) tArr[j + 1]);
+
+                final int blueNumber = arr[j];
+                final int yellowNumber = arr[j+1];
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                explanationText.setText("Compare " + blueNumber + " and " + yellowNumber);}
+                        };
+                        getActivity().runOnUiThread(runnable);
                         cText.select(true);
                         cText2.select(false);
                     }
                 });
-                pause(Thread.currentThread(),1000);
+                pause(Thread.currentThread(),2000);
                 if (arr[j] > arr[j + 1]) {
                     bigNumber = arr[j];
                     smallNumber = arr[j+1];
@@ -243,12 +260,21 @@ public class BubbleSortFragment extends Fragment {
                 pause(Thread.currentThread(), 1000);
 
             }
+            final int sortedNumber = arr[k];
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    explanationText.setText(sortedNumber + " is sorted!");
+                }
+            };
+            getActivity().runOnUiThread(runnable);
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     ((CircleText)tArr[k]).sorted();
                 }
             });
+            pause(Thread.currentThread(),2000);
 
         }
         getActivity().runOnUiThread(new Runnable() {
