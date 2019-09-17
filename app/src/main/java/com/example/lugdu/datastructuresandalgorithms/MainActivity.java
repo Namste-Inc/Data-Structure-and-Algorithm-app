@@ -15,6 +15,7 @@ import com.example.lugdu.datastructuresandalgorithms.dataS.DataStructureFragment
 
 public class MainActivity extends AppCompatActivity  {
     public static int width,height;
+    DatabaseHelper myDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity  {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        myDB = new DatabaseHelper(this);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =

@@ -267,7 +267,6 @@ public class BubbleSortFragment extends Fragment {
         }
         return true;
     }
-
     public void pause(Thread thread, int time){
         synchronized (thread){
             try {
