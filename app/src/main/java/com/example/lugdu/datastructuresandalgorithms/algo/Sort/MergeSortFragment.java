@@ -13,6 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
@@ -35,19 +38,14 @@ import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.MainActivity;
+import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.Set;
+import java.util.HashMap;
 
-import com.example.lugdu.datastructuresandalgorithms.R;
 import com.example.lugdu.datastructuresandalgorithms.Square;
+import com.example.lugdu.datastructuresandalgorithms.StepsFragment;
 
 public class MergeSortFragment extends Fragment {
     View view;
@@ -66,6 +64,8 @@ public class MergeSortFragment extends Fragment {
 
     boolean isSorted = false;
 
+    private ImageView[] dots;
+    ViewPager viewPager;
     public static int color = Color.parseColor("#FF0000");
 
     ArrayList<ArrayList<ArrayList<Square>>> squares = new ArrayList<>();
@@ -91,6 +91,7 @@ public class MergeSortFragment extends Fragment {
         relativeLayout = view.findViewById(R.id.lView);
         h = relativeLayout.getLayoutParams().height;
         w = MainActivity.width;
+        setUpViewPager();
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -654,5 +655,53 @@ public class MergeSortFragment extends Fragment {
         int pos = arr[pos1];
         arr[pos1] = arr[pos2];
         arr[pos2] = pos;
+    }
+
+    public void setUpViewPager(){
+        LinearLayout dotsView = view.findViewById(R.id.sliderDots);
+        HashMap<Integer, Fragment> steps = new HashMap<>();
+        StepsFragment stepsFragment = new StepsFragment();
+        steps.put(0,stepsFragment);
+        StepsFragment stepsFragment1 = new StepsFragment();
+        steps.put(1,stepsFragment1);
+        StepsFragment stepsFragment2 = new StepsFragment();
+        steps.put(2,stepsFragment2);
+        viewPager = view.findViewById(R.id.viewpager);
+        dots = new ImageView[steps.size()];
+        for(int i = 0; i < dots.length; i++){
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(8, 0, 8, 0);
+
+            dotsView.addView(dots[i], params);
+
+        }
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
+
+        PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),steps.size(),steps);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                for(int j = 0; j< dots.length; j++){
+                    dots[j].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
+                }
+                dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 }
