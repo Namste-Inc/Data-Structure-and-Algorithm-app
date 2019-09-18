@@ -42,6 +42,7 @@ import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.Steps2Fragment;
 import com.example.lugdu.datastructuresandalgorithms.StepsFragment;
 
 import java.text.DecimalFormat;
@@ -407,7 +408,7 @@ public class BubbleSortFragment extends Fragment {
         HashMap<Integer, Fragment> steps = new HashMap<>();
         StepsFragment stepsFragment = new StepsFragment();
         steps.put(0,stepsFragment);
-        StepsFragment stepsFragment1 = new StepsFragment();
+        Steps2Fragment stepsFragment1 = new Steps2Fragment();
         steps.put(1,stepsFragment1);
         StepsFragment stepsFragment2 = new StepsFragment();
         steps.put(2,stepsFragment2);
