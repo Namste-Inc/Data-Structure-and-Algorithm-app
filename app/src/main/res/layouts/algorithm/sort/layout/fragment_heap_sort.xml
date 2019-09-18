@@ -18,7 +18,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center"
-        android:text="Definition: first the maximum element is found and then placed at the end, the the process is repeated for each remaining element"
+        android:text="Definition: First the maximum element is found and then placed at the end, the the process is repeated for each remaining element"
         android:padding="13dip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

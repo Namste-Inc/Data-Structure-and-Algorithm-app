@@ -28,10 +28,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onCreate(db);
     }
-    public void insertData(String tableName, String COL_2,String COL_3){
-        //SQLiteDatabase db = this.getWritableDatabase();
-        //ContentValues contentValues = new ContentValues();
-        //contentValues.put(COL_2, );
+    public void insertData(String tableName, String definition,String step){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(COL_2, definition);
+//        contentValues.put(COL_3, step);
+//        db.insert(tableName, null, contentValues);
+
     }
     public void addTable(){
         //SQLiteDatabase db = this.getWritableDatabase();
