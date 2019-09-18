@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity  {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-        myDB = new DatabaseHelper(this);
+
+        /*myDB = new DatabaseHelper(this);
 
         myDB.insertData("BubbleSort", "Sorts an array by swapping the adjacent elements if they are in the wrong order", "Iterates Through array and see if succeeding number if less than the current number");
         myDB.insertData("BubbleSort", null, "If the current number is less than the succeeding number the two numbers swap");
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity  {
         myDB.insertData("HeapSort", null, "Change heap to max heap (A max heap states that a parent node is always greater than or equal to its child node)");
         myDB.insertData("HeapSort", null, "Take the root and swap it with the last node in the heap");
         myDB.insertData("HeapSort", null, "Remove or ignore that node as part of the heap because it has just been sorted");
-        myDB.insertData("HeapSort", null, "Since the array is already in a heap, repeat the rest of the steps to sorted the rest of the nodes in the heap or the rest of the elements in the array");
+        myDB.insertData("HeapSort", null, "Since the array is already in a heap, repeat the rest of the steps to sorted the rest of the nodes in the heap or the rest of the elements in the array");*/
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =

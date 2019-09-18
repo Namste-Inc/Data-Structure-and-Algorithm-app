@@ -7,6 +7,44 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
 
+    <string-array name="bubble">
+        <item>Sorts an array by swapping the adjacent elements if they are in the wrong order</item>
+        <item>Iterates Through array and see if succeeding number if less than the current number</item>
+        <item>If the current number is less than the succeeding number the two numbers swap</item>
+        <item>After each iteration the next number starting from the back is sorted</item>
+    </string-array>
+    <string-array name="insertion">
+        <item>A simple sorting algorithm that builds the final sorted array one item at a time</item>
+        <item>Starting with the second item in the array for as long as the number to the left is less than the current number swap current number with the number on its left</item>
+        <item>This is done for each preceding number in array until we reach the end of the array</item>
+    </string-array>
+    <string-array name="merge">
+        <item>Sorts an array by swapping the adjacent elements if they are in the wrong order</item>
+        <item>The algorithm starts by splitting the array half then split those halves in half until there is until each subarray is size one</item>
+        <item>Each pair of halves is sorted then sorts as they merge with each other</item>
+        <item>This method can be looked at as similar to divide and conquer but they sort as they conquer</item>
+    </string-array>
+    <string-array name="quick">
+        <item>Picks an element as pivot and partitions the given array around the picked pivot</item>
+        <item>Select a pivot of your choosing</item>
+        <item>Put all items lower than the pivot to its left and all items larger than the pivot to its right, the pivot is now sorted</item>
+        <item>Repeat the above step for the right side of the pivot as a sub array and do the same for the right side of the pivot</item>
+    </string-array>
+    <string-array name="heap">
+        <item>First the maximum element is found and then placed at the end, the the process is repeated for each remaining element</item>
+        <item>Puts array in heap</item>
+        <item>Change heap to max heap (A max heap states that a parent node is always greater than or equal to its child node)</item>
+        <item>Take the root and swap it with the last node in the heap</item>
+        <item>Remove or ignore that node as part of the heap because it has just been sorted</item>
+        <item>Since the array is already in a heap, repeat the rest of the steps to sorted the rest of the nodes in the heap or the rest of the elements in the array</item>
+    </string-array>
+    <string-array name="selection">
+        <item></item>
+        <item>Starting from the beginning of the array, sets the next item in the array to be the minimum value in the array</item>
+        <item>Iterates through array to find a lower value then the minimum value and swaps it with the old minimum value making it the new minimum value</item>
+        <item>Each preceding item in the array will be sorted starting from the front after each iteration</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
