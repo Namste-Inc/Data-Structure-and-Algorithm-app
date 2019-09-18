@@ -19,5 +19,4 @@
         android:layout_marginRight="79dp"
         android:layout_marginBottom="493dp"
         app:exampleString=""/>
-
 </RelativeLayout>

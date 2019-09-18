@@ -16,6 +16,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/data_structure/array',
+                            'src/main/res/layouts/data_structure/graphs',
+                            'src/main/res/layouts/data_structure/hash_tables',
+                            'src/main/res/layouts/data_structure/linked_list',
+                            'src/main/res/layouts/data_structure/primative_types',
+                            'src/main/res/layouts/data_structure/queues',
+                            'src/main/res/layouts/data_structure/stacks',
+                            'src/main/res/layouts/data_structure/trees',
+                            'src/main/res/layouts/data_structure',
+                            'src/main/res/layouts/algorithm/sort',
+                            'src/main/res/layouts/algorithm/searching',
+                            'src/main/res/layouts/algorithm/hash_function',
+                            'src/main/res/layouts/algorithm/tree_traversal',
+                            'src/main/res/layouts/algorithm/string_manipulation',
+                            'src/main/res/layouts/algorithm/iteration',
+                            'src/main/res/layouts/algorithm/',
+                            'src/main/res/layouts/helpers',
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
+        }
+    }
 }
 
 dependencies {
@@ -30,3 +56,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'org.jetbrains:annotations-java5:15.0'
 }
+
