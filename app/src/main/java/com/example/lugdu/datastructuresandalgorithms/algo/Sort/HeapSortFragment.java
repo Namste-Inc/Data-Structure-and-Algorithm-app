@@ -83,7 +83,7 @@ public class HeapSortFragment extends Fragment {
         def.setAnimation(animation);
         w = MainActivity.width;
 
-        setUpViewPager();
+        //setUpViewPager();
 
         isRunning = false;
         editText.setOnClickListener(new View.OnClickListener() {

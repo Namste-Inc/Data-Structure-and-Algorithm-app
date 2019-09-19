@@ -76,7 +76,7 @@ public class InsertionSortFragment extends Fragment {
         def.setAnimation(animation);
 
         w = MainActivity.width;
-        setUpViewPager();
+        //setUpViewPager();
 
         isRunning = false;
         editText.setOnClickListener(new View.OnClickListener() {

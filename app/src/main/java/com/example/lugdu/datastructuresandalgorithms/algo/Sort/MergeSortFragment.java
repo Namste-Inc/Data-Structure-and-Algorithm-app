@@ -91,7 +91,7 @@ public class MergeSortFragment extends Fragment {
         relativeLayout = view.findViewById(R.id.lView);
         h = relativeLayout.getLayoutParams().height;
         w = MainActivity.width;
-        setUpViewPager();
+        //setUpViewPager();
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override

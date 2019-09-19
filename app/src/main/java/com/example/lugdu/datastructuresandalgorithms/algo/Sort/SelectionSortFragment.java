@@ -72,7 +72,7 @@ public class SelectionSortFragment extends Fragment {
         def.setAnimation(animation);
         w = MainActivity.width;
 
-        setUpViewPager();
+        //setUpViewPager();
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override

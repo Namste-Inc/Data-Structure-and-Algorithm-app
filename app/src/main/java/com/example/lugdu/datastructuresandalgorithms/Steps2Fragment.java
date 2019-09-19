@@ -1,5 +1,6 @@
 package com.example.lugdu.datastructuresandalgorithms;
 
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,8 +19,10 @@ public class Steps2Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_steps2, container,false);
-        ImageView textView = (ImageView) view.findViewById(R.id.imageviwer);
-        textView.setImageResource(R.drawable.merg_1);
+        TextView textView = view.findViewById(R.id.steps);
+        textView.setText(getArguments().getString("step"));
+        ImageView imageView = view.findViewById(R.id.imageviwer);
+        imageView.setImageResource(getArguments().getInt("image"));
         return view;
     }
 }

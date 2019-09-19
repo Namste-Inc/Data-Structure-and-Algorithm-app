@@ -59,7 +59,7 @@ public class QuickSortFragment extends Fragment {
         explanationText = view.findViewById(R.id.explanationText);
         isRunning = false;
 
-        setUpViewPager();
+        //setUpViewPager();
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override

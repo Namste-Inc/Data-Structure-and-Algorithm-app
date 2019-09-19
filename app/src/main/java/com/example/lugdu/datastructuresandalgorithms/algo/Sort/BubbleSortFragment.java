@@ -405,13 +405,13 @@ public class BubbleSortFragment extends Fragment {
 
     public void setUpViewPager(){
         LinearLayout dotsView = view.findViewById(R.id.sliderDots);
-        HashMap<Integer, Fragment> steps = new HashMap<>();
-        StepsFragment stepsFragment = new StepsFragment();
-        steps.put(0,stepsFragment);
-        Steps2Fragment stepsFragment1 = new Steps2Fragment();
-        steps.put(1,stepsFragment1);
-        StepsFragment stepsFragment2 = new StepsFragment();
-        steps.put(2,stepsFragment2);
+        HashMap<Integer, Fragment> steps = getViewFragments();
+//        StepsFragment stepsFragment = new StepsFragment();
+//        steps.put(0,stepsFragment);
+//        Steps2Fragment stepsFragment1 = new Steps2Fragment();
+//        steps.put(1,stepsFragment1);
+//        StepsFragment stepsFragment2 = new StepsFragment();
+//        steps.put(2,stepsFragment2);
         viewPager = view.findViewById(R.id.viewpager);
         dots = new ImageView[steps.size()];
         for(int i = 0; i < dots.length; i++){
@@ -449,5 +449,33 @@ public class BubbleSortFragment extends Fragment {
 
             }
         });
+    }
+
+    public HashMap<Integer, Fragment> getViewFragments(){
+        HashMap<Integer, Fragment> steps = new HashMap<>();
+        StepsFragment stepsFragment = new StepsFragment();
+        String[] strArr = getResources().getStringArray(R.array.bubble);
+        Bundle bundle = new Bundle();
+        System.out.println(strArr.toString());
+        bundle.putStringArray("string array", strArr);
+        stepsFragment.setArguments(bundle);
+
+        Steps2Fragment steps2Fragment1 = new Steps2Fragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("step", strArr[0]);
+        bundle1.putInt("image", R.drawable.bubble_1);
+        steps2Fragment1.setArguments(bundle1);
+
+        Steps2Fragment steps2Fragment2 = new Steps2Fragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("step", strArr[1]);
+        bundle2.putInt("image", R.drawable.bubble_2);
+        steps2Fragment2.setArguments(bundle2);
+
+        steps.put(0, stepsFragment);
+        steps.put(1, steps2Fragment1);
+        steps.put(2, steps2Fragment2);
+
+        return steps;
     }
 }
