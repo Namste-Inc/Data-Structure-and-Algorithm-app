@@ -46,6 +46,7 @@ import com.example.lugdu.datastructuresandalgorithms.Steps2Fragment;
 import com.example.lugdu.datastructuresandalgorithms.StepsFragment;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -116,7 +117,7 @@ public class BubbleSortFragment extends Fragment {
                         return true;
                     }
                     else{
-                        Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
                         return true;
                     }
                 }
@@ -289,7 +290,26 @@ public class BubbleSortFragment extends Fragment {
 
     }
     public boolean entryGood(String entry){
+        String[] dashSplits = entry.split("-");
+        boolean containsTripleDigits = false;
+        System.out.println(dashSplits[1]);
+        for (int i = 0; i <dashSplits.length; i++) {
+            if (dashSplits[i].length() > 2) {
+                containsTripleDigits = true;
+            }
+        }
+
         if(entry.startsWith("-") || entry.endsWith("-") || entry.contains("--")){
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+
+            return false;
+        } else if (dashSplits.length > 7) {
+            Toast.makeText(getContext(),"Array size must not be larger than 7.", Toast.LENGTH_LONG).show();
+
+            return false;
+        } else if (containsTripleDigits) {
+            Toast.makeText(getContext(),"Inputs must not be larger than 99.", Toast.LENGTH_LONG).show();
+
             return false;
         }
         return true;
@@ -325,26 +345,6 @@ public class BubbleSortFragment extends Fragment {
                 tArr[pos2] = pos;
             }
         });
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void ignite(int pos){
-        ObjectAnimator objectAnimator = ObjectAnimator.ofArgb(tArr[pos], "backgroundColor", Color.BLUE);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void extinguish(int id){
-        TextView txt = view.findViewById(id);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofArgb(txt, "backgroundColor", Color.TRANSPARENT);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public int middleStart(){
-        int len = arr.length;
-        int totalLength = len * (20 + circleSize);
-        int totalSpace = w - totalLength;
-        int startSpace  = totalSpace / 2;
-        return startSpace;
     }
 
     public void initArray(){

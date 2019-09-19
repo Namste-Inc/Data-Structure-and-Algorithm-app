@@ -110,7 +110,6 @@ public class InsertionSortFragment extends Fragment {
                         return true;
                     }
                     else{
-                        Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
                         return true;
                     }
                 }
@@ -326,7 +325,26 @@ public class InsertionSortFragment extends Fragment {
     }
 
     public boolean entryGood(String entry){
+        String[] dashSplits = entry.split("-");
+        boolean containsTripleDigits = false;
+        System.out.println(dashSplits[1]);
+        for (int i = 0; i <dashSplits.length; i++) {
+            if (dashSplits[i].length() > 2) {
+                containsTripleDigits = true;
+            }
+        }
+
         if(entry.startsWith("-") || entry.endsWith("-") || entry.contains("--")){
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+
+            return false;
+        } else if (dashSplits.length > 7) {
+            Toast.makeText(getContext(),"Array size must not be larger than 7.", Toast.LENGTH_LONG).show();
+
+            return false;
+        } else if (containsTripleDigits) {
+            Toast.makeText(getContext(),"Inputs must not be larger than 99.", Toast.LENGTH_LONG).show();
+
             return false;
         }
         return true;
