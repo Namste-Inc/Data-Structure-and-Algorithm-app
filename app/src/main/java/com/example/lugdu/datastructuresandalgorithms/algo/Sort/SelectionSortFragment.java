@@ -145,12 +145,16 @@ public class SelectionSortFragment extends Fragment {
 
                                 selectionSort(arr);
 
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        editText.setEnabled(true);
-                                    }
-                                });
+                                if(getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            editText.setEnabled(true);
+                                        }
+                                    });
+                                } else {
+                                    return;
+                                }
                             }
                         }
                     }
@@ -196,7 +200,11 @@ public class SelectionSortFragment extends Fragment {
                     explanationText.setText("Smallest number found!");
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(runnable);
+            } else {
+                return;
+            }
 
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -269,6 +277,10 @@ public class SelectionSortFragment extends Fragment {
     public boolean entryGood(String entry){
         String[] dashSplits = entry.split("-");
         boolean containsTripleDigits = false;
+        if (dashSplits.length < 2) {
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+            return false;
+        }
         System.out.println(dashSplits[1]);
         for (int i = 0; i <dashSplits.length; i++) {
             if (dashSplits[i].length() > 2) {

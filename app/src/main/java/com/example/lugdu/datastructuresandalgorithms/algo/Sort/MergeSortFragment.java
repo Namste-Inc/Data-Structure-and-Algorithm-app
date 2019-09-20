@@ -147,13 +147,17 @@ public class MergeSortFragment extends Fragment {
 
 
                         mergeSort(arr,arr.length,0);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                TextView resultText = view.findViewById(R.id.resultText);
-                                resultText.setText("Sorted array: " + arrayToString(arr, true));
-                            }
-                        });
+                        if(getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView resultText = view.findViewById(R.id.resultText);
+                                    resultText.setText("Sorted array: " + arrayToString(arr, true));
+                                }
+                            });
+                        } else {
+                            return;
+                        }
                         isSorted = true;
 
                         runnable = new Runnable() {
@@ -257,6 +261,10 @@ public class MergeSortFragment extends Fragment {
     public boolean entryGood(String entry){
         String[] dashSplits = entry.split("-");
         boolean containsTripleDigits = false;
+        if (dashSplits.length < 2) {
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+            return false;
+        }
         System.out.println(dashSplits[1]);
         for (int i = 0; i <dashSplits.length; i++) {
             if (dashSplits[i].length() > 2) {
@@ -334,15 +342,19 @@ public class MergeSortFragment extends Fragment {
             //move circle up
             for (int j = 0; j < tArr.length; j ++) {
                 final int i = j;
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        float toMove = (tArr[i].getY() - topMargin) - (squareSize + 5);
-                        ObjectAnimator moveCircleUp = ObjectAnimator.ofFloat(tArr[i], "translationY", toMove);
-                        moveCircleUp.setDuration(1000);
-                        moveCircleUp.start();
-                    }
-                });
+                if(getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            float toMove = (tArr[i].getY() - topMargin) - (squareSize + 5);
+                            ObjectAnimator moveCircleUp = ObjectAnimator.ofFloat(tArr[i], "translationY", toMove);
+                            moveCircleUp.setDuration(1000);
+                            moveCircleUp.start();
+                        }
+                    });
+                } else {
+                    return;
+                }
             }
             pause(Thread.currentThread(), 1000);
         }
@@ -368,13 +380,17 @@ public class MergeSortFragment extends Fragment {
                                 final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[first], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                                 objectAnimatorX.setDuration(1000);
                                 objectAnimatorY.setDuration(1000);
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        objectAnimatorX.start();
-                                        objectAnimatorY.start();
-                                    }
-                                });
+                                if(getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            objectAnimatorX.start();
+                                            objectAnimatorY.start();
+                                        }
+                                    });
+                                } else {
+                                    return;
+                                }
                                 first ++;
                             } else {
                                 tempTArr[circleIndex] = tArr[second];
@@ -383,13 +399,17 @@ public class MergeSortFragment extends Fragment {
                                 final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[second], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                                 objectAnimatorX.setDuration(1000);
                                 objectAnimatorY.setDuration(1000);
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        objectAnimatorX.start();
-                                        objectAnimatorY.start();
-                                    }
-                                });
+                                if(getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            objectAnimatorX.start();
+                                            objectAnimatorY.start();
+                                        }
+                                    });
+                                } else {
+                                    return;
+                                }
                                 second ++;
                             }
                         }else if(first < firstSize){
@@ -476,103 +496,115 @@ public class MergeSortFragment extends Fragment {
     public void splitAni(int layer1){
         final int layer = layer1;
         //drop number down
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for(int i = 0; i < tArr.length; i++){
-                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(tArr[i], "translationY", (layer + 1) * (squareSize + 5));
-                    objectAnimator.setDuration(1000);
-                    objectAnimator.start();
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < tArr.length; i++) {
+                        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(tArr[i], "translationY", (layer + 1) * (squareSize + 5));
+                        objectAnimator.setDuration(1000);
+                        objectAnimator.start();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            return;
+        }
         if(layer < treeHeight - 2) {
             pause(Thread.currentThread(), 1000);
             //make new boxes
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ArrayList<ArrayList<Square>> temp = copyLayer(layer);
-                    int len = temp.size();
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<ArrayList<Square>> temp = copyLayer(layer);
+                        int len = temp.size();
 
-                    ArrayList<ArrayList<Square>> temp3 = new ArrayList<>();
-                    //for all sublayers
-                    for (int i = 0; i < len; i++) {
-                        int half = temp.get(i).size() / 2;
-                        ArrayList<Square> temp2 = new ArrayList<>();
-                        ArrayList<Square> temp2o = new ArrayList<>();
-                        //for all boxes in sublayers
-                        for (int j = 0; j < half; j++) {
-                            Square square = new Square(getContext());
-                            square.setX(temp.get(i).get(j).getX());
-                            square.setY(temp.get(i).get(j).getY() + squareSize + 5);
-                            Animation fadeIn = new AlphaAnimation(0, 1);
-                            fadeIn.setInterpolator(new DecelerateInterpolator());
-                            fadeIn.setDuration(1000);
-                            square.setAnimation(fadeIn);
-                            temp2.add(square);
-                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize, squareSize);
-                            layoutParams.setMargins(0, 0, 0, 0);
-                            relativeLayout.addView(square, layoutParams);
+                        ArrayList<ArrayList<Square>> temp3 = new ArrayList<>();
+                        //for all sublayers
+                        for (int i = 0; i < len; i++) {
+                            int half = temp.get(i).size() / 2;
+                            ArrayList<Square> temp2 = new ArrayList<>();
+                            ArrayList<Square> temp2o = new ArrayList<>();
+                            //for all boxes in sublayers
+                            for (int j = 0; j < half; j++) {
+                                Square square = new Square(getContext());
+                                square.setX(temp.get(i).get(j).getX());
+                                square.setY(temp.get(i).get(j).getY() + squareSize + 5);
+                                Animation fadeIn = new AlphaAnimation(0, 1);
+                                fadeIn.setInterpolator(new DecelerateInterpolator());
+                                fadeIn.setDuration(1000);
+                                square.setAnimation(fadeIn);
+                                temp2.add(square);
+                                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize, squareSize);
+                                layoutParams.setMargins(0, 0, 0, 0);
+                                relativeLayout.addView(square, layoutParams);
+                            }
+                            temp3.add(temp2);
+                            for (int k = half; k < temp.get(i).size(); k++) {
+                                Square square = new Square(getContext());
+                                square.setX(temp.get(i).get(k).getX());
+                                square.setY(temp.get(i).get(k).getY() + squareSize + 5);
+                                Animation fadeIn = new AlphaAnimation(0, 1);
+                                fadeIn.setInterpolator(new DecelerateInterpolator());
+                                fadeIn.setDuration(1000);
+                                square.setAnimation(fadeIn);
+                                temp2o.add(square);
+                                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize, squareSize);
+                                layoutParams.setMargins(0, 0, 0, 0);
+                                relativeLayout.addView(square, layoutParams);
+                            }
+                            temp3.add(temp2o);
                         }
-                        temp3.add(temp2);
-                        for (int k = half; k < temp.get(i).size(); k++) {
-                            Square square = new Square(getContext());
-                            square.setX(temp.get(i).get(k).getX());
-                            square.setY(temp.get(i).get(k).getY() + squareSize + 5);
-                            Animation fadeIn = new AlphaAnimation(0, 1);
-                            fadeIn.setInterpolator(new DecelerateInterpolator());
-                            fadeIn.setDuration(1000);
-                            square.setAnimation(fadeIn);
-                            temp2o.add(square);
-                            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(squareSize, squareSize);
-                            layoutParams.setMargins(0, 0, 0, 0);
-                            relativeLayout.addView(square, layoutParams);
-                        }
-                        temp3.add(temp2o);
+                        squares.add(temp3);
                     }
-                    squares.add(temp3);
-                }
-            });
+                });
+            } else {
+                return;
+            }
             //split boxes
             pause(Thread.currentThread(), 1000);
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ArrayList<ArrayList<Square>> layerArr = squares.get(layer + 1);
-                    boolean moveRight = true;
-                    int circleIndex = 0;
-                    for (int i = 0; i < layerArr.size(); i++) {
-                        ArrayList<Square> pairs = layerArr.get(i);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<ArrayList<Square>> layerArr = squares.get(layer + 1);
+                        boolean moveRight = true;
+                        int circleIndex = 0;
+                        for (int i = 0; i < layerArr.size(); i++) {
+                            ArrayList<Square> pairs = layerArr.get(i);
 
-                        for (int j = 0; j < pairs.size(); j++) {
-                            String sign;
-                            if (moveRight) {
-                                sign = "-";
-                            } else {
-                                sign = "+";
+                            for (int j = 0; j < pairs.size(); j++) {
+                                String sign;
+                                if (moveRight) {
+                                    sign = "-";
+                                } else {
+                                    sign = "+";
+                                }
+                                int space = (layer == 0) ? 80 : (80 / (layer * 2));
+                                int parse = Integer.parseInt(sign + space);
+                                Float toMove = pairs.get(j).getX() + parse;
+                                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(pairs.get(j), "translationX", toMove);
+                                objectAnimator.setDuration(1000);
+                                ObjectAnimator objectAnimatorC = ObjectAnimator.ofFloat(tArr[circleIndex], "translationX", toMove);
+                                objectAnimatorC.setDuration(1000);
+
+                                objectAnimator.start();
+
+                                objectAnimatorC.start();
+
+                                circleIndex++;
                             }
-                            int space = (layer == 0) ? 80 : (80 / (layer * 2));
-                            int parse = Integer.parseInt(sign + space);
-                            Float toMove = pairs.get(j).getX() + parse;
-                            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(pairs.get(j), "translationX", toMove);
-                            objectAnimator.setDuration(1000);
-                            ObjectAnimator objectAnimatorC = ObjectAnimator.ofFloat(tArr[circleIndex], "translationX", toMove);
-                            objectAnimatorC.setDuration(1000);
+                            moveRight = !moveRight;
 
-                            objectAnimator.start();
 
-                            objectAnimatorC.start();
-
-                            circleIndex++;
                         }
-                        moveRight = !moveRight;
-
 
                     }
-
-                }
-            });
+                });
+            } else {
+                return;
+            }
         }
         pause(Thread.currentThread(), 1000);
 
@@ -600,16 +632,20 @@ public class MergeSortFragment extends Fragment {
 
     public void position(){
         if (!isSorted) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    int treeHeight = tArr.length;
-                    ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
-                    double layers = getTreeHeight((double)treeHeight);
-                    params.height = (int)layers * (130) + 40;
-                    relativeLayout.setLayoutParams(params);
-                }
-            });
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int treeHeight = tArr.length;
+                        ViewGroup.LayoutParams params = relativeLayout.getLayoutParams();
+                        double layers = getTreeHeight((double) treeHeight);
+                        params.height = (int) layers * (130) + 40;
+                        relativeLayout.setLayoutParams(params);
+                    }
+                });
+            } else {
+                return;
+            }
         } else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -645,29 +681,37 @@ public class MergeSortFragment extends Fragment {
                 explanationText.setText("Sort the numbers as you move them to the top layer.");
             }
         };
-        getActivity().runOnUiThread(runnable);
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(runnable);
+        } else {
+            return;
+        }
         pause(Thread.currentThread(),2000);
 
         final int pos1 = firstPos;
         final int pos2 = secondPos;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView txt1 = tArr[pos1];
-                TextView txt2 = tArr[pos2];
-                float x1 = txt1.getX() - leftMargin;
-                float x2 = txt2.getX() - leftMargin;
-                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
-                animation.setDuration(1000);
-                ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
-                animation2.setDuration(1000);
-                animation.start();
-                animation2.start();
-                TextView pos = tArr[pos1];
-                tArr[pos1] = tArr[pos2];
-                tArr[pos2] = pos;
-            }
-        });
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView txt1 = tArr[pos1];
+                    TextView txt2 = tArr[pos2];
+                    float x1 = txt1.getX() - leftMargin;
+                    float x2 = txt2.getX() - leftMargin;
+                    ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
+                    animation.setDuration(1000);
+                    ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
+                    animation2.setDuration(1000);
+                    animation.start();
+                    animation2.start();
+                    TextView pos = tArr[pos1];
+                    tArr[pos1] = tArr[pos2];
+                    tArr[pos2] = pos;
+                }
+            });
+        } else {
+            return;
+        }
     }
 
     public void swapArrInt(int[] arr, int pos1, int pos2){

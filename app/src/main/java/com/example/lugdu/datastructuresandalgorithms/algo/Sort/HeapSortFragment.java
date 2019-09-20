@@ -166,12 +166,16 @@ public class HeapSortFragment extends Fragment {
 
                                 heapSort(arr);
 
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        editText.setEnabled(true);
-                                    }
-                                });
+                                if(getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            editText.setEnabled(true);
+                                        }
+                                    });
+                                } else {
+                                    return;
+                                }
                             }
                         }
                     }
@@ -185,6 +189,10 @@ public class HeapSortFragment extends Fragment {
     public boolean entryGood(String entry){
         String[] dashSplits = entry.split("-");
         boolean containsTripleDigits = false;
+        if (dashSplits.length < 2) {
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+            return false;
+        }
         System.out.println(dashSplits[1]);
         for (int i = 0; i <dashSplits.length; i++) {
             if (dashSplits[i].length() > 2) {
@@ -360,20 +368,46 @@ public class HeapSortFragment extends Fragment {
             };
             pause(Thread.currentThread(),1000);
 
-            getActivity().runOnUiThread(runnable);
-            ((CircleText) tArr[0]).select(true);
-            tArr[i].invalidate();
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(runnable);
+            } else {
+                return;
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[0]).select(true);
+                    tArr[finalI].invalidate();
+                }
+            });
 
-            ((CircleText) tArrLinear[0]).select(true);
-            tArr[i].invalidate();
+
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArrLinear[0]).select(true);
+                    tArr[finalI].invalidate();
+                }
+            });
+
+
+
 
             pause(Thread.currentThread(),1000);
 
-            ((CircleText) tArr[i]).select(true);
-            tArr[i].invalidate();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[finalI]).select(true);
+                    tArr[finalI].invalidate();
 
-            ((CircleText) tArrLinear[i]).select(true);
-            tArr[i].invalidate();
+                    ((CircleText) tArrLinear[finalI]).select(true);
+                    tArr[finalI].invalidate();
+                }
+            });
+
+
 
             pause(Thread.currentThread(),1000);
 
@@ -384,11 +418,19 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            ((CircleText) tArr[0]).deselect();
-            tArr[i].invalidate();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[0]).deselect();
+                    tArr[finalI].invalidate();
 
-            ((CircleText) tArrLinear[0]).deselect();
-            tArr[i].invalidate();
+                    ((CircleText) tArrLinear[0]).deselect();
+                    tArr[finalI].invalidate();
+                }
+            });
+
+
+
 
             runnable = new Runnable() {
                 @Override
@@ -398,11 +440,18 @@ public class HeapSortFragment extends Fragment {
             };
             getActivity().runOnUiThread(runnable);
 
-            ((CircleText) tArr[i]).sorted();
-            tArr[i].invalidate();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[finalI]).sorted();
+                    tArr[finalI].invalidate();
 
-            ((CircleText) tArrLinear[i]).sorted();
-            tArr[i].invalidate();
+                    ((CircleText) tArrLinear[finalI]).sorted();
+                    tArr[finalI].invalidate();
+                }
+            });
+
+
 
             pause(Thread.currentThread(),1000);
 
@@ -467,7 +516,11 @@ public class HeapSortFragment extends Fragment {
                     explanationText.setText("Parent '" + parent + "' is larger than child '" + child + "'.");
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(runnable);
+            } else {
+                return;
+            }
 
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -481,16 +534,20 @@ public class HeapSortFragment extends Fragment {
             });
             pause(Thread.currentThread(),1000);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalLargest]).select(true);
-                    tArr[finalLargest].invalidate();
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalLargest]).select(true);
+                        tArr[finalLargest].invalidate();
 
-                    ((CircleText) tArrLinear[finalLargest]).select(true);
-                    tArr[finalLargest].invalidate();
-                }
-            });
+                        ((CircleText) tArrLinear[finalLargest]).select(true);
+                        tArr[finalLargest].invalidate();
+                    }
+                });
+            } else {
+                return;
+            }
             pause(Thread.currentThread(),1000);
 
             runnable = new Runnable() {
@@ -499,7 +556,11 @@ public class HeapSortFragment extends Fragment {
                     explanationText.setText("Swap parent '" + parent + "' and child '" + child + "'.");
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(runnable);
+            } else {
+                return;
+            }
             pause(Thread.currentThread(),1000);
 
             swapAni(i,largest);
