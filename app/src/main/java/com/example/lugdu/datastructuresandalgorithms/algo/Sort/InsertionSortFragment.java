@@ -151,12 +151,16 @@ public class InsertionSortFragment extends Fragment {
                                 });
                                 insertionSort(arr);
 
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        editText.setEnabled(true);
-                                    }
-                                });
+                                if(getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            editText.setEnabled(true);
+                                        }
+                                    });
+                                } else {
+                                    return;
+                                }
                             }
                         }
 
@@ -187,7 +191,11 @@ public class InsertionSortFragment extends Fragment {
                     explanationText.setText("Key is at index " + finalJ);
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(runnable);
+            } else {
+                return;
+            }
 
             pause(Thread.currentThread(),2000);
 
@@ -197,16 +205,24 @@ public class InsertionSortFragment extends Fragment {
                     explanationText.setText("Select: " + arr[finalJ]);
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(runnable);
+            } else {
+                return;
+            }
 
             pause(Thread.currentThread(),1000);
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalJ]).select(true);
-                    tArr[finalJ].invalidate();
-                }
-            });
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalJ]).select(true);
+                        tArr[finalJ].invalidate();
+                    }
+                });
+            } else {
+                return;
+            }
 
             int key = array[j];
             int i = j-1;
@@ -230,9 +246,13 @@ public class InsertionSortFragment extends Fragment {
                         explanationText.setText("Check: " + arr[finalI]);
                     }
                 };
-                getActivity().runOnUiThread(runnable);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(runnable);
+                }else {
+                    return;
+                }
 
-                pause(Thread.currentThread(),1000);
+                pause(Thread.currentThread(), 1000);
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -241,7 +261,7 @@ public class InsertionSortFragment extends Fragment {
                     }
                 });
 
-                pause(Thread.currentThread(),1000);
+                pause(Thread.currentThread(), 1000);
 
                 runnable = new Runnable() {
                     @Override
@@ -249,7 +269,9 @@ public class InsertionSortFragment extends Fragment {
                         explanationText.setText("Since '" + finalKey + "' is greater than '" + arr[finalI] + "', swap them.");
                     }
                 };
-                getActivity().runOnUiThread(runnable);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(runnable);
+                }
 
                 pause(Thread.currentThread(),1000);
 
@@ -299,13 +321,17 @@ public class InsertionSortFragment extends Fragment {
             //make the first element in the array equal to the current key
             array[i+1] = key;
         }
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView textView = view.findViewById(R.id.textView4);
-                textView.setText("Sorted Array: [ " + arrayToString(arr,true) + " ]");
-            }
-        });
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView textView = view.findViewById(R.id.textView4);
+                    textView.setText("Sorted Array: [ " + arrayToString(arr, true) + " ]");
+                }
+            });
+        } else {
+            return;
+        }
 
         Runnable runnable = new Runnable() {
             @Override
@@ -313,7 +339,11 @@ public class InsertionSortFragment extends Fragment {
                 explanationText.setText("The array is sorted!");
             }
         };
-        getActivity().runOnUiThread(runnable);
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(runnable);
+        } else {
+            return;
+        }
 
         pause(Thread.currentThread(),1000);
         setSortedAll();
@@ -431,20 +461,24 @@ public class InsertionSortFragment extends Fragment {
 
     public void moveUp(int pos1) {
         final int pos = pos1;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView txt1 = tArr[pos];
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView txt1 = tArr[pos];
 
-                float x1 = (txt1.getY() - (circleSize + 10)) - topMargin * 2;
+                    float x1 = (txt1.getY() - (circleSize + 10)) - topMargin * 2;
 
-                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
+                    ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationY", x1);
 
-                animation.setDuration(1000);
+                    animation.setDuration(1000);
 
-                animation.start();
-            }
-        });
+                    animation.start();
+                }
+            });
+        } else {
+            return;
+        }
     }
 
     public void pause(Thread thread, int time){

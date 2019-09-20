@@ -145,12 +145,16 @@ public class SelectionSortFragment extends Fragment {
 
                                 selectionSort(arr);
 
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        editText.setEnabled(true);
-                                    }
-                                });
+                                if(getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            editText.setEnabled(true);
+                                        }
+                                    });
+                                } else {
+                                    return;
+                                }
                             }
                         }
                     }
@@ -196,7 +200,11 @@ public class SelectionSortFragment extends Fragment {
                     explanationText.setText("Smallest number found!");
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(runnable);
+            } else {
+                return;
+            }
 
             getActivity().runOnUiThread(new Runnable() {
                 @Override
