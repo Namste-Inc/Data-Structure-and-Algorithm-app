@@ -165,6 +165,10 @@ public class BubbleSortFragment extends Fragment {
                                 });
 
                                 bubbleSort();
+                                isRunning = false;
+                                if(getActivity() == null) {
+                                    return;
+                                }
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
@@ -195,13 +199,17 @@ public class BubbleSortFragment extends Fragment {
     public void bubbleSort() {
         isRunning = true;
         pause(Thread.currentThread(), 1000);
+        if(getActivity() != null){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 TextView textView = view.findViewById(R.id.textView4);
                 textView.setText("Sorted Array:");
             }
-        });
+        });}
+        else{
+            return;
+        }
         for (int i = arr.length - 1; i >= 0; i--) {
             final int k = i;
             for (int j = 0; j < i; j++) {
@@ -211,19 +219,26 @@ public class BubbleSortFragment extends Fragment {
 
                 final int blueNumber = arr[j];
                 final int yellowNumber = arr[j+1];
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Runnable runnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                explanationText.setText("Compare " + blueNumber + " and " + yellowNumber);}
-                        };
-                        getActivity().runOnUiThread(runnable);
-                        cText.select(true);
-                        cText2.select(false);
-                    }
-                });
+                if(getActivity() != null) {
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    explanationText.setText("Compare " + blueNumber + " and " + yellowNumber);
+                                }
+                            };
+                            getActivity().runOnUiThread(runnable);
+                            cText.select(true);
+                            cText2.select(false);
+                        }
+                    });
+                }
+                else{
+                    return;
+                }
                 pause(Thread.currentThread(),2000);
                 if (arr[j] > arr[j + 1]) {
                     bigNumber = arr[j];
@@ -234,8 +249,12 @@ public class BubbleSortFragment extends Fragment {
                             explanationText.setText(bigNumber + " is bigger than " + smallNumber + ". Switch their positions.");
                         }
                     };
-
-                    getActivity().runOnUiThread(runnable);
+                    if(getActivity() != null) {
+                        getActivity().runOnUiThread(runnable);
+                    }
+                    else{
+                        return;
+                    }
 
                     swapArrInt(m, m + 1);
                     swapAni(m, m+1);
@@ -249,13 +268,18 @@ public class BubbleSortFragment extends Fragment {
                     pause(Thread.currentThread(),1000);
                 }
                 else{
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((CircleText)tArr[m + 1]).deselect();
-                            ((CircleText)tArr[m]).deselect();
-                        }
-                    });
+                    if(getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((CircleText) tArr[m + 1]).deselect();
+                                ((CircleText) tArr[m]).deselect();
+                            }
+                        });
+                    }
+                    else{
+                        return;
+                    }
                 }
 
 
@@ -269,23 +293,33 @@ public class BubbleSortFragment extends Fragment {
                     explanationText.setText(sortedNumber + " is sorted!");
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(runnable);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[k]).sorted();
+                    }
+                });
+            }
+            else{
+                return;
+            }
+            pause(Thread.currentThread(),2000);
+
+
+        }
+        if(getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ((CircleText)tArr[k]).sorted();
+                    TextView textView = view.findViewById(R.id.textView4);
+                    textView.setText("Sorted Array: [ " + arrayToString(arr, true) + " ]");
                 }
             });
-            pause(Thread.currentThread(),2000);
-
+        }else{
+            return;
         }
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView textView = view.findViewById(R.id.textView4);
-                textView.setText("Sorted Array: [ " + arrayToString(arr,true) + " ]");
-            }
-        });
         isRunning = false;
 
     }

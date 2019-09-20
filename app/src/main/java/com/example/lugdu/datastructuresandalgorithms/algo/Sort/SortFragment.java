@@ -68,7 +68,6 @@ public class SortFragment extends Fragment {
         sort.put(3,new MergeSortFragment());
         sort.put(4,new QuickSortFragment());
         sort.put(5,new SelectionSortFragment());
-
         PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),tabLayout.getTabCount(),sort);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -81,7 +80,6 @@ public class SortFragment extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
