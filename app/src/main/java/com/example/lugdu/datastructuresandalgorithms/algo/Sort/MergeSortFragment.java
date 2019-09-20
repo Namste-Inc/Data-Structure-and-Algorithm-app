@@ -261,6 +261,10 @@ public class MergeSortFragment extends Fragment {
     public boolean entryGood(String entry){
         String[] dashSplits = entry.split("-");
         boolean containsTripleDigits = false;
+        if (dashSplits.length < 2) {
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+            return false;
+        }
         System.out.println(dashSplits[1]);
         for (int i = 0; i <dashSplits.length; i++) {
             if (dashSplits[i].length() > 2) {
