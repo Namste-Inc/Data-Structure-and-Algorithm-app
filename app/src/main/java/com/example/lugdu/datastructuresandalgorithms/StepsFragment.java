@@ -23,12 +23,11 @@ public class StepsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_steps, container,false);
         stringArr = getArguments().getStringArray("string array");
-        String str = "";
 
         int bulletGap = (int) dp(10);
 
         SpannableStringBuilder ssb = new SpannableStringBuilder();
-        for (int i = 0; i < stringArr.length; i++) {
+        for (int i = 1; i < stringArr.length; i++) {
             String line = stringArr[i];
             SpannableString ss = new SpannableString(line);
             ss.setSpan(new BulletSpan(bulletGap), 0, line.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -38,9 +37,6 @@ public class StepsFragment extends Fragment {
             if(i+1<stringArr.length)
                 ssb.append("\n");
 
-        }
-        for(String i : stringArr){
-            str += "\u2022 " + i + "\n";
         }
         TextView textView = view.findViewById(R.id.steps);
         textView.setText(ssb);

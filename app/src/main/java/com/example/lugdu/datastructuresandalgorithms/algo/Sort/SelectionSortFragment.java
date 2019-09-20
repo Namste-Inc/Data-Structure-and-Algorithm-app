@@ -33,6 +33,7 @@ import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.Steps2Fragment;
 import com.example.lugdu.datastructuresandalgorithms.StepsFragment;
 
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public class SelectionSortFragment extends Fragment {
         def.setAnimation(animation);
         w = MainActivity.width;
 
-        //setUpViewPager();
+        setUpViewPager();
 
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -379,13 +380,7 @@ public class SelectionSortFragment extends Fragment {
 
     public void setUpViewPager(){
         LinearLayout dotsView = view.findViewById(R.id.sliderDots);
-        HashMap<Integer, Fragment> steps = new HashMap<>();
-        StepsFragment stepsFragment = new StepsFragment();
-        steps.put(0,stepsFragment);
-        StepsFragment stepsFragment1 = new StepsFragment();
-        steps.put(1,stepsFragment1);
-        StepsFragment stepsFragment2 = new StepsFragment();
-        steps.put(2,stepsFragment2);
+        HashMap<Integer, Fragment> steps = getViewFragments();
         viewPager = view.findViewById(R.id.viewpager);
         dots = new ImageView[steps.size()];
         for(int i = 0; i < dots.length; i++){
@@ -401,7 +396,7 @@ public class SelectionSortFragment extends Fragment {
         }
         dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),steps.size(),steps);
+        PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager(),steps.size(),steps);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -423,5 +418,33 @@ public class SelectionSortFragment extends Fragment {
 
             }
         });
+    }
+
+    public HashMap<Integer, Fragment> getViewFragments(){
+        HashMap<Integer, Fragment> steps = new HashMap<>();
+        StepsFragment stepsFragment = new StepsFragment();
+        String[] strArr = getResources().getStringArray(R.array.selection);
+        Bundle bundle = new Bundle();
+        System.out.println(strArr.toString());
+        bundle.putStringArray("string array", strArr);
+        stepsFragment.setArguments(bundle);
+
+        Steps2Fragment steps2Fragment1 = new Steps2Fragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("step", strArr[1]);
+        bundle1.putInt("image", R.drawable.selection_1);
+        steps2Fragment1.setArguments(bundle1);
+
+        Steps2Fragment steps2Fragment2 = new Steps2Fragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("step", strArr[2]);
+        bundle2.putInt("image", R.drawable.selection_2);
+        steps2Fragment2.setArguments(bundle2);
+
+        steps.put(0, stepsFragment);
+        steps.put(1, steps2Fragment1);
+        steps.put(2, steps2Fragment2);
+
+        return steps;
     }
 }

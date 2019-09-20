@@ -406,12 +406,6 @@ public class BubbleSortFragment extends Fragment {
     public void setUpViewPager(){
         LinearLayout dotsView = view.findViewById(R.id.sliderDots);
         HashMap<Integer, Fragment> steps = getViewFragments();
-//        StepsFragment stepsFragment = new StepsFragment();
-//        steps.put(0,stepsFragment);
-//        Steps2Fragment stepsFragment1 = new Steps2Fragment();
-//        steps.put(1,stepsFragment1);
-//        StepsFragment stepsFragment2 = new StepsFragment();
-//        steps.put(2,stepsFragment2);
         viewPager = view.findViewById(R.id.viewpager);
         dots = new ImageView[steps.size()];
         for(int i = 0; i < dots.length; i++){
@@ -427,7 +421,7 @@ public class BubbleSortFragment extends Fragment {
         }
         dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),steps.size(),steps);
+        PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager(),steps.size(),steps);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -462,13 +456,13 @@ public class BubbleSortFragment extends Fragment {
 
         Steps2Fragment steps2Fragment1 = new Steps2Fragment();
         Bundle bundle1 = new Bundle();
-        bundle1.putString("step", strArr[0]);
+        bundle1.putString("step", strArr[1]);
         bundle1.putInt("image", R.drawable.bubble_1);
         steps2Fragment1.setArguments(bundle1);
 
         Steps2Fragment steps2Fragment2 = new Steps2Fragment();
         Bundle bundle2 = new Bundle();
-        bundle2.putString("step", strArr[1]);
+        bundle2.putString("step", strArr[2]);
         bundle2.putInt("image", R.drawable.bubble_2);
         steps2Fragment2.setArguments(bundle2);
 
