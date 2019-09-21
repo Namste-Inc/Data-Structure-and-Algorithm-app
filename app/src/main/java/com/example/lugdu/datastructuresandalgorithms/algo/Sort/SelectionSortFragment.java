@@ -48,6 +48,7 @@ public class SelectionSortFragment extends Fragment {
     final int rightMargin = 0;
     final int topMargin = 0;
     final int bottomMargin = 25;
+    boolean hasStopped;
     int w;
     boolean isRunning;
     public static int color = Color.parseColor("#FF0000");
@@ -142,7 +143,9 @@ public class SelectionSortFragment extends Fragment {
                                 });
 
 
+                                isRunning = true;
                                 selectionSort(arr);
+                                isRunning = false;
 
                                 if(getActivity() != null) {
                                     getActivity().runOnUiThread(new Runnable() {
@@ -177,15 +180,19 @@ public class SelectionSortFragment extends Fragment {
                     explanationText.setText("Find the smallest number.");
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if (getActivity() != null && !hasStopped) {
+                getActivity().runOnUiThread(runnable);
+            } else {
+                return;
+            }
 
-            pause(Thread.currentThread(),2000);
+            pause(Thread.currentThread(), 2000);
 
             final int finalI = i;
             // Find the minimum element in unsorted array
             min_idx = i;
 
-            for (int j = i+1; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 final int finalJ = j;
                 if (arr[j] < arr[min_idx]) {
                     min_idx = j;
@@ -199,18 +206,19 @@ public class SelectionSortFragment extends Fragment {
                     explanationText.setText("Smallest number found!");
                 }
             };
-            if(getActivity() != null) {
+            if (getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(runnable);
+
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[final_min]).select(true);
+                    }
+                });
             } else {
                 return;
             }
-
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[final_min]).select(true);
-                }
-            });
             pause(Thread.currentThread(), 2000);
 
             // Swap the found minimum element with the first
@@ -223,13 +231,17 @@ public class SelectionSortFragment extends Fragment {
                     explanationText.setText("Swap '" + smallestNumber + "' with the first unsorted element.");
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if (getActivity() != null && !hasStopped) {
+                getActivity().runOnUiThread(runnable);
+            }else{
+                return;
+            }
 
 
             swapArrInt(min_idx, i);
             swapAni(min_idx, i);
 
-            pause(Thread.currentThread(),1000);
+            pause(Thread.currentThread(), 1000);
 
             runnable = new Runnable() {
                 @Override
@@ -237,14 +249,18 @@ public class SelectionSortFragment extends Fragment {
                     explanationText.setText("'" + smallestNumber + "' is sorted!");
                 }
             };
-            getActivity().runOnUiThread(runnable);
+            if (getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(runnable);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalI]).sorted();
-                }
-            });
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalI]).sorted();
+                    }
+                });
+            }else {
+                return;
+            }
             pause(Thread.currentThread(), 2000);
         }
         final int last = n - 1;
@@ -255,14 +271,18 @@ public class SelectionSortFragment extends Fragment {
                 explanationText.setText("Array is sorted!");
             }
         };
-        getActivity().runOnUiThread(runnable);
+        if(getActivity() != null && !hasStopped) {
+            getActivity().runOnUiThread(runnable);
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((CircleText) tArr[last]).sorted();
-            }
-        });
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((CircleText) tArr[last]).sorted();
+                }
+            });
+        }else{
+            return;
+        }
         pause(Thread.currentThread(),1000);
 
     }

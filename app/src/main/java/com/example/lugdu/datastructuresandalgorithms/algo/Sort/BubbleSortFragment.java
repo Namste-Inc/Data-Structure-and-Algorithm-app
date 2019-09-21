@@ -65,6 +65,7 @@ public class BubbleSortFragment extends Fragment {
     final int bottomMargin = 25;
     int w;
     private ImageView[] dots;
+    boolean hasStopped = false;
     ViewPager viewPager;
     boolean isRunning;
     public static int color = Color.parseColor("#FF0000");
@@ -195,8 +196,22 @@ public class BubbleSortFragment extends Fragment {
     }
     int smallNumber = 0;
     int bigNumber = 0;
+    public void checkStatus(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(getActivity() != null){
+
+                }
+                hasStopped = true;
+            }
+        });
+        thread.start();
+    }
     public void bubbleSort() {
         isRunning = true;
+        hasStopped = false;
+        checkStatus();
         pause(Thread.currentThread(), 1000);
         if(getActivity() != null){
         getActivity().runOnUiThread(new Runnable() {

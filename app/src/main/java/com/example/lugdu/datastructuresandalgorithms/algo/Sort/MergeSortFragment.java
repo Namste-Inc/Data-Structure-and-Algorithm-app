@@ -146,7 +146,7 @@ public class MergeSortFragment extends Fragment {
                             pause(Thread.currentThread(), 2000);
                             position();
 
-
+                            isRunning = true;
                             mergeSort(arr, arr.length, 0);
                             isRunning = false;
                             if (getActivity() != null) {
