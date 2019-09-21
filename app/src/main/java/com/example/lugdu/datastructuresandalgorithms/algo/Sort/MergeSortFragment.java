@@ -80,7 +80,6 @@ public class MergeSortFragment extends Fragment {
 
         TextView def = view.findViewById(R.id.definitionText);
         GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setCornerRadius(50);
         int[] colors = {Color.GRAY,color};
         gradientDrawable.setColors(colors);
         def.setBackground(gradientDrawable);

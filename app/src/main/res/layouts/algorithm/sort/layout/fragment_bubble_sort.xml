@@ -20,6 +20,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center"
+        android:elevation="8dp"
         android:text="Definition: Sorts an array by swapping the adjacent elements if they are in the wrong order"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="Original Array"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +53,7 @@
         android:elevation="8dp"
         android:enabled="true"
         android:gravity="left|center"
+        android:layout_marginTop="8dp"
         android:paddingLeft="5dp"
         android:text=" Sorted Array:"
         android:textSize="18dp"
@@ -82,7 +84,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="125dp"
         android:layout_marginRight="125dp"
         android:background="@color/cardview_light_background"
@@ -107,13 +109,13 @@
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="bottom"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/explanationText"></RelativeLayout>
 
@@ -156,8 +158,6 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
-        android:background="@drawable/my_rect"
-        android:elevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginStart="8dp"
@@ -166,13 +166,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="3dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/my_rect"
+        android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
 
-        app:layout_constraintVertical_bias="0.14"></android.support.v4.view.ViewPager>
+        app:layout_constraintVertical_bias="0.035"></android.support.v4.view.ViewPager>
 
     <LinearLayout
         android:id="@+id/sliderDots"

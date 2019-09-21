@@ -68,7 +68,6 @@ public class InsertionSortFragment extends Fragment {
 
         TextView def = view.findViewById(R.id.textView7);
         GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setCornerRadius(50);
         int[] colors = {Color.GRAY,color};
         gradientDrawable.setColors(colors);
         def.setBackground(gradientDrawable);
