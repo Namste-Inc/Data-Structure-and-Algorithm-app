@@ -149,6 +149,7 @@ public class InsertionSortFragment extends Fragment {
                                     }
                                 });
                                 insertionSort(arr);
+                                isRunning = false;
 
                                 if(getActivity() != null) {
                                     getActivity().runOnUiThread(new Runnable() {
@@ -253,12 +254,16 @@ public class InsertionSortFragment extends Fragment {
 
                 pause(Thread.currentThread(), 1000);
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((CircleText) tArr[finalI]).select(false);
-                    }
-                });
+                if(getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((CircleText) tArr[finalI]).select(false);
+                        }
+                    });
+                }else{
+                    return;
+                }
 
                 pause(Thread.currentThread(), 1000);
 
@@ -270,6 +275,8 @@ public class InsertionSortFragment extends Fragment {
                 };
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(runnable);
+                }else{
+                    return;
                 }
 
                 pause(Thread.currentThread(),1000);
@@ -281,12 +288,17 @@ public class InsertionSortFragment extends Fragment {
                 updatedKey[0] = i;
                 pause(Thread.currentThread(),2000);
                 final int finalI1 = i;
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((CircleText) tArr[finalI1 + 1]).deselect();
-                    }
-                });
+                if(getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((CircleText) tArr[finalI1 + 1]).deselect();
+                        }
+                    });
+                }
+                else{
+                    return;
+                }
 
                 i--;
             }
@@ -300,21 +312,25 @@ public class InsertionSortFragment extends Fragment {
                 moveUp(finalJ);
             }
             pause(Thread.currentThread(), 2000);
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[updatedKey[0]]).deselect();
-                    tArr[updatedKey[0]].invalidate();
-                }
-            });
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[updatedKey[0]]).deselect();
+                        tArr[updatedKey[0]].invalidate();
+                    }
+                });
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalJ]).deselect();
-                    tArr[finalJ].invalidate();
-                }
-            });
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalJ]).deselect();
+                        tArr[finalJ].invalidate();
+                    }
+                });
+            }else{
+                return;
+            }
 
             pause(Thread.currentThread(),1000);
             //make the first element in the array equal to the current key
@@ -348,6 +364,7 @@ public class InsertionSortFragment extends Fragment {
         setSortedAll();
         isRunning = false;
     }
+
     public void swapArrInt(int pos1, int pos2){
         int pos = arr[pos1];
         arr[pos1] = arr[pos2];
@@ -421,6 +438,7 @@ public class InsertionSortFragment extends Fragment {
 
     public void moveDownAni(int pos1) {
         final int pos = pos1;
+        if(getActivity() != null){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -433,12 +451,16 @@ public class InsertionSortFragment extends Fragment {
 
                 animation.start();
             }
-        });
+        });}
+        else{
+            return;
+        }
     }
 
     public void swapHorizontally(int firstPos1, int secondPos1) {
         final int firstPos = firstPos1;
         final int secondPos = secondPos1;
+        if(getActivity() != null){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -459,7 +481,10 @@ public class InsertionSortFragment extends Fragment {
                 tArr[pos1] = tArr[pos2];
                 tArr[pos2] = pos;
             }
-        });
+        });}
+        else{
+            return;
+        }
     }
 
     public void moveUp(int pos1) {
@@ -496,12 +521,17 @@ public class InsertionSortFragment extends Fragment {
 
     public void setSortedAll(){
         for(final TextView T: tArr){
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) T).sorted();
-                }
-            });
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) T).sorted();
+                    }
+                });
+            }
+            else{
+                return;
+            }
         }
     }
 
@@ -560,6 +590,7 @@ public class InsertionSortFragment extends Fragment {
             }
         });
     }
+
     public HashMap<Integer, Fragment> getViewFragments(){
         HashMap<Integer, Fragment> steps = new HashMap<>();
         StepsFragment stepsFragment = new StepsFragment();

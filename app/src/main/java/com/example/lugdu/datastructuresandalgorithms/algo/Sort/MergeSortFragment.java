@@ -64,6 +64,7 @@ public class MergeSortFragment extends Fragment {
     int treeHeight;
 
     boolean isSorted = false;
+    boolean isRunning = false;
 
     private ImageView[] dots;
     ViewPager viewPager;
@@ -133,41 +134,52 @@ public class MergeSortFragment extends Fragment {
                 final Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        pause(Thread.currentThread(), 500);
-                        Runnable runnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                explanationText.setText("Split the array.");
+                        if(!isRunning) {
+                            pause(Thread.currentThread(), 500);
+                            Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    explanationText.setText("Split the array.");
+                                }
+                            };
+                            getActivity().runOnUiThread(runnable);
+                            pause(Thread.currentThread(), 2000);
+                            position();
+
+
+                            mergeSort(arr, arr.length, 0);
+                            isRunning = false;
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        TextView resultText = view.findViewById(R.id.resultText);
+                                        resultText.setText("Sorted array: " + arrayToString(arr, true));
+                                    }
+                                });
+                            } else {
+                                return;
                             }
-                        };
-                        getActivity().runOnUiThread(runnable);
-                        pause(Thread.currentThread(),2000);
-                        position();
+                            isSorted = true;
 
+                            runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    explanationText.setText("Array has been sorted!");
+                                }
+                            };
+                            getActivity().runOnUiThread(runnable);
 
-                        mergeSort(arr,arr.length,0);
-                        if(getActivity() != null) {
+                            position();
+                        }
+                        else{
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    TextView resultText = view.findViewById(R.id.resultText);
-                                    resultText.setText("Sorted array: " + arrayToString(arr, true));
+                                    Toast.makeText(getContext(),"Animation running, please wait", Toast.LENGTH_LONG).show();
                                 }
                             });
-                        } else {
-                            return;
                         }
-                        isSorted = true;
-
-                        runnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                explanationText.setText("Array has been sorted!");
-                            }
-                        };
-                        getActivity().runOnUiThread(runnable);
-
-                        position();
                     }
                 };
                 Thread thread = new Thread(runnable);
@@ -318,7 +330,12 @@ public class MergeSortFragment extends Fragment {
 
     public void mergeAni(final int layer) {
         System.out.println(layer + " layer");
-        final ArrayList<ArrayList<Square>> temp = squares.get(layer);
+        final ArrayList<ArrayList<Square>> temp;
+        if(getActivity() != null){
+            temp = squares.get(layer);
+        }else{
+            return;
+        }
         final TextView[] tempTArr = new TextView[tArr.length];
         int[] tempOfTemp = new int[tempArr.length];
         int incrementer = (layer == treeHeight - 2)?1:2;
@@ -418,13 +435,17 @@ public class MergeSortFragment extends Fragment {
                             final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[first], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                             objectAnimatorX.setDuration(1000);
                             objectAnimatorY.setDuration(1000);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    objectAnimatorX.start();
-                                    objectAnimatorY.start();
-                                }
-                            });
+                            if(getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        objectAnimatorX.start();
+                                        objectAnimatorY.start();
+                                    }
+                                });
+                            }else{
+                                return;
+                            }
                             first ++;
 
                         }
@@ -435,25 +456,34 @@ public class MergeSortFragment extends Fragment {
                             final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[second], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                             objectAnimatorX.setDuration(1000);
                             objectAnimatorY.setDuration(1000);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    objectAnimatorX.start();
-                                    objectAnimatorY.start();
-                                }
-                            });
+                            if(getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        objectAnimatorX.start();
+                                        objectAnimatorY.start();
+                                    }
+                                });
+                            }
+                            else{
+                                return;
+                            }
                             second ++;
                         }
                     circleIndex++;
                         final int finalIndex = circleIndex -1;
                     if(layer == 0){
                         pause(Thread.currentThread(), 1000);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((CircleText) tempTArr[finalIndex]).sorted();
-                            }
-                        });
+                        if(getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((CircleText) tempTArr[finalIndex]).sorted();
+                                }
+                            });
+                        }else{
+                            return;
+                        }
                     }
                 }
             }
@@ -467,17 +497,22 @@ public class MergeSortFragment extends Fragment {
             final int finalI = i;
             for(int j = 0; j < temp.get(i).size(); j++){
                 final int finalJ = j;
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                Animation fadeOut = new AlphaAnimation(1, 0);
-                fadeOut.setInterpolator(new DecelerateInterpolator());
-                fadeOut.setDuration(1000);
-                fadeOut.setFillAfter(true);
-                        temp.get(finalI).get(finalJ).clearAnimation();
-                        temp.get(finalI).get(finalJ).startAnimation(fadeOut);
-                    }
-                });
+                if(getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Animation fadeOut = new AlphaAnimation(1, 0);
+                            fadeOut.setInterpolator(new DecelerateInterpolator());
+                            fadeOut.setDuration(1000);
+                            fadeOut.setFillAfter(true);
+                            temp.get(finalI).get(finalJ).clearAnimation();
+                            temp.get(finalI).get(finalJ).startAnimation(fadeOut);
+                        }
+                    });
+                }
+                else{
+                    return;
+                }
                 circleIndex++;
             }
         }

@@ -120,50 +120,61 @@ public class QuickSortFragment extends Fragment {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        if(arr == null || arr.length == 0){
+                        if(!isRunning) {
+                            if (arr == null || arr.length == 0) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getContext(), "Must enter an array", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            } else {
+                                if (isRunning) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getContext(), "Animation running, please wait", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                } else {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            editText.setEnabled(false);
+                                        }
+                                    });
+                                    quickSort(arr, 0, arr.length - 1);
+                                    isRunning = false;
+
+                                    Runnable runnable = new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            explanationText.setText("Array is sorted!");
+                                        }
+                                    };
+                                    if(getActivity() != null) {
+                                        getActivity().runOnUiThread(runnable);
+                                    }else{
+                                        return;
+                                    }
+
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            editText.setEnabled(true);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        else{
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getContext(),"Must enter an array", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(),"Animation running, please wait", Toast.LENGTH_LONG).show();
                                 }
                             });
-                        }
-                        else {
-                            if(isRunning){
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(getContext(),"Animation running, please wait", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                            }
-                            else{
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        editText.setEnabled(false);
-                                    }
-                                });
-                                quickSort(arr, 0, arr.length - 1);
-
-                                Runnable runnable = new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        explanationText.setText("Array is sorted!");
-                                    }
-                                };
-                                getActivity().runOnUiThread(runnable);
-
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        editText.setEnabled(true);
-                                    }
-                                });
-                            }
-                        }
-
-                    }
+                        }}
                 };
                 Thread thread = new Thread(runnable);
                 thread.start();
@@ -235,20 +246,27 @@ public class QuickSortFragment extends Fragment {
     }
 
     public void quickSort(int arr[], int begin, int end) {
+        isRunning = true;
         final int finalEnd = end;
         if (begin < end) {
             int partitionIndex = partition(arr, begin, end);
-
+            if(partitionIndex < 0){
+                return;
+            }
             quickSort(arr, begin, partitionIndex-1);
             quickSort(arr, partitionIndex+1, end);
         }
         else if(begin == end){
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalEnd]).sorted();
-                }
-            });
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalEnd]).sorted();
+                    }
+                });
+            }else{
+                return;
+            }
         }
     }
 
@@ -261,17 +279,27 @@ public class QuickSortFragment extends Fragment {
                 explanationText.setText("Select the rightmost unsorted element '" + pivotFinal + "' as the pivot.");
             }
         };
-        getActivity().runOnUiThread(runnable);
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(runnable);
+        }
+        else{
+            return -1;
+        }
         pause(Thread.currentThread(),3000);
         final int finalEnd = end;
         int pivot = arr[end];
         int i = (begin-1);
+        if(getActivity() != null){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ((CircleText) tArr[finalEnd]).select(true);
             }
         });
+        }
+        else{
+            return -1;
+        }
 
         runnable = new Runnable() {
             @Override
@@ -279,7 +307,11 @@ public class QuickSortFragment extends Fragment {
                 explanationText.setText("All numbers that are less than " + pivotFinal + " go to its left, and all numbers that are greater go to its right.");
             }
         };
-        getActivity().runOnUiThread(runnable);
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(runnable);
+        }else{
+            return - 1;
+        }
         pause(Thread.currentThread(),2000);
 
         for (int j = begin; j < end; j++) {
@@ -295,36 +327,45 @@ public class QuickSortFragment extends Fragment {
         final int finalI = i + 1;
         swapArrInt(arr, end, i + 1);
         swapAni(end , i + 1);
+        if(getActivity() != null){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ((CircleText) tArr[finalI]).sorted();
             }
         });
+        }else{
+            return -1;
+        }
         return i+1;
     }
 
     public void swapAni(int firstPos, int secondPos){
         final int pos1 = firstPos;
         final int pos2 = secondPos;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView txt1 = tArr[pos1];
-                TextView txt2 = tArr[pos2];
-                float x1 = txt1.getX() - leftMargin;
-                float x2 = txt2.getX() - leftMargin;
-                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
-                animation.setDuration(1000);
-                ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
-                animation2.setDuration(1000);
-                animation.start();
-                animation2.start();
-                TextView pos = tArr[pos1];
-                tArr[pos1] = tArr[pos2];
-                tArr[pos2] = pos;
-            }
-        });
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView txt1 = tArr[pos1];
+                    TextView txt2 = tArr[pos2];
+                    float x1 = txt1.getX() - leftMargin;
+                    float x2 = txt2.getX() - leftMargin;
+                    ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
+                    animation.setDuration(1000);
+                    ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
+                    animation2.setDuration(1000);
+                    animation.start();
+                    animation2.start();
+                    TextView pos = tArr[pos1];
+                    tArr[pos1] = tArr[pos2];
+                    tArr[pos2] = pos;
+                }
+            });
+        }
+        else{
+            return;
+        }
     }
 
     public void swapArrInt(int[] arr, int pos1, int pos2){
