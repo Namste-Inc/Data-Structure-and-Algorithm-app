@@ -164,6 +164,7 @@ public class HeapSortFragment extends Fragment {
                                 });
 
                                 heapSort(arr);
+                                isRunning = false;
 
                                 if(getActivity() != null) {
                                     getActivity().runOnUiThread(new Runnable() {
@@ -326,13 +327,17 @@ public class HeapSortFragment extends Fragment {
 
     public void heapSort(final int[] arr) {
         isRunning=true;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView textView = view.findViewById(R.id.textView4);
-                textView.setText("Sorted Array:");
-            }
-        });
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView textView = view.findViewById(R.id.textView4);
+                    textView.setText("Sorted Array:");
+                }
+            });
+        }else{
+            return;
+        }
         int n = arr.length;
 
         // Build heap (rearrange array)
@@ -342,7 +347,11 @@ public class HeapSortFragment extends Fragment {
                 explanationText.setText("Build heap.");
             }
         };
-        getActivity().runOnUiThread(runnable);
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(runnable);
+        }else{
+            return;
+        }
         for (int i = n / 2 - 1; i >= 0; i--) {
 
             pause(Thread.currentThread(),1000);
@@ -369,42 +378,45 @@ public class HeapSortFragment extends Fragment {
 
             if(getActivity() != null) {
                 getActivity().runOnUiThread(runnable);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[0]).select(true);
+                        tArr[finalI].invalidate();
+                    }
+                });
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArrLinear[0]).select(true);
+                        tArr[finalI].invalidate();
+                    }
+                });
             } else {
                 return;
             }
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[0]).select(true);
-                    tArr[finalI].invalidate();
-                }
-            });
-
-
-
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArrLinear[0]).select(true);
-                    tArr[finalI].invalidate();
-                }
-            });
 
 
 
 
             pause(Thread.currentThread(),1000);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalI]).select(true);
-                    tArr[finalI].invalidate();
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalI]).select(true);
+                        tArr[finalI].invalidate();
 
-                    ((CircleText) tArrLinear[finalI]).select(true);
-                    tArr[finalI].invalidate();
-                }
-            });
+                        ((CircleText) tArrLinear[finalI]).select(true);
+                        tArr[finalI].invalidate();
+                    }
+                });
+            }else{
+                return;
+            }
 
 
 
@@ -417,16 +429,18 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[0]).deselect();
-                    tArr[finalI].invalidate();
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[0]).deselect();
+                        tArr[finalI].invalidate();
 
-                    ((CircleText) tArrLinear[0]).deselect();
-                    tArr[finalI].invalidate();
-                }
-            });
+                        ((CircleText) tArrLinear[0]).deselect();
+                        tArr[finalI].invalidate();
+                    }
+                });
+
 
 
 
@@ -449,6 +463,10 @@ public class HeapSortFragment extends Fragment {
                     tArr[finalI].invalidate();
                 }
             });
+            }
+            else{
+                return;
+            }
 
 
 
@@ -464,15 +482,19 @@ public class HeapSortFragment extends Fragment {
                 explanationText.setText("Array has been sorted!");
             }
         };
-        getActivity().runOnUiThread(runnable);
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(runnable);
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView textView = view.findViewById(R.id.textView4);
-                textView.setText("Sorted Array: [ " + arrayToString(arr,true) + " ]");
-            }
-        });
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView textView = view.findViewById(R.id.textView4);
+                    textView.setText("Sorted Array: [ " + arrayToString(arr, true) + " ]");
+                }
+            });
+        }else {
+            return;
+        }
         isRunning = false;
     }
 
@@ -517,9 +539,7 @@ public class HeapSortFragment extends Fragment {
             };
             if(getActivity() != null) {
                 getActivity().runOnUiThread(runnable);
-            } else {
-                return;
-            }
+
 
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -531,6 +551,9 @@ public class HeapSortFragment extends Fragment {
                     tArr[finalI].invalidate();
                 }
             });
+            } else {
+                return;
+            }
             pause(Thread.currentThread(),1000);
 
             if(getActivity() != null) {
@@ -570,23 +593,26 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalI]).deselect();
-                    tArr[finalI].invalidate();
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalI]).deselect();
+                        tArr[finalI].invalidate();
 
-                    ((CircleText) tArrLinear[finalI]).deselect();
-                    tArr[finalI].invalidate();
+                        ((CircleText) tArrLinear[finalI]).deselect();
+                        tArr[finalI].invalidate();
 
-                    ((CircleText) tArr[finalLargest]).deselect();
-                    tArr[finalLargest].invalidate();
+                        ((CircleText) tArr[finalLargest]).deselect();
+                        tArr[finalLargest].invalidate();
 
-                    ((CircleText) tArrLinear[finalLargest]).deselect();
-                    tArr[finalLargest].invalidate();
-                }
-            });
-
+                        ((CircleText) tArrLinear[finalLargest]).deselect();
+                        tArr[finalLargest].invalidate();
+                    }
+                });
+            }else{
+                return;
+            }
             pause(Thread.currentThread(),1000);
 
             // Recursively heapify the affected sub-tree
@@ -597,65 +623,70 @@ public class HeapSortFragment extends Fragment {
     public void swapAni(int firstPos, int secondPos){
         final int pos1 = firstPos;
         final int pos2 = secondPos;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView txt1 = tArr[pos1];
-                TextView txt1Linear = tArrLinear[pos1];
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView txt1 = tArr[pos1];
+                    TextView txt1Linear = tArrLinear[pos1];
 
-                TextView txt2 = tArr[pos2];
-                TextView txt2Linear = tArrLinear[pos2];
+                    TextView txt2 = tArr[pos2];
+                    TextView txt2Linear = tArrLinear[pos2];
 
-                float x1 = txt1.getX() - leftMargin;
-                float y1 = txt1.getY() - topMargin;
-                float x2 = txt2.getX() - leftMargin;
-                float y2 = txt2.getY() - topMargin;
+                    float x1 = txt1.getX() - leftMargin;
+                    float y1 = txt1.getY() - topMargin;
+                    float x2 = txt2.getX() - leftMargin;
+                    float y2 = txt2.getY() - topMargin;
 
-                float x1Linear = txt1Linear.getX() - leftMargin;
-                float y1Linear = txt1Linear.getY() - topMargin;
-                float x2Linear = txt2Linear.getX() - leftMargin;
-                float y2Linear = txt2Linear.getY() - topMargin;
+                    float x1Linear = txt1Linear.getX() - leftMargin;
+                    float y1Linear = txt1Linear.getY() - topMargin;
+                    float x2Linear = txt2Linear.getX() - leftMargin;
+                    float y2Linear = txt2Linear.getY() - topMargin;
 
-                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
-                ObjectAnimator animationY1 = ObjectAnimator.ofFloat(txt1, "translationY", y2);
-                animation.setDuration(1000);
-                animationY1.setDuration(1000);
+                    ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
+                    ObjectAnimator animationY1 = ObjectAnimator.ofFloat(txt1, "translationY", y2);
+                    animation.setDuration(1000);
+                    animationY1.setDuration(1000);
 
-                ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
-                ObjectAnimator animationY2 = ObjectAnimator.ofFloat(txt2, "translationY", y1);
-                animation2.setDuration(1000);
-                animationY2.setDuration(1000);
+                    ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
+                    ObjectAnimator animationY2 = ObjectAnimator.ofFloat(txt2, "translationY", y1);
+                    animation2.setDuration(1000);
+                    animationY2.setDuration(1000);
 
-                ObjectAnimator animationX1Linear = ObjectAnimator.ofFloat(txt1Linear, "translationX", x2Linear);
-                ObjectAnimator animationY1Linear = ObjectAnimator.ofFloat(txt1Linear, "translationY", y2Linear);
-                animationX1Linear.setDuration(1000);
-                animationY1Linear.setDuration(1000);
+                    ObjectAnimator animationX1Linear = ObjectAnimator.ofFloat(txt1Linear, "translationX", x2Linear);
+                    ObjectAnimator animationY1Linear = ObjectAnimator.ofFloat(txt1Linear, "translationY", y2Linear);
+                    animationX1Linear.setDuration(1000);
+                    animationY1Linear.setDuration(1000);
 
-                ObjectAnimator animationX2Linear = ObjectAnimator.ofFloat(txt2Linear, "translationX", x1Linear);
-                ObjectAnimator animationY2Linear = ObjectAnimator.ofFloat(txt2Linear, "translationY", y1Linear);
-                animationX2Linear.setDuration(1000);
-                animationY2Linear.setDuration(1000);
+                    ObjectAnimator animationX2Linear = ObjectAnimator.ofFloat(txt2Linear, "translationX", x1Linear);
+                    ObjectAnimator animationY2Linear = ObjectAnimator.ofFloat(txt2Linear, "translationY", y1Linear);
+                    animationX2Linear.setDuration(1000);
+                    animationY2Linear.setDuration(1000);
 
-                animation.start();
-                animation2.start();
-                animationY1.start();
-                animationY2.start();
+                    animation.start();
+                    animation2.start();
+                    animationY1.start();
+                    animationY2.start();
 
-                animationX1Linear.start();
-                animationY1Linear.start();
-                animationX2Linear.start();
-                animationY2Linear.start();
+                    animationX1Linear.start();
+                    animationY1Linear.start();
+                    animationX2Linear.start();
+                    animationY2Linear.start();
 
-                TextView pos = tArr[pos1];
-                tArr[pos1] = tArr[pos2];
-                tArr[pos2] = pos;
+                    TextView pos = tArr[pos1];
+                    tArr[pos1] = tArr[pos2];
+                    tArr[pos2] = pos;
 
-                TextView posLinear = tArrLinear[pos1];
-                tArrLinear[pos1] = tArrLinear[pos2];
-                tArrLinear[pos2] = posLinear;
+                    TextView posLinear = tArrLinear[pos1];
+                    tArrLinear[pos1] = tArrLinear[pos2];
+                    tArrLinear[pos2] = posLinear;
 
-            }
-        });
+                }
+            });
+        }
+        else{
+            return;
+        }
         pause(Thread.currentThread(),1000);
     }
 
