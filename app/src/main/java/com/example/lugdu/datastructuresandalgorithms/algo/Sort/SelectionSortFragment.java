@@ -144,6 +144,8 @@ public class SelectionSortFragment extends Fragment {
 
 
                                 isRunning = true;
+                                hasStopped = false;
+                                checkStatus();
                                 selectionSort(arr);
                                 isRunning = false;
 
@@ -166,6 +168,19 @@ public class SelectionSortFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void checkStatus(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(getActivity() != null){
+
+                }
+                hasStopped = true;
+            }
+        });
+        thread.start();
     }
 
     public void selectionSort(int arr[]) {
@@ -337,26 +352,31 @@ public class SelectionSortFragment extends Fragment {
         final int pos1 = firstPos;
         final int pos2 = secondPos;
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView txt1 = tArr[pos1];
-                TextView txt2 = tArr[pos2];
-                float x1 = txt1.getX() - leftMargin;
-                float x2 = txt2.getX() - leftMargin;
-                ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
-                animation.setDuration(1000);
-                ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
-                animation2.setDuration(1000);
+        if(getActivity() != null && !hasStopped) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView txt1 = tArr[pos1];
+                    TextView txt2 = tArr[pos2];
+                    float x1 = txt1.getX() - leftMargin;
+                    float x2 = txt2.getX() - leftMargin;
+                    ObjectAnimator animation = ObjectAnimator.ofFloat(txt1, "translationX", x2);
+                    animation.setDuration(1000);
+                    ObjectAnimator animation2 = ObjectAnimator.ofFloat(txt2, "translationX", x1);
+                    animation2.setDuration(1000);
 
-                animation.start();
-                animation2.start();
+                    animation.start();
+                    animation2.start();
 
-                TextView pos = tArr[pos1];
-                tArr[pos1] = tArr[pos2];
-                tArr[pos2] = pos;
-            }
-        });
+                    TextView pos = tArr[pos1];
+                    tArr[pos1] = tArr[pos2];
+                    tArr[pos2] = pos;
+                }
+            });
+        }
+        else{
+            return;
+        }
     }
 
     public void initArray(){

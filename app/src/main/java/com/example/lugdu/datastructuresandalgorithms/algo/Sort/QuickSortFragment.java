@@ -51,7 +51,7 @@ public class QuickSortFragment extends Fragment {
     int rightMargin = 0;
     int topMargin = 25;
     int bottomMargin = 0;
-
+    boolean hasStopped = false;
     private ImageView[] dots;
     ViewPager viewPager;
     public static int color = Color.parseColor("#FF0000");
@@ -143,6 +143,9 @@ public class QuickSortFragment extends Fragment {
                                             editText.setEnabled(false);
                                         }
                                     });
+                                    isRunning = true;
+                                    hasStopped = false;
+                                    checkStatus();
                                     quickSort(arr, 0, arr.length - 1);
                                     isRunning = false;
 
@@ -181,6 +184,19 @@ public class QuickSortFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void checkStatus(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(getActivity() != null){
+
+                }
+                hasStopped = true;
+            }
+        });
+        thread.start();
     }
 
     public boolean entryGood(String entry){
@@ -257,7 +273,7 @@ public class QuickSortFragment extends Fragment {
             quickSort(arr, partitionIndex+1, end);
         }
         else if(begin == end){
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -279,7 +295,7 @@ public class QuickSortFragment extends Fragment {
                 explanationText.setText("Select the rightmost unsorted element '" + pivotFinal + "' as the pivot.");
             }
         };
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(runnable);
         }
         else{
@@ -289,7 +305,7 @@ public class QuickSortFragment extends Fragment {
         final int finalEnd = end;
         int pivot = arr[end];
         int i = (begin-1);
-        if(getActivity() != null){
+        if(getActivity() != null && !hasStopped){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -307,7 +323,7 @@ public class QuickSortFragment extends Fragment {
                 explanationText.setText("All numbers that are less than " + pivotFinal + " go to its left, and all numbers that are greater go to its right.");
             }
         };
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(runnable);
         }else{
             return - 1;
@@ -327,7 +343,7 @@ public class QuickSortFragment extends Fragment {
         final int finalI = i + 1;
         swapArrInt(arr, end, i + 1);
         swapAni(end , i + 1);
-        if(getActivity() != null){
+        if(getActivity() != null && !hasStopped){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -343,7 +359,7 @@ public class QuickSortFragment extends Fragment {
     public void swapAni(int firstPos, int secondPos){
         final int pos1 = firstPos;
         final int pos2 = secondPos;
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

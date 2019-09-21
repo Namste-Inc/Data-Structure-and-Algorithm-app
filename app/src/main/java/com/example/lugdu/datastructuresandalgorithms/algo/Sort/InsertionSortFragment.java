@@ -53,6 +53,7 @@ public class InsertionSortFragment extends Fragment {
     int topMargin = 25;
     int bottomMargin = 0;
     boolean isRunning;
+    boolean hasStopped = false;
 
     private ImageView[] dots;
     ViewPager viewPager;
@@ -148,6 +149,9 @@ public class InsertionSortFragment extends Fragment {
                                         editText.setEnabled(false);
                                     }
                                 });
+                                isRunning = true;
+                                hasStopped = false;
+                                checkStatus();
                                 insertionSort(arr);
                                 isRunning = false;
 
@@ -173,13 +177,23 @@ public class InsertionSortFragment extends Fragment {
         return view;
     }
 
+    public void checkStatus(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(getActivity() != null){
+
+                }
+                hasStopped = true;
+            }
+        });
+        thread.start();
+    }
+
     public void insertionSort(int[] array) {
 
         isRunning = true;
         int arrayLength = array.length;
-
-
-
         pause(Thread.currentThread(),2000);
 
         for (int j = 1; j < arrayLength; j++) {
@@ -191,7 +205,7 @@ public class InsertionSortFragment extends Fragment {
                     explanationText.setText("Key is at index " + finalJ);
                 }
             };
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(runnable);
             } else {
                 return;
@@ -205,14 +219,14 @@ public class InsertionSortFragment extends Fragment {
                     explanationText.setText("Select: " + arr[finalJ]);
                 }
             };
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(runnable);
             } else {
                 return;
             }
 
             pause(Thread.currentThread(),1000);
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -246,7 +260,7 @@ public class InsertionSortFragment extends Fragment {
                         explanationText.setText("Check: " + arr[finalI]);
                     }
                 };
-                if (getActivity() != null) {
+                if (getActivity() != null && !hasStopped) {
                     getActivity().runOnUiThread(runnable);
                 }else {
                     return;
@@ -254,7 +268,7 @@ public class InsertionSortFragment extends Fragment {
 
                 pause(Thread.currentThread(), 1000);
 
-                if(getActivity() != null) {
+                if(getActivity() != null && !hasStopped) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -273,7 +287,7 @@ public class InsertionSortFragment extends Fragment {
                         explanationText.setText("Since '" + finalKey + "' is greater than '" + arr[finalI] + "', swap them.");
                     }
                 };
-                if (getActivity() != null) {
+                if (getActivity() != null && !hasStopped) {
                     getActivity().runOnUiThread(runnable);
                 }else{
                     return;
@@ -288,7 +302,7 @@ public class InsertionSortFragment extends Fragment {
                 updatedKey[0] = i;
                 pause(Thread.currentThread(),2000);
                 final int finalI1 = i;
-                if(getActivity() != null) {
+                if(getActivity() != null && !hasStopped) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -312,7 +326,7 @@ public class InsertionSortFragment extends Fragment {
                 moveUp(finalJ);
             }
             pause(Thread.currentThread(), 2000);
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -354,7 +368,7 @@ public class InsertionSortFragment extends Fragment {
                 explanationText.setText("The array is sorted!");
             }
         };
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(runnable);
         } else {
             return;
@@ -438,7 +452,7 @@ public class InsertionSortFragment extends Fragment {
 
     public void moveDownAni(int pos1) {
         final int pos = pos1;
-        if(getActivity() != null){
+        if(getActivity() != null && !hasStopped){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -460,7 +474,7 @@ public class InsertionSortFragment extends Fragment {
     public void swapHorizontally(int firstPos1, int secondPos1) {
         final int firstPos = firstPos1;
         final int secondPos = secondPos1;
-        if(getActivity() != null){
+        if(getActivity() != null && !hasStopped){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -489,7 +503,7 @@ public class InsertionSortFragment extends Fragment {
 
     public void moveUp(int pos1) {
         final int pos = pos1;
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -521,7 +535,7 @@ public class InsertionSortFragment extends Fragment {
 
     public void setSortedAll(){
         for(final TextView T: tArr){
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

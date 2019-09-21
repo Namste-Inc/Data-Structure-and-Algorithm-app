@@ -58,7 +58,7 @@ public class HeapSortFragment extends Fragment {
     int topMargin = 25;
     int bottomMargin = 0;
     boolean isRunning;
-
+    boolean hasStopped = false;
     int w;
     private ImageView[] dots;
     public static int color = Color.parseColor("#FF0000");
@@ -165,6 +165,8 @@ public class HeapSortFragment extends Fragment {
 
                                 heapSort(arr);
                                 isRunning = false;
+                                hasStopped = false;
+                                checkStatus();
 
                                 if(getActivity() != null) {
                                     getActivity().runOnUiThread(new Runnable() {
@@ -186,6 +188,20 @@ public class HeapSortFragment extends Fragment {
         });
         return view;
     }
+
+    public void checkStatus(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(getActivity() != null){
+
+                }
+                hasStopped = true;
+            }
+        });
+        thread.start();
+    }
+
     public boolean entryGood(String entry){
         String[] dashSplits = entry.split("-");
         boolean containsTripleDigits = false;
@@ -327,7 +343,7 @@ public class HeapSortFragment extends Fragment {
 
     public void heapSort(final int[] arr) {
         isRunning=true;
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -347,7 +363,7 @@ public class HeapSortFragment extends Fragment {
                 explanationText.setText("Build heap.");
             }
         };
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(runnable);
         }else{
             return;
@@ -376,7 +392,7 @@ public class HeapSortFragment extends Fragment {
             };
             pause(Thread.currentThread(),1000);
 
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(runnable);
 
                 getActivity().runOnUiThread(new Runnable() {
@@ -403,7 +419,7 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -429,7 +445,7 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -445,24 +461,24 @@ public class HeapSortFragment extends Fragment {
 
 
 
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    explanationText.setText(currentRoot + " is sorted!");
-                }
-            };
-            getActivity().runOnUiThread(runnable);
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText(currentRoot + " is sorted!");
+                    }
+                };
+                getActivity().runOnUiThread(runnable);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalI]).sorted();
-                    tArr[finalI].invalidate();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalI]).sorted();
+                        tArr[finalI].invalidate();
 
-                    ((CircleText) tArrLinear[finalI]).sorted();
-                    tArr[finalI].invalidate();
-                }
-            });
+                        ((CircleText) tArrLinear[finalI]).sorted();
+                        tArr[finalI].invalidate();
+                    }
+                });
             }
             else{
                 return;
@@ -482,7 +498,7 @@ public class HeapSortFragment extends Fragment {
                 explanationText.setText("Array has been sorted!");
             }
         };
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(runnable);
 
             getActivity().runOnUiThread(new Runnable() {
@@ -537,26 +553,26 @@ public class HeapSortFragment extends Fragment {
                     explanationText.setText("Parent '" + parent + "' is larger than child '" + child + "'.");
                 }
             };
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(runnable);
 
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((CircleText) tArr[finalI]).select(true);
-                    tArr[finalI].invalidate();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((CircleText) tArr[finalI]).select(true);
+                        tArr[finalI].invalidate();
 
-                    ((CircleText) tArrLinear[finalI]).select(true);
-                    tArr[finalI].invalidate();
-                }
-            });
+                        ((CircleText) tArrLinear[finalI]).select(true);
+                        tArr[finalI].invalidate();
+                    }
+                });
             } else {
                 return;
             }
             pause(Thread.currentThread(),1000);
 
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -578,7 +594,7 @@ public class HeapSortFragment extends Fragment {
                     explanationText.setText("Swap parent '" + parent + "' and child '" + child + "'.");
                 }
             };
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(runnable);
             } else {
                 return;
@@ -593,7 +609,7 @@ public class HeapSortFragment extends Fragment {
 
             pause(Thread.currentThread(),1000);
 
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

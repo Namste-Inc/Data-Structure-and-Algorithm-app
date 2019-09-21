@@ -65,7 +65,7 @@ public class MergeSortFragment extends Fragment {
 
     boolean isSorted = false;
     boolean isRunning = false;
-
+    boolean hasStopped = false;
     private ImageView[] dots;
     ViewPager viewPager;
     public static int color = Color.parseColor("#FF0000");
@@ -147,6 +147,8 @@ public class MergeSortFragment extends Fragment {
                             position();
 
                             isRunning = true;
+                            hasStopped = false;
+                            checkStatus();
                             mergeSort(arr, arr.length, 0);
                             isRunning = false;
                             if (getActivity() != null) {
@@ -187,6 +189,19 @@ public class MergeSortFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void checkStatus(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(getActivity() != null){
+
+                }
+                hasStopped = true;
+            }
+        });
+        thread.start();
     }
 
     public void mergeSort(int[] array, int sizeOfArray, int layer) {
@@ -331,7 +346,7 @@ public class MergeSortFragment extends Fragment {
     public void mergeAni(final int layer) {
         System.out.println(layer + " layer");
         final ArrayList<ArrayList<Square>> temp;
-        if(getActivity() != null){
+        if(getActivity() != null && !hasStopped){
             temp = squares.get(layer);
         }else{
             return;
@@ -358,7 +373,7 @@ public class MergeSortFragment extends Fragment {
             //move circle up
             for (int j = 0; j < tArr.length; j ++) {
                 final int i = j;
-                if(getActivity() != null) {
+                if(getActivity() != null && !hasStopped) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -396,7 +411,7 @@ public class MergeSortFragment extends Fragment {
                                 final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[first], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                                 objectAnimatorX.setDuration(1000);
                                 objectAnimatorY.setDuration(1000);
-                                if(getActivity() != null) {
+                                if(getActivity() != null && !hasStopped) {
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -415,7 +430,7 @@ public class MergeSortFragment extends Fragment {
                                 final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[second], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                                 objectAnimatorX.setDuration(1000);
                                 objectAnimatorY.setDuration(1000);
-                                if(getActivity() != null) {
+                                if(getActivity() != null && !hasStopped) {
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -435,7 +450,7 @@ public class MergeSortFragment extends Fragment {
                             final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[first], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                             objectAnimatorX.setDuration(1000);
                             objectAnimatorY.setDuration(1000);
-                            if(getActivity() != null) {
+                            if(getActivity() != null && !hasStopped) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -456,7 +471,7 @@ public class MergeSortFragment extends Fragment {
                             final ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(tArr[second], "translationY", squares.get(layer).get(finalI).get(finalJ).getY() - topMargin);
                             objectAnimatorX.setDuration(1000);
                             objectAnimatorY.setDuration(1000);
-                            if(getActivity() != null) {
+                            if(getActivity() != null && !hasStopped) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -474,7 +489,7 @@ public class MergeSortFragment extends Fragment {
                         final int finalIndex = circleIndex -1;
                     if(layer == 0){
                         pause(Thread.currentThread(), 1000);
-                        if(getActivity() != null) {
+                        if(getActivity() != null && !hasStopped) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -497,7 +512,7 @@ public class MergeSortFragment extends Fragment {
             final int finalI = i;
             for(int j = 0; j < temp.get(i).size(); j++){
                 final int finalJ = j;
-                if(getActivity() != null) {
+                if(getActivity() != null && !hasStopped) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -530,7 +545,7 @@ public class MergeSortFragment extends Fragment {
     public void splitAni(int layer1){
         final int layer = layer1;
         //drop number down
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -547,7 +562,7 @@ public class MergeSortFragment extends Fragment {
         if(layer < treeHeight - 2) {
             pause(Thread.currentThread(), 1000);
             //make new boxes
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -598,7 +613,7 @@ public class MergeSortFragment extends Fragment {
             }
             //split boxes
             pause(Thread.currentThread(), 1000);
-            if(getActivity() != null) {
+            if(getActivity() != null && !hasStopped) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -715,7 +730,7 @@ public class MergeSortFragment extends Fragment {
                 explanationText.setText("Sort the numbers as you move them to the top layer.");
             }
         };
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(runnable);
         } else {
             return;
@@ -724,7 +739,7 @@ public class MergeSortFragment extends Fragment {
 
         final int pos1 = firstPos;
         final int pos2 = secondPos;
-        if(getActivity() != null) {
+        if(getActivity() != null && !hasStopped) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
