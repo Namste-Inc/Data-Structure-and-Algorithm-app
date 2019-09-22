@@ -91,7 +91,6 @@ public class BubbleSortFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(arrayToString(arr,false));
                 editText.setSelection(editText.getText().length());
             }
         });
@@ -104,7 +103,6 @@ public class BubbleSortFragment extends Fragment {
                         if(!editText.getText().toString().equals("")){
                             parseArray(editText.getText().toString());
                             initArray();
-                            editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
                         }
                         else{
 

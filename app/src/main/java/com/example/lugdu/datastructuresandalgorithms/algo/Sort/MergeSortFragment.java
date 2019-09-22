@@ -97,7 +97,6 @@ public class MergeSortFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(arrayToString(arr,false));
                 editText.setSelection(editText.getText().length());
             }
         });
@@ -110,7 +109,6 @@ public class MergeSortFragment extends Fragment {
                         if(!editText.getText().toString().equals("")){
                             parseArray(editText.getText().toString());
                             initArray();
-                            editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
                         }
 
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -142,16 +140,23 @@ public class MergeSortFragment extends Fragment {
                                     explanationText.setText("Split the array.");
                                 }
                             };
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    editText.setEnabled(false);
+                                }
+                            });
                             getActivity().runOnUiThread(runnable);
-                            pause(Thread.currentThread(), 2000);
+                            pause(Thread.currentThread(), 1000);
                             position();
+
 
                             isRunning = true;
                             hasStopped = false;
                             checkStatus();
                             mergeSort(arr, arr.length, 0);
                             isRunning = false;
-                            if (getActivity() != null) {
+                            if (getActivity() != null && !hasStopped) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -162,12 +167,14 @@ public class MergeSortFragment extends Fragment {
                             } else {
                                 return;
                             }
+
                             isSorted = true;
 
                             runnable = new Runnable() {
                                 @Override
                                 public void run() {
                                     explanationText.setText("Array has been sorted!");
+                                    editText.setEnabled(false);
                                 }
                             };
                             getActivity().runOnUiThread(runnable);
@@ -710,6 +717,9 @@ public class MergeSortFragment extends Fragment {
     }
 
     public String arrayToString(int[] arr, boolean comma){
+//        if(arr == null){
+//            return "";
+//        }
         String separator = comma?",":"-";
         int len = arr.length;
         String toString = "";

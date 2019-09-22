@@ -90,7 +90,6 @@ public class HeapSortFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                editText.setText(arrayToString(arr,false));
                 editText.setSelection(editText.getText().length());
             }
         });
@@ -105,7 +104,6 @@ public class HeapSortFragment extends Fragment {
                             parseArray(editText.getText().toString());
                             initArray();
                             linearInitArray();
-                            editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
                         } else {
                             editText.setText("");
                         }

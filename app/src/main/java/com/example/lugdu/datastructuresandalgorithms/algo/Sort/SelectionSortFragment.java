@@ -78,7 +78,6 @@ public class SelectionSortFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText(arrayToString(arr,false));
                 editText.setSelection(editText.getText().length());
             }
         });
@@ -91,9 +90,9 @@ public class SelectionSortFragment extends Fragment {
                         if(!editText.getText().toString().equals("")){
                             parseArray(editText.getText().toString());
                             initArray();
-                            editText.setText("Original array: [ " + arrayToString(arr,true) + " ]");
                         }
                         else{
+
                             editText.setText("");
                         }
 
@@ -103,6 +102,7 @@ public class SelectionSortFragment extends Fragment {
                         return true;
                     }
                     else{
+//                        Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
                         return true;
                     }
                 }

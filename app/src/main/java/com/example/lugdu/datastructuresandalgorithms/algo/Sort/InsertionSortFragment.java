@@ -83,14 +83,8 @@ public class InsertionSortFragment extends Fragment {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editText.setSelection(editText.getText().length());
 
-                if(!editText.isInEditMode()){
-                    String[] afterC = editText.getText().toString().split(": ");
-                    if(afterC.length > 1){
-                        editText.setText(afterC[1]);
-                    }
-                    editText.setSelection(editText.getText().length());
-                }
             }
         });
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -103,14 +97,18 @@ public class InsertionSortFragment extends Fragment {
                             parseArray(editText.getText().toString());
                             initArray();
                         }
-                        editText.setText(editText.getText());
+                        else{
+
+                            editText.setText("");
+                        }
+
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                        editText.clearFocus();
                         editText.setSelection(editText.getText().length());
                         return true;
                     }
                     else{
+//                        Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
                         return true;
                     }
                 }
