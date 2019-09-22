@@ -158,6 +158,7 @@ public class BubbleSortFragment extends Fragment {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        initArray();
                                         editText.setEnabled(false);
                                     }
                                 });
