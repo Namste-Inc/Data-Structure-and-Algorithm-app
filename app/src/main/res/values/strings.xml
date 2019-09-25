@@ -45,6 +45,32 @@
         <item>Each preceding item in the array will be sorted starting from the front after each iteration</item>
     </string-array>
 
+
+
+    <string-array name ="for_loop">
+        <item>A form of iteration where a block code is repeated where the “for” statement contains where the loop starts, where the loop ends and how long the loop will be running for. </item>
+        <item>Starts by typing “for”</item>
+        <item>Enters the starting point of the loop followed by a semicolon</item>
+        <item>Enters the condition that will keep the loop repeating followed by a semicolon</item>
+        <item>Enters the incrementer</item>
+        <item>A completed “for loop” statement</item>
+    </string-array>
+    <string-array name ="while_loop">
+        <item>A form of iteration where a block of code is repeated for as long as the condition in the while statement is true</item>
+        <item>Starts by typing “while”</item>
+        <item>Enters the condition that will keep the loop going, the loop will exit when that condition becomes false</item>
+        <item>Enters the condition that will keep the loop repeating followed by a semicolon</item>
+        <item>A completed “while loop” statement</item>
+    </string-array>
+    <string-array name ="do_while_loop">
+        <item>A form of iteration where a block of code is executed before the condition in the while statement is checked. The same block of code will then be repeated for as long as the condition in the while statement is true. </item>
+        <item>Starts by typing “do”</item>
+        <item>Enters the block of code to be repeated</item>
+        <item>Followed by the word “while”</item>
+        <item>Enters the condition that will keep the loop going, the loop will exit when that condition becomes false</item>
+        <item>A completed “do while loop” statement</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
