@@ -59,7 +59,6 @@
         <item>A form of iteration where a block of code is repeated for as long as the condition in the while statement is true</item>
         <item>Starts by typing “while”</item>
         <item>Enters the condition that will keep the loop going, the loop will exit when that condition becomes false</item>
-        <item>Enters the condition that will keep the loop repeating followed by a semicolon</item>
         <item>A completed “while loop” statement</item>
     </string-array>
     <string-array name ="do_while_loop">

@@ -57,7 +57,6 @@ public class BubbleSortFragment extends Fragment {
     int arr[];
     TextView tArr[];
     TextView explanationText;
-    boolean animating;
     final int circleSize = 120;
     final int leftMargin = 20;
     final int rightMargin = 0;
