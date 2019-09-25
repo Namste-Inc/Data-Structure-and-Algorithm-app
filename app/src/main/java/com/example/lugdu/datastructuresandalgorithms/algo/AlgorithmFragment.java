@@ -46,7 +46,7 @@ public class AlgorithmFragment extends Fragment {
         Hexagon hexHashF = view.findViewById(R.id.hash_func_hex_b);
         hexHashF.setDef("Any function that can be used to map data of arbitrary size onto data of a fixed size");
         Hexagon hexIter = view.findViewById(R.id.itr_hex_b);
-        hexIter.setDef("The technique marking out of a block of statements within a computer program for a defined number of repetitions");
+        hexIter.setDef("Defining a process and repeating it for a set amount of times.");
         Hexagon hexSearching = view.findViewById(R.id.searching_hex_b);
         hexSearching.setDef("Designed to check for an element or retrieve an element from any data structure where it is stored");
         hexA.add(hexSort);

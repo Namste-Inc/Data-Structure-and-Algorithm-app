@@ -144,6 +144,7 @@ public class InsertionSortFragment extends Fragment {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        initArray();
                                         editText.setEnabled(false);
                                     }
                                 });
