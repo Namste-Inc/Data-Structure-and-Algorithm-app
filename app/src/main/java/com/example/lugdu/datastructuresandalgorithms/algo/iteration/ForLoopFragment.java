@@ -1,6 +1,7 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.iteration;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,9 +11,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
 import com.example.lugdu.datastructuresandalgorithms.Steps2Fragment;
@@ -22,15 +28,33 @@ import java.util.HashMap;
 
 public class ForLoopFragment extends Fragment {
     View view;
+    int arr[];
+    TextView tArr[];
+    TextView explanationText;
+    final int circleSize = 120;
+    final int leftMargin = 20;
+    final int rightMargin = 0;
+    final int topMargin = 0;
+    final int bottomMargin = 25;
+    int w;
     private ImageView[] dots;
     boolean hasStopped = false;
     ViewPager viewPager;
     boolean isRunning;
-    public static int color = Color.parseColor("#FF0000");
+    public static int color = Color.parseColor("#19B41C");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_for_loop, container,false);
+        TextView def = view.findViewById(R.id.definitionText);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        int[] colors = {Color.GRAY,color};
+        gradientDrawable.setColors(colors);
+        def.setBackground(gradientDrawable);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        animation.setDuration(1000);
+        def.setAnimation(animation);
+
         setUpViewPager();
 
         return view;
@@ -86,6 +110,9 @@ public class ForLoopFragment extends Fragment {
         bundle.putStringArray("string array", strArr);
         stepsFragment.setArguments(bundle);
 
+        TextView textView = view.findViewById(R.id.definitionText);
+        textView.setText("Definition: " + strArr[0]);
+
         Steps2Fragment steps2Fragment1 = new Steps2Fragment();
         Bundle bundle1 = new Bundle();
         bundle1.putString("step", strArr[1]);
@@ -124,5 +151,26 @@ public class ForLoopFragment extends Fragment {
         steps.put(5, steps2Fragment5);
 
         return steps;
+    }
+
+    public void initArray(){
+        int len = arr.length;
+        int totalLength = (len * (circleSize + leftMargin + rightMargin)) - leftMargin;
+        int totalSpace = w - totalLength;
+        int startSpace  = (totalSpace / 2);
+        tArr = new TextView[len];
+        RelativeLayout insertPoint = view.findViewById(R.id.lView);
+        if(insertPoint.getChildCount() > 0){
+            insertPoint.removeAllViews();
+        }
+        for(int i = 0; i<len; i++){
+            TextView textView = new CircleText(getContext());
+            textView.setText(arr[i] + "");
+            tArr[i] = textView;
+            textView.setX((i * 130) + startSpace);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
+            layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+            insertPoint.addView(textView, layoutParams);
+        }
     }
 }

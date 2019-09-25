@@ -1,6 +1,7 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.iteration;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,13 +11,18 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
 import com.example.lugdu.datastructuresandalgorithms.Steps2Fragment;
 import com.example.lugdu.datastructuresandalgorithms.StepsFragment;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -26,11 +32,21 @@ public class DoWhileLoopFragment extends Fragment {
     boolean hasStopped = false;
     ViewPager viewPager;
     boolean isRunning;
-    public static int color = Color.parseColor("#FF0000");
+    public static int color = Color.parseColor("#19B41C");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_do_while_loop, container,false);
+
+        TextView def = view.findViewById(R.id.definitionText);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        int[] colors = {Color.GRAY,color};
+        gradientDrawable.setColors(colors);
+        def.setBackground(gradientDrawable);
+        Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        animation.setDuration(1000);
+        def.setAnimation(animation);
+
         setUpViewPager();
         return view;
     }
@@ -84,6 +100,9 @@ public class DoWhileLoopFragment extends Fragment {
         System.out.println(strArr.toString());
         bundle.putStringArray("string array", strArr);
         stepsFragment.setArguments(bundle);
+
+        TextView textView = view.findViewById(R.id.definitionText);
+        textView.setText("Definition: " + strArr[0]);
 
         Steps2Fragment steps2Fragment1 = new Steps2Fragment();
         Bundle bundle1 = new Bundle();
