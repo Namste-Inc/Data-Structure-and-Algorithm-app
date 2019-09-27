@@ -522,4 +522,10 @@ public class BubbleSortFragment extends Fragment {
 
         return steps;
     }
+
+    public void addTracker(int start){
+        Button button = new Button(getContext());
+        CircleText circleTexts = (CircleText) tArr[start];
+        circleTexts.getX();
+    }
 }

@@ -1,24 +1,36 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.iteration;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lugdu.datastructuresandalgorithms.CircleText;
+import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
 import com.example.lugdu.datastructuresandalgorithms.Steps2Fragment;
@@ -31,11 +43,13 @@ public class ForLoopFragment extends Fragment {
     int arr[];
     TextView tArr[];
     TextView explanationText;
-    final int circleSize = 120;
+    RelativeLayout insertPoint;
+    RelativeLayout insertPoint2;
+    final int circleSize = 150;
     final int leftMargin = 20;
     final int rightMargin = 0;
     final int topMargin = 0;
-    final int bottomMargin = 25;
+    final int bottomMargin = 0;
     int w;
     private ImageView[] dots;
     boolean hasStopped = false;
@@ -54,11 +68,105 @@ public class ForLoopFragment extends Fragment {
         Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         animation.setDuration(1000);
         def.setAnimation(animation);
+        w = MainActivity.width;
+        final EditText editText = view.findViewById(R.id.arrInputBox);
+        final EditText startPosText = view.findViewById(R.id.starterInputBox);
+        final EditText endPosText = view.findViewById(R.id.maxIterationBox);
+
+        insertPoint = view.findViewById(R.id.animationView);
+        insertPoint2 = view.findViewById(R.id.animationViewPointer);
 
         setUpViewPager();
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setSelection(editText.getText().length());
+            }
+        });
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    if(entryGood(editText.getText().toString())) {
+                        if(!editText.getText().toString().equals("")){
+                            parseArray(editText.getText().toString());
+                            initArray();
+                            startPosText.setEnabled(true);
+                            Button button = initPointer(tArr[0].getX());
+                        }
+                        else{
 
+                            editText.setText("");
+                        }
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                        editText.setSelection(editText.getText().length());
+                        editText.clearFocus();
+                        return true;
+                    }
+                    else{
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        startPosText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPosText.setSelection(startPosText.getText().length());
+            }
+        });
+        startPosText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    endPosText.setEnabled(true);
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(startPosText.getWindowToken(), 0);
+                    startPosText.setSelection(startPosText.getText().length());
+                    startPosText.clearFocus();
+                }
+                return false;
+            }
+        });
+
+        endPosText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endPosText.setSelection(endPosText.getText().length());
+            }
+        });
+        endPosText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(endPosText.getWindowToken(), 0);
+                    endPosText.setSelection(endPosText.getText().length());
+                    endPosText.clearFocus();
+                }
+                return false;
+            }
+        });
         return view;
     }
+    public void parseArray(String arr){
+        String[] arr1 = arr.split("-");
+        this.arr = new int[arr1.length];
+        if(arr.equals("")){
+            this.arr = null;
+            return;
+        }
+        for(int i = 0; i<arr1.length; i++){
+            this.arr[i] = Integer.parseInt(arr1[i]);
+        }
+    }
+
     public void setUpViewPager(){
         LinearLayout dotsView = view.findViewById(R.id.sliderDots);
         HashMap<Integer, Fragment> steps = getViewFragments();
@@ -153,13 +261,42 @@ public class ForLoopFragment extends Fragment {
         return steps;
     }
 
+    public boolean entryGood(String entry){
+        String[] dashSplits = entry.split("-");
+        boolean containsTripleDigits = false;
+        if (dashSplits.length < 2) {
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        System.out.println(dashSplits[1]);
+        for (int i = 0; i <dashSplits.length; i++) {
+            if (dashSplits[i].length() > 2) {
+                containsTripleDigits = true;
+            }
+        }
+
+        if(entry.startsWith("-") || entry.endsWith("-") || entry.contains("--")){
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+
+            return false;
+        } else if (dashSplits.length > 7) {
+            Toast.makeText(getContext(),"Array size must not be larger than 7.", Toast.LENGTH_LONG).show();
+
+            return false;
+        } else if (containsTripleDigits) {
+            Toast.makeText(getContext(),"Inputs must not be larger than 99.", Toast.LENGTH_LONG).show();
+
+            return false;
+        }
+        return true;
+    }
+
     public void initArray(){
         int len = arr.length;
         int totalLength = (len * (circleSize + leftMargin + rightMargin)) - leftMargin;
         int totalSpace = w - totalLength;
         int startSpace  = (totalSpace / 2);
         tArr = new TextView[len];
-        RelativeLayout insertPoint = view.findViewById(R.id.lView);
         if(insertPoint.getChildCount() > 0){
             insertPoint.removeAllViews();
         }
@@ -167,10 +304,37 @@ public class ForLoopFragment extends Fragment {
             TextView textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
             tArr[i] = textView;
-            textView.setX((i * 130) + startSpace);
+            textView.setX((i * 160) + startSpace);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
             insertPoint.addView(textView, layoutParams);
         }
     }
+
+    public Button initPointer(float start){
+        if(insertPoint2.getChildCount() > 0){
+            insertPoint2.removeAllViews();
+        }
+        Button button = new Button(getContext());
+        button.setAllCaps(false);
+        button.setPadding(0, 0, 0, 0);
+        Drawable drawableArrow = ContextCompat.getDrawable(
+                getContext(),
+                R.drawable.ic_arrow_down_black_24dp
+        );
+        button.setText("arr[i]");
+        button.setX(start);
+        button.setBackgroundColor(Color.TRANSPARENT);
+        button.setCompoundDrawablesWithIntrinsicBounds(
+                null, // Drawable left
+                null, // Drawable top
+                null, // Drawable right
+                drawableArrow // Drawable bottom
+        );
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,180);
+        layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+        insertPoint2.addView(button, layoutParams);
+        return button;
+    }
+
 }
