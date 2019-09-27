@@ -1,5 +1,6 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.iteration;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,7 +53,11 @@ public class ForLoopFragment extends Fragment {
     final int rightMargin = 0;
     final int topMargin = 0;
     final int bottomMargin = 0;
+    int startNum;
+    int endNum;
     int w;
+    Button pointerButton;
+    SwitchCompat switchStatus;
     private ImageView[] dots;
     boolean hasStopped = false;
     ViewPager viewPager;
@@ -69,6 +76,8 @@ public class ForLoopFragment extends Fragment {
         animation.setDuration(1000);
         def.setAnimation(animation);
         w = MainActivity.width;
+        explanationText = view.findViewById(R.id.explanationText);
+        switchStatus = view.findViewById(R.id.swStatusCustom);
         final EditText editText = view.findViewById(R.id.arrInputBox);
         final EditText startPosText = view.findViewById(R.id.starterInputBox);
         final EditText endPosText = view.findViewById(R.id.maxIterationBox);
@@ -93,16 +102,16 @@ public class ForLoopFragment extends Fragment {
                             parseArray(editText.getText().toString());
                             initArray();
                             startPosText.setEnabled(true);
-                            Button button = initPointer(tArr[0].getX());
                         }
                         else{
-
                             editText.setText("");
                         }
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         editText.setSelection(editText.getText().length());
                         editText.clearFocus();
+                        explanationText.setText("");
+                        Toast.makeText(getContext(), "Input the start index", Toast.LENGTH_LONG).show();
                         return true;
                     }
                     else{
@@ -124,11 +133,23 @@ public class ForLoopFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE){
-                    endPosText.setEnabled(true);
+                    if(entryGood(startPosText.getText().toString(), true)){
+                        pointerButton = initPointer(tArr[startNum].getX() - 20);
+                        explanationText.setText("for(int i = " + startNum);
+                        endPosText.setEnabled(true);
+                        Toast.makeText(getContext(), "Input the End index", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        startPosText.setText("");
+                        Toast.makeText(getContext(), "Input must be less then array size", Toast.LENGTH_LONG).show();
+                    }
+
                     InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(startPosText.getWindowToken(), 0);
                     startPosText.setSelection(startPosText.getText().length());
                     startPosText.clearFocus();
+
+                    return true;
                 }
                 return false;
             }
@@ -149,12 +170,98 @@ public class ForLoopFragment extends Fragment {
                     imm.hideSoftInputFromWindow(endPosText.getWindowToken(), 0);
                     endPosText.setSelection(endPosText.getText().length());
                     endPosText.clearFocus();
+                    if(entryGood(endPosText.getText().toString(), false)){
+                        explanationText.setText("for(int i = " + startNum + "; i < " + endNum + "; i++){}");
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pause(Thread.currentThread(), 1000);
+                                for(int i = startNum; i< endNum; i++){
+                                    final int iFinal = i;
+                                    if(getActivity() != null && !hasStopped) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ((CircleText)tArr[iFinal]).select(true);
+                                            }
+                                        });
+                                        pause(Thread.currentThread(), 100);
+                                    }
+                                }
+                            }
+                        });
+                        thread.start();
+                    }
+                    else{
+                        endPosText.setText("");
+                        Toast.makeText(getContext(), "Input must be less then array size", Toast.LENGTH_LONG).show();
+                    }
                 }
                 return false;
             }
         });
+
+        switchStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // --
+                try{
+                    if(isChecked) {
+
+                        if (startNum < endNum) {
+                            int temp;
+                            temp = endNum;
+                            endNum = startNum;
+                            startNum = temp;
+                            if (getActivity() != null && !hasStopped) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        float newX = tArr[startNum - 1].getX() - 20;
+                                        ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
+                                        animation.setDuration(1000);
+                                        animation.start();
+                                    }
+                                });
+                            }
+                        }
+                    }else {
+                        if (startNum > endNum) {
+                            int temp;
+                            temp = endNum;
+                            endNum = startNum;
+                            startNum = temp;
+                            if (getActivity() != null && !hasStopped) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        float newX = tArr[startNum].getX() - 20;
+                                        ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
+                                        animation.setDuration(1000);
+                                        animation.start();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }catch (NullPointerException e){
+
+                }
+            }
+        });
         return view;
     }
+
+    public void pause(Thread thread, int time){
+        synchronized (thread){
+            try {
+                Thread.currentThread().wait(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void parseArray(String arr){
         String[] arr1 = arr.split("-");
         this.arr = new int[arr1.length];
@@ -268,7 +375,6 @@ public class ForLoopFragment extends Fragment {
             Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
             return false;
         }
-        System.out.println(dashSplits[1]);
         for (int i = 0; i <dashSplits.length; i++) {
             if (dashSplits[i].length() > 2) {
                 containsTripleDigits = true;
@@ -308,6 +414,21 @@ public class ForLoopFragment extends Fragment {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
             layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
             insertPoint.addView(textView, layoutParams);
+        }
+    }
+
+    public boolean entryGood(String entry, boolean start){
+        int entryInt = Integer.parseInt(entry);
+        if(entryInt > tArr.length){
+            return false;
+        }
+        if(start){
+            startNum = entryInt;
+            return true;
+        }
+        else{
+            endNum = entryInt;
+            return true;
         }
     }
 
