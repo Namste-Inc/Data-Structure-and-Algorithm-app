@@ -53,7 +53,11 @@ public class WhileLoopFragment extends Fragment {
     final int rightMargin = 0;
     final int topMargin = 0;
     final int bottomMargin = 0;
+
+    boolean isTrue = false;
     boolean hasStopped = false;
+    Thread animationThread;
+
     int w;
     SwitchCompat switchStatus;
     private ImageView[] dots;
@@ -84,37 +88,73 @@ public class WhileLoopFragment extends Fragment {
         initView();
 
 
+
         switchStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // --
-                final boolean isCheckedFinal = isChecked;
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (isCheckedFinal) {
-                            pause(Thread.currentThread(), 1000);
-                            if (getActivity() != null && !hasStopped) {
-                                getActivity().runOnUiThread((new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //move left and right
-                                        float x1 = (textView.getX() + 10);
-                                        ObjectAnimator animation = ObjectAnimator.ofFloat(textView, "translationX", x1);
-                                        animation.setDuration(1000);
+                hasStopped = false;
+                checkStatus();
+                animate();
 
-                                        animation.start();
-                                    }
-                                }));
-                            }
-                        }
-                    }
-                });
-                thread.start();
-
+                if (isChecked) {
+                    isTrue = true;
+                    animationThread.start();
+                } else {
+                    isTrue = false;
+                }
             }
+
         });
         return view;
+    }
+
+    public void animate() {
+        animationThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isTrue) {
+                    if (getActivity() != null && !hasStopped) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                float x1 = (textView.getX() + 100);
+                                ObjectAnimator animation1 = ObjectAnimator.ofFloat(textView, "translationX", x1);
+                                animation1.setDuration(1000);
+
+                                animation1.start();
+                            }
+                        });
+                    }
+                    pause(Thread.currentThread(),2000);
+                    if (getActivity() != null && !hasStopped) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                float x2 = (textView.getX() - (100 + leftMargin));
+                                ObjectAnimator animation2 = ObjectAnimator.ofFloat(textView, "translationX", x2);
+                                animation2.setDuration(1000);
+
+                                animation2.start();
+                            }
+                        });
+                    }
+                    pause(Thread.currentThread(),2000);
+                }
+            }
+        });
+    }
+
+    public void checkStatus() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (getActivity() != null) {
+
+                }
+                hasStopped = true;
+            }
+        });
+        thread.start();
     }
 
     public void pause(Thread thread, int time) {
@@ -229,5 +269,4 @@ public class WhileLoopFragment extends Fragment {
         layoutParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
         insertPoint.addView(textView, layoutParams);
     }
-
 }
