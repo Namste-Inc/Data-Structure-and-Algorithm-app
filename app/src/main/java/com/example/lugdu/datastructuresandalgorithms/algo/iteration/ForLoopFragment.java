@@ -1,6 +1,7 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.iteration;
 
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -81,6 +82,98 @@ public class ForLoopFragment extends Fragment {
         final EditText editText = view.findViewById(R.id.arrInputBox);
         final EditText startPosText = view.findViewById(R.id.starterInputBox);
         final EditText endPosText = view.findViewById(R.id.maxIterationBox);
+        final Button runButton = view.findViewById(R.id.run_button);
+        runButton.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public void onClick(View v) {
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!isRunning){
+                            if (getActivity() != null && !hasStopped) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        editText.setEnabled(false);
+                                        startPosText.setEnabled(false);
+                                        endPosText.setEnabled(false);
+                                    }
+                                });
+                            }else{
+                                return;
+                            }
+
+                            if (getActivity() != null && !hasStopped) {
+                               if(switchStatus.isChecked()){
+                                   for(int i = startNum - 1; i > endNum - 1; i--){
+                                       final int finalI = i;
+                                       pause(Thread.currentThread(), 1000);
+                                       if (getActivity() != null && !hasStopped) {
+                                           getActivity().runOnUiThread(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                   float newX = tArr[finalI].getX() - 20;
+                                                   ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
+                                                   animation.setDuration(1000);
+                                                   animation.start();
+                                                   ((CircleText)tArr[finalI]).sorted();
+                                               }
+                                           });
+                                       }
+                                       else{
+                                           return;
+                                       }
+                                   }
+                               }else{
+                                   for(int i = startNum; i < endNum; i++){
+                                       final int finalI = i;
+                                       pause(Thread.currentThread(), 1000);
+                                       if (getActivity() != null && !hasStopped) {
+                                           getActivity().runOnUiThread(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                   float newX = tArr[finalI].getX() - 20;
+                                                   ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
+                                                   animation.setDuration(1000);
+                                                   animation.start();
+                                                   ((CircleText)tArr[finalI]).sorted();
+                                               }
+                                           });
+                                       }
+                                       else{
+                                           return;
+                                       }
+                                   }
+                               }
+                               pause(Thread.currentThread(), 1000);
+                               getActivity().runOnUiThread(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       for(int i = 0; i < tArr.length; i++){
+                                           ((CircleText) tArr[i]).deselect();
+                                       }
+                                       editText.setEnabled(true);
+                                       startPosText.setEnabled(true);
+                                       endPosText.setEnabled(true);
+                                       isRunning = false;
+                                   }
+                               });
+
+                            }else{
+                                return;
+                            }
+                        }
+                        else{
+                            Toast.makeText(getContext(), "Already running", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                };
+                Thread thread = new Thread(runnable);
+                thread.start();
+            }
+        });
 
         insertPoint = view.findViewById(R.id.animationView);
         insertPoint2 = view.findViewById(R.id.animationViewPointer);
@@ -209,7 +302,7 @@ public class ForLoopFragment extends Fragment {
                     if(isChecked) {
 
                         if (startNum < endNum) {
-                            int temp;
+                            final int temp;
                             temp = endNum;
                             endNum = startNum;
                             startNum = temp;
@@ -217,10 +310,13 @@ public class ForLoopFragment extends Fragment {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        startPosText.setText(startNum + "");
+                                        endPosText.setText(endNum + "");
                                         float newX = tArr[startNum - 1].getX() - 20;
                                         ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
                                         animation.setDuration(1000);
                                         animation.start();
+
                                     }
                                 });
                             }
@@ -235,6 +331,8 @@ public class ForLoopFragment extends Fragment {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        startPosText.setText(startNum + "");
+                                        endPosText.setText(endNum + "");
                                         float newX = tArr[startNum].getX() - 20;
                                         ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
                                         animation.setDuration(1000);
@@ -419,7 +517,7 @@ public class ForLoopFragment extends Fragment {
 
     public boolean entryGood(String entry, boolean start){
         int entryInt = Integer.parseInt(entry);
-        if(entryInt > tArr.length){
+        if(entryInt >= tArr.length){
             return false;
         }
         if(start){

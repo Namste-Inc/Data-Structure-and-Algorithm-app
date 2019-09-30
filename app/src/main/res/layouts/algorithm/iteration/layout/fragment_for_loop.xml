@@ -140,7 +140,7 @@
 
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/run_button"
             android:layout_width="103dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
