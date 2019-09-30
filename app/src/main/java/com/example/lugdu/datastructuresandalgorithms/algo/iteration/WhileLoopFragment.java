@@ -49,16 +49,15 @@ public class WhileLoopFragment extends Fragment {
     TextView explanationText;
     RelativeLayout insertPoint;
     final int circleSize = 150;
-    final int leftMargin = 20;
+    final int leftMargin = 0;
     final int rightMargin = 0;
     final int topMargin = 0;
     final int bottomMargin = 0;
 
     boolean isTrue = false;
     boolean hasStopped = false;
-    Thread animationThread;
-
     int w;
+    Thread animationThread;
     SwitchCompat switchStatus;
     private ImageView[] dots;
     ViewPager viewPager;
@@ -73,7 +72,7 @@ public class WhileLoopFragment extends Fragment {
         int[] colors = {Color.GRAY, color};
         gradientDrawable.setColors(colors);
         def.setBackground(gradientDrawable);
-        Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        final Animation animation = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         animation.setDuration(1000);
         def.setAnimation(animation);
         w = MainActivity.width;
@@ -92,19 +91,15 @@ public class WhileLoopFragment extends Fragment {
         switchStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                hasStopped = false;
-                checkStatus();
-                animate();
-
                 if (isChecked) {
-                    isTrue = true;
-                    animationThread.start();
-                } else {
-                    isTrue = false;
+                    hasStopped = false;
+                    checkStatus();
+                    animate();
                 }
             }
-
         });
+
+        explanationText.setText("while(condition){\n    runAnimation();\n}");
         return view;
     }
 
@@ -112,36 +107,38 @@ public class WhileLoopFragment extends Fragment {
         animationThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (isTrue) {
+                while (switchStatus.isChecked()) {
                     if (getActivity() != null && !hasStopped) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                float x1 = (textView.getX() + 100);
+                                float x1 = (w - (circleSize + 20));
                                 ObjectAnimator animation1 = ObjectAnimator.ofFloat(textView, "translationX", x1);
                                 animation1.setDuration(1000);
+                                System.out.println(x1);
 
                                 animation1.start();
                             }
                         });
                     }
-                    pause(Thread.currentThread(),2000);
+                    pause(Thread.currentThread(),1000);
                     if (getActivity() != null && !hasStopped) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                float x2 = (textView.getX() - (100 + leftMargin));
+                                float x2 = 20;
                                 ObjectAnimator animation2 = ObjectAnimator.ofFloat(textView, "translationX", x2);
                                 animation2.setDuration(1000);
-
+                                System.out.println(x2);
                                 animation2.start();
                             }
                         });
                     }
-                    pause(Thread.currentThread(),2000);
+                    pause(Thread.currentThread(),1000);
                 }
             }
         });
+        animationThread.start();
     }
 
     public void checkStatus() {
@@ -263,8 +260,7 @@ public class WhileLoopFragment extends Fragment {
 
     public void initView() {
         textView = new CircleText(getContext());
-        textView.setText("");
-        textView.setX((420));
+        textView.setX(20);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize, circleSize);
         layoutParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
         insertPoint.addView(textView, layoutParams);

@@ -8,7 +8,6 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <TextView
             android:id="@+id/definitionText"
             android:layout_width="match_parent"
@@ -54,20 +53,18 @@
             android:layout_marginRight="8dp"
             android:layout_marginBottom="378dp"
             android:text="Start by inputting an array"
+            android:lines="3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sliderDots" />
+
         <RelativeLayout
             android:id="@+id/animationView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="bottom"
+            android:gravity="center|left"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,17 +72,6 @@
 
         </RelativeLayout>
 
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="103dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:drawableBottom="@drawable/ic_play_arrow_black_24dp"
-            android:text="Run"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/switchButton" />
 
         <LinearLayout
             android:id="@+id/sliderDots"
@@ -107,15 +93,19 @@
             android:id="@+id/switchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="172dp"
-            android:layout_marginLeft="172dp"
-            android:layout_marginTop="36dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textOff="++"
-            android:textOn="--"
+            android:textOff="F"
+            android:textOn="T"
+            android:text="condition "
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
             android:thumb="@drawable/switch_custom_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/animationView"
+            app:layout_constraintVertical_bias="1.0"
             app:showText="true"
             app:track="@drawable/switch_custom_track" />
 

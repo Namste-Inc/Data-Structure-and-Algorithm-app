@@ -90,7 +90,7 @@ public class DoWhileLoopFragment extends Fragment {
             }
         });
         setUpViewPager();
-        explaination.setText("do{ circleAnimation() }while(condition1 && condition2);");
+        explaination.setText("do{\n     circleAnimation(); \n}while(condition1 && condition2);");
         animateCircles();
         return view;
     }
