@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView5"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -59,15 +60,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sliderDots" />
         <RelativeLayout
-            android:id="@+id/animationViewPointer"
+            android:id="@+id/animationView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="bottom"
+            android:gravity="center|left"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,87 +73,6 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/animationView"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="top"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/animationViewPointer">
-        </RelativeLayout>
-
-
-        <EditText
-            android:id="@+id/starterInputBox"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:background="@color/cardview_light_background"
-            android:digits="0123456789"
-            android:elevation="8dp"
-            android:hint="Start pos"
-            android:gravity="center"
-            android:imeOptions="actionDone"
-            android:inputType="numberSigned"
-            android:textSize="12dp"
-            android:enabled="false"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/maxIterationBox"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/maxIterationBox"
-            app:layout_constraintVertical_bias="0.0" />
-
-
-        <EditText
-            android:id="@+id/arrInputBox"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="125dp"
-            android:layout_marginRight="125dp"
-            android:background="@color/cardview_light_background"
-            android:digits="0123456789-"
-            android:elevation="8dp"
-            android:gravity="left|center"
-            android:hint="Add new array {1-2-3...}"
-            android:imeOptions="actionDone"
-            android:inputType="numberSigned"
-            android:paddingLeft="10dp"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/animationView" />
-
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="103dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:drawableBottom="@drawable/ic_play_arrow_black_24dp"
-            android:text="Run"
-            app:layout_constraintBottom_toBottomOf="@+id/starterInputBox"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/arrInputBox"
-            app:layout_constraintTop_toTopOf="@+id/arrInputBox"
-            app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
             android:id="@+id/sliderDots"
@@ -174,65 +91,41 @@
             app:layout_constraintTop_toBottomOf="@id/viewpager"></LinearLayout>
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/swStatusCustom"
+            android:id="@+id/swStatusCustom2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginTop="24dp"
+            android:text="Condition2 "
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textOff="++"
-            android:textOn="--"
+            android:textOff="F"
+            android:textOn="T"
             android:thumb="@drawable/switch_custom_selector"
-            app:layout_constraintBottom_toBottomOf="@+id/counter"
-            app:layout_constraintStart_toEndOf="@+id/counter"
-            app:layout_constraintTop_toTopOf="@+id/counter"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@+id/swStatusCustom1"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/swStatusCustom1"
+            app:layout_constraintTop_toBottomOf="@+id/swStatusCustom1"
             app:showText="true"
             app:track="@drawable/switch_custom_track" />
 
-        <EditText
-            android:id="@+id/maxIterationBox"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/swStatusCustom1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/cardview_light_background"
-            android:digits="0123456789"
-            android:elevation="8dp"
-            android:enabled="false"
-            android:gravity="center|center"
-            android:hint="End pos"
-            android:imeOptions="actionDone"
-            android:inputType="numberSigned"
-            android:textSize="12dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/starterInputBox"
-            app:layout_constraintTop_toBottomOf="@+id/arrInputBox"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <EditText
-            android:id="@+id/counter"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginLeft="48dp"
-            android:background="@color/cardview_light_background"
-            android:digits="0123456789"
-            android:elevation="8dp"
-            android:enabled="false"
-            android:gravity="center"
-            android:hint="Counter"
-            android:imeOptions="actionDone"
-            android:inputType="numberSigned"
-            android:textSize="12dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/maxIterationBox"
-            app:layout_constraintStart_toStartOf="@+id/maxIterationBox"
-            app:layout_constraintTop_toTopOf="@+id/maxIterationBox"
-            app:layout_constraintVertical_bias="0.0" />
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Condition1 "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textOff="F"
+            android:textOn="T"
+            android:thumb="@drawable/switch_custom_selector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/animationView"
+            app:showText="true"
+            app:track="@drawable/switch_custom_track" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
