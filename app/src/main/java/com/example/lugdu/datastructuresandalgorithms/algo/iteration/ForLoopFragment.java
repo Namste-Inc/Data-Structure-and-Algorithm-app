@@ -107,7 +107,7 @@ public class ForLoopFragment extends Fragment {
 
                             if (getActivity() != null && !hasStopped) {
                                if(switchStatus.isChecked()){
-                                   for(int i = startNum - 1; i > endNum - 1; i--){
+                                   for(int i = startNum; i > endNum - 1; i--){
                                        final int finalI = i;
                                        pause(Thread.currentThread(), 1000);
                                        if (getActivity() != null && !hasStopped) {
@@ -127,18 +127,18 @@ public class ForLoopFragment extends Fragment {
                                        }
                                    }
                                }else{
-                                   for(int i = startNum; i < endNum; i++){
+                                   for(int i = startNum; i <= endNum; i++){
                                        final int finalI = i;
                                        pause(Thread.currentThread(), 1000);
                                        if (getActivity() != null && !hasStopped) {
                                            getActivity().runOnUiThread(new Runnable() {
                                                @Override
                                                public void run() {
-                                                   float newX = tArr[finalI].getX() - 20;
-                                                   ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
-                                                   animation.setDuration(1000);
-                                                   animation.start();
-                                                   ((CircleText)tArr[finalI]).sorted();
+                                               float newX = tArr[finalI].getX() - 20;
+                                               ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
+                                               animation.setDuration(1000);
+                                               animation.start();
+                                               ((CircleText)tArr[finalI]).sorted();
                                                }
                                            });
                                        }
@@ -268,7 +268,7 @@ public class ForLoopFragment extends Fragment {
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                pause(Thread.currentThread(), 1000);
+                                pause(Thread.currentThread(), 500);
                                 for(int i = startNum; i< endNum; i++){
                                     final int iFinal = i;
                                     if(getActivity() != null && !hasStopped) {
