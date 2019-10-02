@@ -37,17 +37,14 @@ public class DoWhileLoopFragment extends Fragment {
     private ImageView[] dots;
     boolean hasStopped = false;
     ViewPager viewPager;
-    boolean isRunning;
     Thread animationThread;
     int circleSize = 150;
     int leftMargin = 0;
     int topMargin = 0;
     int bottomMargin = 0;
     int rightMargin = 0;
-    boolean condition1 = true;
-    boolean condition2 = true;
     int w;
-    SwitchCompat switchStatus1;
+    public SwitchCompat switchStatus1;
     SwitchCompat switchStatus2;
 
     RelativeLayout insertionPoint;
@@ -57,7 +54,6 @@ public class DoWhileLoopFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_do_while_loop, container,false);
-
         TextView def = view.findViewById(R.id.definitionText);
         GradientDrawable gradientDrawable = new GradientDrawable();
         int[] colors = {Color.GRAY,color};
@@ -77,6 +73,8 @@ public class DoWhileLoopFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked && switchStatus2.isChecked()){
+                    hasStopped = false;
+                    //checkStatus();
                     animateCircles();
                 }
             }
@@ -85,6 +83,8 @@ public class DoWhileLoopFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked && switchStatus1.isChecked()){
+                    hasStopped = false;
+                    //checkStatus();
                     animateCircles();
                 }
             }
@@ -95,7 +95,23 @@ public class DoWhileLoopFragment extends Fragment {
         return view;
     }
 
+    public void checkStatus() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (getActivity() != null) {
+
+                }
+                hasStopped = true;
+            }
+        });
+        thread.start();
+    }
+
     public void animateCircles(){
+        hasStopped = false;
+        checkStatus();
+        System.out.println("call");
         animationThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -112,10 +128,13 @@ public class DoWhileLoopFragment extends Fragment {
 
                                 animator.start();
                                 animator1.start();
-                                System.out.println("runing");
-                                //animate
                             }
                         });
+                    }
+                    else{
+//                        switchStatus1.setChecked(false);
+//                        switchStatus2.setChecked(false);
+                        break;
                     }
                     pause(Thread.currentThread(), 1000);
 
@@ -131,14 +150,35 @@ public class DoWhileLoopFragment extends Fragment {
 
                                 animator.start();
                                 animator1.start();
-                                System.out.println("runing");
+                                //System.out.println("runing2");
                                 //animate
                             }
                         });
+                    }else{
+                        break;
                     }
-
                     pause(Thread.currentThread(), 1000);
+                    if(getActivity()!= null && !hasStopped){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ObjectAnimator animator = ObjectAnimator.ofFloat(tArr[0],"translationX", tArr[1].getX());
+                                animator.setDuration(1000);
+
+                                ObjectAnimator animator1 = ObjectAnimator.ofFloat(tArr[1],"translationX", tArr[0].getX());
+                                animator1.setDuration(1000);
+
+                                animator.start();
+                                animator1.start();
+                                //System.out.println("runing2");
+                                //animate
+                            }
+                        });
+                    }else{
+                        break;
+                    }
                 }while (switchStatus1.isChecked() && switchStatus2.isChecked());
+                System.out.println("out");
             }
         });
         animationThread.start();
