@@ -44,9 +44,6 @@
         <item>Iterates through array to find a lower value then the minimum value and swaps it with the old minimum value making it the new minimum value</item>
         <item>Each preceding item in the array will be sorted starting from the front after each iteration</item>
     </string-array>
-
-
-
     <string-array name ="for_loop">
         <item>A form of iteration where a block code is repeated where the “for” statement contains where the loop starts, where the loop ends and how long the loop will be running for. </item>
         <item>Starts by typing “for”</item>
@@ -69,6 +66,27 @@
         <item>Enters the condition that will keep the loop going, the loop will exit when that condition becomes false</item>
         <item>A completed “do while loop” statement</item>
     </string-array>
+    <string-array name = "linear_search">
+        <item>An iterative algorithm that finds the position of a target value within a list, with the list being usually unsorted.</item>
+        <item>Does not need the list to be sorted</item>
+        <item>Starting from the leftmost item in the list</item>
+        <item>Sequentially look at every element in that list to see if it is the element we are looking for</item>
+        <item>If we have found the element then return the index of the element</item>
+        <item>If we have not found the element then return -1</item>
+    </string-array>
+    <string-array name = "binary_search">
+        <item>An algorithm that finds the position of a target value within a sorted array by cutting the array in half until the item is found or until we cannot split anymore. This would mean that the item is not found.</item>
+        <item>Needs to be a sorted list</item>
+        <item>Starts by comparing the middle element of the list to the element being searched for</item>
+        <item>If the element is equal to the middle element then we have found our element</item>
+        <item>If the element being searched for is greater than the middle element, the algorithm then looks at the left side of the list</item>
+        <item>If the element is less, the algorithm looks at the right side of the list</item>
+
+        <item>Repeat the process of splitting until we find our element</item>
+        <item>If we split down to one element and our item is not found then the element does not exist in the list</item>
+    </string-array>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
