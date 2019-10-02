@@ -1,25 +1,34 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.searching;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SwitchCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.lugdu.datastructuresandalgorithms.CircleText;
 import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
@@ -49,12 +58,16 @@ public class BinarySearchFragment extends Fragment {
     private ImageView[] dots;
     boolean hasStopped = false;
     ViewPager viewPager;
-    boolean isRunning;
+    boolean isRunning = false;
+    EditText addArray;
+    EditText searchFor;
+    Button searchButton;
+    int searchNum;
     public static int color = Color.parseColor("#1964B4");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_for_loop, container,false);
+        view = inflater.inflate(R.layout.fragment_binary_search, container,false);
         TextView def = view.findViewById(R.id.definitionText);
         GradientDrawable gradientDrawable = new GradientDrawable();
         int[] colors = {Color.GRAY,color};
@@ -65,6 +78,76 @@ public class BinarySearchFragment extends Fragment {
         def.setAnimation(animation);
         w = MainActivity.width;
         setUpViewPager();
+
+        insertPoint = view.findViewById(R.id.animationView);
+        insertPoint2 = view.findViewById(R.id.animationViewPointer);
+        addArray = view.findViewById(R.id.arrInputBox);
+        searchFor = view.findViewById(R.id.search_for);
+        searchButton = view.findViewById(R.id.search_button);
+        addArray.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addArray.setSelection(addArray.getText().length());
+            }
+        });
+        addArray.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    if(entryGood(addArray.getText().toString())) {
+                        if(!addArray.getText().toString().equals("")){
+                            parseArray(addArray.getText().toString());
+                            initArraySorted();
+                            searchFor.setEnabled(true);
+                        }
+                        else{
+                            addArray.setText("");
+                        }
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(addArray.getWindowToken(), 0);
+                        addArray.setSelection(addArray.getText().length());
+                        addArray.clearFocus();
+                        //explanationText.setText("");
+                        Toast.makeText(getContext(), "Input the start index", Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                    else{
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        searchFor.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    searchNum = Integer.parseInt(searchFor.getText().toString());
+                }
+                return false;
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(searchFor.isEnabled()) {
+                    if(isRunning){
+                        Toast.makeText(getContext(), "Already running", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        isRunning = true;
+                        explanationText.setText("Searching for" + searchNum);
+                        isRunning = false;
+                    }
+
+                }
+            }
+        });
+
         return view;
     }
 
@@ -173,5 +256,69 @@ public class BinarySearchFragment extends Fragment {
 
         return steps;
     }
+
+    public void initArraySorted(){
+        bubbleSort(arr);
+        int len = arr.length;
+        int totalLength = (len * (circleSize + leftMargin + rightMargin)) - leftMargin;
+        int totalSpace = w - totalLength;
+        int startSpace  = (totalSpace / 2);
+        tArr = new TextView[len];
+        if(insertPoint.getChildCount() > 0){
+            insertPoint.removeAllViews();
+        }
+        for(int i = 0; i<len; i++){
+            TextView textView = new CircleText(getContext());
+            textView.setText(arr[i] + "");
+            tArr[i] = textView;
+            textView.setX((i * 160) + startSpace);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
+            layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+            insertPoint.addView(textView, layoutParams);
+        }
+    }
+
+    public boolean entryGood(String entry){
+        String[] dashSplits = entry.split("-");
+        boolean containsTripleDigits = false;
+        if (dashSplits.length < 2) {
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        for (int i = 0; i <dashSplits.length; i++) {
+            if (dashSplits[i].length() > 2) {
+                containsTripleDigits = true;
+            }
+        }
+
+        if(entry.startsWith("-") || entry.endsWith("-") || entry.contains("--")){
+            Toast.makeText(getContext(),"Invalid Entry", Toast.LENGTH_LONG).show();
+
+            return false;
+        } else if (dashSplits.length > 7) {
+            Toast.makeText(getContext(),"Array size must not be larger than 7.", Toast.LENGTH_LONG).show();
+
+            return false;
+        } else if (containsTripleDigits) {
+            Toast.makeText(getContext(),"Inputs must not be larger than 99.", Toast.LENGTH_LONG).show();
+
+            return false;
+        }
+        return true;
+    }
+
+    public void bubbleSort(int arr[]){
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++)
+                if (arr[j] > arr[j+1])
+                {
+                    // swap arr[j+1] and arr[i]
+                    int temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                }
+    }
+
 
 }

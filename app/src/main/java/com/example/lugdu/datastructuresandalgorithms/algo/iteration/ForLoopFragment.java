@@ -61,7 +61,7 @@ public class ForLoopFragment extends Fragment {
     private ImageView[] dots;
     boolean hasStopped = false;
     ViewPager viewPager;
-    boolean isRunning;
+    boolean isRunning = false;
     public static int color = Color.parseColor("#19B41C");
     @Nullable
     @Override
@@ -91,6 +91,7 @@ public class ForLoopFragment extends Fragment {
                     @Override
                     public void run() {
                         if(!isRunning){
+                            isRunning = true;
                             if (getActivity() != null && !hasStopped) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
@@ -167,6 +168,7 @@ public class ForLoopFragment extends Fragment {
                         else{
                             Toast.makeText(getContext(), "Already running", Toast.LENGTH_LONG).show();
                         }
+                        isRunning = false;
                     }
                 };
                 Thread thread = new Thread(runnable);
