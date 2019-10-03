@@ -1,7 +1,9 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.searching;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,7 +47,7 @@ public class LinearSearchFragment extends Fragment {
     RelativeLayout insertPoint;
     RelativeLayout insertPoint2;
     final int circleSize = 150;
-    final int leftMargin = 20;
+    final int leftMargin = 0;
     final int rightMargin = 0;
     final int topMargin = 0;
     final int bottomMargin = 0;
@@ -77,6 +79,7 @@ public class LinearSearchFragment extends Fragment {
         def.setAnimation(animation);
         w = MainActivity.width;
         setUpViewPager();
+        explanationText = view.findViewById(R.id.explanationText);
         searchFor = view.findViewById(R.id.search_for);
         searchButton = view.findViewById(R.id.search_button);
 
@@ -106,7 +109,7 @@ public class LinearSearchFragment extends Fragment {
                         addArray.setSelection(addArray.getText().length());
                         addArray.clearFocus();
                         //explanationText.setText("");
-                        Toast.makeText(getContext(), "Input the start index", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Input a number to search for", Toast.LENGTH_LONG).show();
                         return true;
                     }
                     else{
@@ -123,6 +126,8 @@ public class LinearSearchFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE){
                     searchNum = Integer.parseInt(searchFor.getText().toString());
+                    pointerButton = initPointer(0);
+
                 }
                 return false;
             }
@@ -131,19 +136,176 @@ public class LinearSearchFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(searchFor.isEnabled()) {
-                    if(isRunning){
-                        Toast.makeText(getContext(), "Already running", Toast.LENGTH_LONG).show();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(searchFor.isEnabled()) {
+                            if(isRunning){
+                                if(getActivity() != null && !hasStopped){
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getContext(), "Already running", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+
+                            }
+                            else{
+                                isRunning = true;
+                                final int num = linearSearch(arr, searchNum);
+                                if(getActivity() != null && !hasStopped){
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            explanationText.setText("Searching for " + searchNum);
+                                            if(num == -1){
+                                                explanationText.setText("The number you are looking for is not in the list");
+                                            }else{
+                                                explanationText.setText("Number found at index " + num);
+                                            }
+                                        }
+                                    });
+                                }
+                                else{
+                                    hasStopped = true;
+                                    isRunning = false;
+                                    return;
+                                }
+                                isRunning = false;
+                            }
+                        }
                     }
-                    else{
-                        isRunning = true;
-                        explanationText.setText("Searching for" + searchNum);
-                        isRunning = false;
-                    }
-                }
+                });
+                thread.start();
             }
         });
         return view;
+    }
+
+    public int linearSearch(int[] array1, int num1){
+        final int[] array = array1;
+        final int num = num1;
+        for(int i1 = 0; i1 < array.length; i1++){
+            final int i = i1;
+            if(getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        float newX = tArr[i].getX();
+                        ObjectAnimator animation = ObjectAnimator.ofFloat(pointerButton, "translationX", newX);
+                        animation.setDuration(1000);
+                        animation.start();
+                        ((CircleText)tArr[i]).select(true);
+                    }
+                });
+            }
+            pause(Thread.currentThread(), 1000);
+            if(getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pointerButton.setText("arr[" + i + "]");
+                    }
+                });
+            }
+            if(array[i] == num){
+                if(getActivity() != null && !hasStopped){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            explanationText.setText("is '" + array[i] + "' = " + num);
+                        }
+                    });
+
+                }else{
+                    return -2;
+                }
+                pause(Thread.currentThread(), 1000);
+                if(getActivity() != null && !hasStopped){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            explanationText.setText("Yes");
+                        }
+                    });
+                }else{
+                    return -2;
+                }
+                pause(Thread.currentThread(), 1000);
+                if(getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((CircleText)tArr[i]).deselect();
+                        }
+                    });
+                }
+                return i;
+            }
+            if(getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("is '" + array[i] + "' = " + num);
+                    }
+                });
+
+            }else{
+                return -2;
+            }
+            pause(Thread.currentThread(), 1000);
+            if(getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("No");
+                        ((CircleText)tArr[i]).deselect();
+                    }
+                });
+
+            }else{
+                return -2;
+            }
+            pause(Thread.currentThread(), 1000);
+        }
+        return -1;
+    }
+
+    public void pause(Thread thread, int time){
+        synchronized (thread){
+            try {
+                Thread.currentThread().wait(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Button initPointer(int start){
+        if(insertPoint2.getChildCount() > 0){
+            insertPoint2.removeAllViews();
+        }
+        Button button = new Button(getContext());
+        button.setAllCaps(false);
+        button.setPadding(0, 0, 0, 0);
+        Drawable drawableArrow = ContextCompat.getDrawable(
+                getContext(),
+                R.drawable.ic_arrow_down_black_24dp
+        );
+        button.setText("arr[" + start + "]");
+        button.setX(tArr[start].getX());
+        button.setBackgroundColor(Color.TRANSPARENT);
+        button.setCompoundDrawablesWithIntrinsicBounds(
+                null, // Drawable left
+                null, // Drawable top
+                null, // Drawable right
+                drawableArrow // Drawable bottom
+        );
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,180);
+        layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+        insertPoint2.addView(button, layoutParams);
+        return button;
     }
 
     public void parseArray(String arr){
