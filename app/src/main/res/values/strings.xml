@@ -74,6 +74,9 @@
     <string-array name ="get_length">
         <item>A method used to return the number of characters in a String. </item>
     </string-array>
+    <string-array name ="replace">
+        <item>A method used to search a string for a specified value, or a regular expression, and returns a new string where the specified values are replaced. </item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

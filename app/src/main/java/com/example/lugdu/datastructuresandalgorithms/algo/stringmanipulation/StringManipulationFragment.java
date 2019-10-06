@@ -59,21 +59,14 @@ public class StringManipulationFragment extends Fragment {
         textView.setText("String Manipulation");
 
         final ViewPager viewPager = view.findViewById(R.id.pager);
-        tabLayout.addTab(tabLayout.newTab().setText("Get Length"));
-        tabLayout.addTab(tabLayout.newTab().setText("Get Index"));
-        tabLayout.addTab(tabLayout.newTab().setText("Contains"));
         tabLayout.addTab(tabLayout.newTab().setText("Replace"));
-        tabLayout.addTab(tabLayout.newTab().setText("Casing"));
+        tabLayout.addTab(tabLayout.newTab().setText("Concatenate"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         HashMap<Integer, Fragment> stringmanipulation = new HashMap<>();
-        stringmanipulation.put(0,new GetLengthFragment());
-        stringmanipulation.put(1,new GetLengthFragment());
-        stringmanipulation.put(2,new GetLengthFragment());
-        stringmanipulation.put(3,new GetLengthFragment());
-        stringmanipulation.put(4,new GetLengthFragment());
+        stringmanipulation.put(0,new ReplaceFragment());
+        stringmanipulation.put(1,new StringConcatFragment());
 
         PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),tabLayout.getTabCount(),stringmanipulation);
         viewPager.setAdapter(pagerAdapter);
