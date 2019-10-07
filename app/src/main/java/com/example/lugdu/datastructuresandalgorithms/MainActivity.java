@@ -32,26 +32,20 @@ public class MainActivity extends AppCompatActivity  {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
         /*myDB = new DatabaseHelper(this);
-
         myDB.insertData("BubbleSort", "Sorts an array by swapping the adjacent elements if they are in the wrong order", "Iterates Through array and see if succeeding number if less than the current number");
         myDB.insertData("BubbleSort", null, "If the current number is less than the succeeding number the two numbers swap");
         myDB.insertData("BubbleSort", null, "After each iteration the next number starting from the back is sorted");
-
         myDB.insertData("SelectionSort", "Sorts an array by repeatedly finding the minimum element from unsorted part and putting it at the beginning; in every iteration of selection sort, the minimum element from the unsorted subarray is picked and moved to the sorted array", "Starting from the beginning of the array, sets the next item in the array to be the minimum value in the array");
         myDB.insertData("SelectionSort", null, "Iterates through array to find a lower value then the minimum value and swaps it with the old minimum value making it the new minimum value");
         myDB.insertData("SelectionSort", null, "Each preceding item in the array will be sorted starting from the front after each iteration");
-
         myDB.insertData("InsertionSort", "A simple sorting algorithm that builds the final sorted array one item at a time", "Starting with the second item in the array for as long as the number to the left is less than the current number swap current number with the number on its left");
         myDB.insertData("InsertionSort", null, "This is done for each preceding number in array until we reach the end of the array");
-
         myDB.insertData("QuickSort", "Picks an element as pivot and partitions the given array around the picked pivot", "Select a pivot of your choosing");
         myDB.insertData("QuickSort", null, "Put all items lower than the pivot to its left and all items larger than the pivot to its right, the pivot is now sorted");
         myDB.insertData("QuickSort", null, "Repeat the above step for the right side of the pivot as a sub array and do the same for the right side of the pivot");
-
         myDB.insertData("MergeSort", "Sorts an array by swapping the adjacent elements if they are in the wrong order", "The algorithm starts by splitting the array half then split those halves in half until there is until each subarray is size one");
         myDB.insertData("MergeSort", null, "Each pair of halves is sorted then sorts as they merge with each other");
         myDB.insertData("MergeSort", null, "This method can be looked at as similar to divide and conquer but they sort as they conquer");
-
         myDB.insertData("HeapSort", "First the maximum element is found and then placed at the end, the the process is repeated for each remaining element", "Puts array in heap");
         myDB.insertData("HeapSort", null, "Change heap to max heap (A max heap states that a parent node is always greater than or equal to its child node)");
         myDB.insertData("HeapSort", null, "Take the root and swap it with the last node in the heap");
@@ -78,7 +72,7 @@ public class MainActivity extends AppCompatActivity  {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                     return true;
                 }
-    };
+            };
 
     public static int manipulateColor(int color, float factor) {
         int a = Color.alpha(color);
