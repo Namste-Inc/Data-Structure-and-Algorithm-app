@@ -47,13 +47,15 @@ public class TreeTraversalFragment extends Fragment {
         textView.setText("Tree Traversal");
         final ViewPager viewPager = view.findViewById(R.id.pager);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Depth-First Search"));
-        tabLayout.addTab(tabLayout.newTab().setText("Breadth-First Search"));
+        tabLayout.addTab(tabLayout.newTab().setText("In Order"));
+        tabLayout.addTab(tabLayout.newTab().setText("Pre Order"));
+        tabLayout.addTab(tabLayout.newTab().setText("Post Order"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         HashMap<Integer, Fragment> search = new HashMap<>();
-        search.put(1,new DFSearchFragment());
-        search.put(0,new BFSearchFragment());
+        search.put(0,new InOrderFragment());
+        search.put(1,new PreOrderFragment());
+        search.put(2,new PostOrderFragment());
 
         PagerAdapter pagerAdapter = new PagerAdapter(getFragmentManager(),tabLayout.getTabCount(),search);
         viewPager.setAdapter(pagerAdapter);

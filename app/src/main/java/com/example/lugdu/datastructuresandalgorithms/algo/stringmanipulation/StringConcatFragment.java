@@ -257,7 +257,7 @@ public class StringConcatFragment extends Fragment {
     public HashMap<Integer, Fragment> getViewFragments(){
         HashMap<Integer, Fragment> steps = new HashMap<>();
         StepsFragment stepsFragment = new StepsFragment();
-        String[] strArr = getResources().getStringArray(R.array.replace);
+        String[] strArr = getResources().getStringArray(R.array.string_concat);
         Bundle bundle = new Bundle();
         bundle.putStringArray("string array", strArr);
         stepsFragment.setArguments(bundle);
