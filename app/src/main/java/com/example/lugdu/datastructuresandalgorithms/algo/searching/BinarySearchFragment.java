@@ -257,6 +257,7 @@ public class BinarySearchFragment extends Fragment {
                     public void run() {
                         explanationText.setText("is '" + num + "' greater than " + arr1[mid] +" Or less than " + arr1[mid]);
                     }
+
                 });
             }
             pause(Thread.currentThread(), 3000);
@@ -278,12 +279,11 @@ public class BinarySearchFragment extends Fragment {
                             for(int i = left; i <= mid; i ++){
                                 Animation fadeOut = new AlphaAnimation(1, 0);
                                 fadeOut.setInterpolator(new DecelerateInterpolator());
-                                fadeOut.setDuration(000);
+                                fadeOut.setDuration(1000);
                                 fadeOut.setFillAfter(true);
                                 tArr[i].clearAnimation();
                                 tArr[i].startAnimation(fadeOut);
                             }
-
                         }
                     });
                 }
