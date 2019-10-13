@@ -1,7 +1,9 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.searching;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,8 +18,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -41,17 +45,15 @@ import java.util.HashMap;
 public class BinarySearchFragment extends Fragment {
     View view;
     int arr[];
-    TextView tArr[];
+    CircleText tArr[];
     TextView explanationText;
     RelativeLayout insertPoint;
     RelativeLayout insertPoint2;
     final int circleSize = 150;
-    final int leftMargin = 20;
+    final int leftMargin = 0;
     final int rightMargin = 0;
     final int topMargin = 0;
     final int bottomMargin = 0;
-    int startNum;
-    int endNum;
     int w;
     Button pointerButton;
     SwitchCompat switchStatus;
@@ -79,6 +81,7 @@ public class BinarySearchFragment extends Fragment {
         w = MainActivity.width;
         setUpViewPager();
 
+        explanationText = view.findViewById(R.id.explanationText);
         insertPoint = view.findViewById(R.id.animationView);
         insertPoint2 = view.findViewById(R.id.animationViewPointer);
         addArray = view.findViewById(R.id.arrInputBox);
@@ -126,6 +129,8 @@ public class BinarySearchFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE){
                     searchNum = Integer.parseInt(searchFor.getText().toString());
+                    pointerButton = initPointer(arr.length / 2);
+                    explanationText.setText("Search will start at the half");
                 }
                 return false;
             }
@@ -134,21 +139,236 @@ public class BinarySearchFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(searchFor.isEnabled()) {
-                    if(isRunning){
-                        Toast.makeText(getContext(), "Already running", Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        isRunning = true;
-                        explanationText.setText("Searching for" + searchNum);
-                        isRunning = false;
-                    }
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(searchFor.isEnabled()) {
+                            if(isRunning){
+                                Toast.makeText(getContext(), "Already running", Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                isRunning = true;
+                                if(getActivity() != null && !hasStopped){
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            explanationText.setText("Searching for " + searchNum);
+                                        }
+                                    });
+                                }
+                                binarySearch(arr, searchNum);
+                                if(getActivity() != null && !hasStopped){
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            for(int i = 0; i < tArr.length; i ++){
+                                                tArr[i].deselect();
+                                                Animation fadeOut = new AlphaAnimation(0, 1);
+                                                fadeOut.setInterpolator(new DecelerateInterpolator());
+                                                fadeOut.setDuration(1000);
+                                                fadeOut.setFillAfter(true);
+                                                tArr[i].clearAnimation();
+                                                tArr[i].startAnimation(fadeOut);
+                                            }
+                                        }
+                                    });
 
-                }
+                                }
+                                isRunning = false;
+                            }
+                        }
+                    }
+                });
+                thread.start();
             }
         });
 
         return view;
+    }
+
+    public int binarySearch(int arr[], int x)
+    {
+        final int [] arr1 = arr;
+        final int num = x;
+        int l = 0, r = arr.length - 1;
+
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            final int left = l, right = r;
+            final int mid = m;
+            if(getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(pointerButton, "translationX", tArr[mid].getX());
+                        objectAnimator.setDuration(1000);
+                        objectAnimator.start();
+                        tArr[mid].select(false);
+                        pointerButton.setText("arr["+ mid +"]");
+                    }
+                });
+            }
+            pause(Thread.currentThread(), 1000);
+            if(getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("is '" + arr1[mid] + "' = " + num);
+                    }
+                });
+            }
+            pause(Thread.currentThread(), 2000);
+            // Check if x is present at mid
+            if (arr[m] == x) {
+                if(getActivity() != null && !hasStopped){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            explanationText.setText("Yes");
+                            tArr[mid].sorted();
+                        }
+                    });
+                }
+                pause(Thread.currentThread(), 1500);
+                if(getActivity() != null && !hasStopped){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            explanationText.setText(num + " found at index " + mid);
+                            tArr[mid].sorted();
+                        }
+                    });
+                }
+                pause(Thread.currentThread(), 1500);
+                return m;
+            }
+            if(getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("No");
+                    }
+                });
+            }
+            pause(Thread.currentThread(), 1500);
+            if(getActivity() != null && !hasStopped){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("is '" + num + "' greater than " + arr1[mid] +" Or less than " + arr1[mid]);
+                    }
+                });
+            }
+            pause(Thread.currentThread(), 3000);
+            // If x greater, ignore left half
+            if (arr[m] < x) {
+                if(getActivity() != null && !hasStopped){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            explanationText.setText("Greater than");
+                        }
+                    });
+                }
+                pause(Thread.currentThread(), 2000);
+                if(getActivity() != null && !hasStopped){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for(int i = left; i <= mid; i ++){
+                                Animation fadeOut = new AlphaAnimation(1, 0);
+                                fadeOut.setInterpolator(new DecelerateInterpolator());
+                                fadeOut.setDuration(000);
+                                fadeOut.setFillAfter(true);
+                                tArr[i].clearAnimation();
+                                tArr[i].startAnimation(fadeOut);
+                            }
+
+                        }
+                    });
+                }
+                l = m + 1;
+            }
+                // If x is smaller, ignore right half
+            else {
+                if(getActivity() != null && !hasStopped){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            explanationText.setText("Less than");
+                        }
+                    });
+                }
+                pause(Thread.currentThread(), 1000);
+                if(getActivity() != null && !hasStopped){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for(int i = right; i >= mid; i --){
+                                Animation fadeOut = new AlphaAnimation(1, 0);
+                                fadeOut.setInterpolator(new DecelerateInterpolator());
+                                fadeOut.setDuration(1000);
+                                fadeOut.setFillAfter(true);
+                                tArr[i].clearAnimation();
+                                tArr[i].startAnimation(fadeOut);
+                            }
+
+                        }
+                    });
+                }
+
+                r = m - 1;
+            }
+            pause(Thread.currentThread(), 1000);
+        }
+        if(getActivity() != null && !hasStopped){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    explanationText.setText(num +" is not in the list");
+                }
+            });
+        }
+        pause(Thread.currentThread(), 1500);
+        // if we reach here, then element was
+        // not present
+        return -1;
+    }
+
+    public void pause(Thread thread, int time){
+        synchronized (thread){
+            try {
+                Thread.currentThread().wait(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Button initPointer(int start){
+        if(insertPoint2.getChildCount() > 0){
+            insertPoint2.removeAllViews();
+        }
+        Button button = new Button(getContext());
+        button.setAllCaps(false);
+        button.setPadding(0, 0, 0, 0);
+        Drawable drawableArrow = ContextCompat.getDrawable(
+                getContext(),
+                R.drawable.ic_arrow_down_black_24dp
+        );
+        button.setText("arr[" + start + "]");
+        button.setX(tArr[start].getX());
+        button.setBackgroundColor(Color.TRANSPARENT);
+        button.setCompoundDrawablesWithIntrinsicBounds(
+                null, // Drawable left
+                null, // Drawable top
+                null, // Drawable right
+                drawableArrow // Drawable bottom
+        );
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,180);
+        layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+        insertPoint2.addView(button, layoutParams);
+        return button;
     }
 
     public void parseArray(String arr){
@@ -263,12 +483,12 @@ public class BinarySearchFragment extends Fragment {
         int totalLength = (len * (circleSize + leftMargin + rightMargin)) - leftMargin;
         int totalSpace = w - totalLength;
         int startSpace  = (totalSpace / 2);
-        tArr = new TextView[len];
+        tArr = new CircleText[len];
         if(insertPoint.getChildCount() > 0){
             insertPoint.removeAllViews();
         }
         for(int i = 0; i<len; i++){
-            TextView textView = new CircleText(getContext());
+            CircleText textView = new CircleText(getContext());
             textView.setText(arr[i] + "");
             tArr[i] = textView;
             textView.setX((i * 160) + startSpace);
@@ -319,6 +539,5 @@ public class BinarySearchFragment extends Fragment {
                     arr[j+1] = temp;
                 }
     }
-
 
 }
