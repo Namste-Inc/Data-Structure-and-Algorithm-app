@@ -59,4 +59,12 @@ public class CircleText extends android.support.v7.widget.AppCompatTextView {
         color = Color.GREEN;
         invalidate();
     }
+
+    public boolean isSelected() {
+        if (color == Color.BLUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
