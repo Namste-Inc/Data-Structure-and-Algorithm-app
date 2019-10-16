@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.example.lugdu.datastructuresandalgorithms.MainActivity;
 import com.example.lugdu.datastructuresandalgorithms.PagerAdapter;
 import com.example.lugdu.datastructuresandalgorithms.R;
+import com.example.lugdu.datastructuresandalgorithms.Steps2Fragment;
 import com.example.lugdu.datastructuresandalgorithms.StepsFragment;
 
 import java.util.HashMap;
@@ -216,7 +217,6 @@ public class StringConcatFragment extends Fragment {
         String originalText = editText.getText().toString();
         String secondText = secondInputBox.getText().toString();
         appendedText = originalText + secondText;
-
     }
 
     public void parseArray(String arr) {
@@ -256,17 +256,25 @@ public class StringConcatFragment extends Fragment {
 
     public HashMap<Integer, Fragment> getViewFragments(){
         HashMap<Integer, Fragment> steps = new HashMap<>();
+
         StepsFragment stepsFragment = new StepsFragment();
         String[] strArr = getResources().getStringArray(R.array.string_concat);
         Bundle bundle = new Bundle();
         bundle.putStringArray("string array", strArr);
         stepsFragment.setArguments(bundle);
 
+        Steps2Fragment steps2Fragment1 = new Steps2Fragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("step", strArr[2]);
+        bundle1.putInt("image", R.drawable.concat_pic);
+        steps2Fragment1.setArguments(bundle1);
+
         TextView textView = view.findViewById(R.id.definitionText);
         textView.setText("Definition: " + strArr[0]);
 
 
         steps.put(0, stepsFragment);
+        steps.put(1, steps2Fragment1);
 
         return steps;
     }

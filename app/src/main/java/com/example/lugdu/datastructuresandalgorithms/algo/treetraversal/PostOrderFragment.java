@@ -48,7 +48,7 @@ public class PostOrderFragment extends Fragment {
     TextView tArr[];
     int[] orderedArray;
     RelativeLayout explanationText;
-    EditText resultText;
+    TextView resultText;
 
     int circleSize = 120;
     int leftMargin = 20;
@@ -170,6 +170,18 @@ public class PostOrderFragment extends Fragment {
                                             resultText.setText("Ordered tree: " + arrayToString(orderedArray, true));
                                         }
                                     });
+                                }
+
+                                for (int i = 0; i < arr.length; i ++) {
+                                    final int finalI = i;
+                                    if (getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ((CircleText) tArr[finalI]).sorted();
+                                            }
+                                        });
+                                    }
                                 }
 
                                 isRunning = false;
@@ -377,9 +389,7 @@ public class PostOrderFragment extends Fragment {
             }
 
             postOrder(node.left);
-
             postOrder(node.right);
-
 
             System.out.printf("%s ", node.data);
             int index = 0;
@@ -404,8 +414,6 @@ public class PostOrderFragment extends Fragment {
                 });
             }
             pause(Thread.currentThread(),1000);
-//            postOrder(node.left);
-//            postOrder(node.right);
         }
 
         /**
@@ -503,17 +511,32 @@ public class PostOrderFragment extends Fragment {
 
     public HashMap<Integer, Fragment> getViewFragments(){
         HashMap<Integer, Fragment> steps = new HashMap<>();
+
         StepsFragment stepsFragment = new StepsFragment();
-        String[] strArr = getResources().getStringArray(R.array.inOrder);
+        String[] strArr = getResources().getStringArray(R.array.postOrder);
         Bundle bundle = new Bundle();
         bundle.putStringArray("string array", strArr);
         stepsFragment.setArguments(bundle);
+
+        Steps2Fragment steps2Fragment1 = new Steps2Fragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("step", strArr[1]);
+        bundle1.putInt("image", R.drawable.tree_creation_pic);
+        steps2Fragment1.setArguments(bundle1);
+
+        Steps2Fragment steps2Fragment2 = new Steps2Fragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("step", strArr[2]);
+        bundle2.putInt("image", R.drawable.visiting_postorder);
+        steps2Fragment2.setArguments(bundle2);
 
         TextView textView = view.findViewById(R.id.definitionText);
         textView.setText("Definition: " + strArr[0]);
 
 
         steps.put(0, stepsFragment);
+        steps.put(1, steps2Fragment1);
+        steps.put(2, steps2Fragment2);
 
         return steps;
     }
