@@ -1,6 +1,7 @@
 package com.example.lugdu.datastructuresandalgorithms.algo.hashfunction;
 
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,20 +39,24 @@ import java.util.HashMap;
 
 public class HashFunctionFragment extends Fragment {
     View view;
-    RelativeLayout insertPoint;
-    RelativeLayout insertPoint2;
+    LinearLayout insertPoint;
     final int circleSize = 90;
-    final int leftMargin = 30;
+    final int leftMargin = 20;
     final int rightMargin = 0;
     final int topMargin = 20;
-    final int bottomMargin = 20;
+    final int bottomMargin = 0;
+    EditText stringInput;
+    TextView explanationText;
+
+    Button hashButton;
+    boolean running = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_hash_function, container,false);
-        System.out.println(hashingStr("mane"));
+        //System.out.println(hashingStr("mane"));
         int color = getArguments().getInt("color");
         int darkenColor = MainActivity.manipulateColor(color, .8f);
         getActivity().getWindow().setStatusBarColor(darkenColor);
@@ -64,7 +71,9 @@ public class HashFunctionFragment extends Fragment {
         TextView def = view.findViewById(R.id.definitionText);
         GradientDrawable gradientDrawable = new GradientDrawable();
         insertPoint = view.findViewById(R.id.animationView);
-        insertPoint2 = view.findViewById(R.id.animationViewPointer);
+        hashButton = view.findViewById(R.id.hash_button);
+        stringInput = view.findViewById(R.id.string_input);
+        explanationText = view.findViewById(R.id.explanationText);
         int[] colors = {Color.GRAY,color};
         gradientDrawable.setColors(colors);
         def.setBackground(gradientDrawable);
@@ -73,7 +82,22 @@ public class HashFunctionFragment extends Fragment {
         def.setAnimation(animation);
         TextView textView = view.findViewById(R.id.textviewtoolbar);
         textView.setText("Hash Function");
-        initBoxes();
+        hashButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!running){
+                            hashingStrAni(stringInput.getText().toString(),11);
+                        }
+                    }
+                });
+                thread.start();
+            }
+        });
+
+        //initBoxes();
         return view;
     }
 
@@ -200,27 +224,6 @@ public class HashFunctionFragment extends Fragment {
         return steps;
     }
 
-//    public void initArraySorted(){
-//        bubbleSort(arr);
-//        int len = arr.length;
-//        int totalLength = (len * (circleSize + leftMargin + rightMargin)) - leftMargin;
-//        int totalSpace = w - totalLength;
-//        int startSpace  = (totalSpace / 2);
-//        tArr = new CircleText[len];
-//        if(insertPoint.getChildCount() > 0){
-//            insertPoint.removeAllViews();
-//        }
-//        for(int i = 0; i<len; i++){
-//            CircleText textView = new CircleText(getContext());
-//            textView.setText(arr[i] + "");
-//            tArr[i] = textView;
-//            textView.setX((i * 160) + startSpace);
-//            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleSize,circleSize);
-//            layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
-//            insertPoint.addView(textView, layoutParams);
-//        }
-//    }
-
     public boolean entryGood(String entry) {
         String[] dashSplits = entry.split("-");
         boolean containsTripleDigits = false;
@@ -250,13 +253,111 @@ public class HashFunctionFragment extends Fragment {
         return true;
     }
 
-
-    public int hashingStr(String str){
-        int modifier = 7;
+    public int hashingStrAni(String str, int arraySize){
         int hash = 0;
-        for(int i = 0; i < str.length(); i++){
-            hash += Math.pow(str.charAt(i), modifier);
+        for(int i = 0; i < str.length(); i++) {
+            final int constantInt = 31;
+            final char charAtI = str.charAt(i);
+            final int charIntAtI = str.charAt(i);
+            final int subHash = (int)(charIntAtI * Math.pow(constantInt,i));
+            hash += subHash;
+            final int finalI = i;
+            if(i == 0){
+                final TextView textView = new TextView(getContext());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        textView.setText(charAtI + "");
+                        textView.setPadding(20,0,0,0);
+                        //textView.setBackgroundColor(Color.GRAY);
+                        //textView.setY((finalI * 100));
+                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(700,80);
+                        layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+                        insertPoint.addView(textView);
+                        explanationText.setText("We first get the unicode value of '" + charAtI + "'" );
+                    }
+                });
+                pause(Thread.currentThread(), 3000);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.append(" = " + charIntAtI);
+                    }
+                });
+                pause(Thread.currentThread(),1000);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("multiply a constant to the power of the characters current position in the string");
+                    }
+                });
+                pause(Thread.currentThread(), 2000);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.append(" x 31^" + finalI );
+                    }
+                });
+                pause(Thread.currentThread(), 1000);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        explanationText.setText("The hash value for character '"+ charAtI + "' is " + subHash);
+                    }
+                });
+                pause(Thread.currentThread(), 2000);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.append(" = " + subHash);
+                    }
+                });
+                if(str.length() > 1){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            explanationText.setText("Do this for the rest of the characters");
+                        }
+                    });
+                }
+            }
+            else{
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView textView = new TextView(getContext());
+                        textView.setText(charAtI + " = " + charIntAtI + " x 31^" + finalI + " = " + subHash);
+                        textView.setPadding(20,0,0,0);
+                        //textView.setBackgroundColor(Color.GRAY);
+                        //textView.setY((finalI * 100));
+                        //RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(700,80);
+                        //layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+                        insertPoint.addView(textView);
+                    }
+                });}
+                pause(Thread.currentThread(), 1000);
         }
-        return hash % 8;
+        final int finalHash = hash;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                explanationText.setText("The summation of these values gives us the hash for the string: " + finalHash);
+                TextView textView = new TextView(getContext());
+                textView.setPadding(20,30,0,0);
+                textView.setText("hash: " + finalHash);
+            }
+        });
+
+        return hash % arraySize;
+    }
+    public void pause(Thread thread, int time){
+        synchronized (thread){
+            try {
+                Thread.currentThread().wait(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
