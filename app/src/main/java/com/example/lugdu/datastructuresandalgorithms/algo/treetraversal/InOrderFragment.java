@@ -48,7 +48,7 @@ public class InOrderFragment extends Fragment {
     TextView tArr[];
     int[] orderedArray;
     RelativeLayout explanationText;
-    EditText resultText;
+    TextView resultText;
 
     int circleSize = 120;
     int leftMargin = 20;
@@ -171,6 +171,17 @@ public class InOrderFragment extends Fragment {
                                         }
                                     });
                                 }
+                                for (int i = 0; i < arr.length; i ++) {
+                                    final int finalI = i;
+                                    if (getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ((CircleText) tArr[finalI]).sorted();
+                                            }
+                                        });
+                                    }
+                                }
 
                                 isRunning = false;
                                 hasStopped = false;
@@ -213,6 +224,7 @@ public class InOrderFragment extends Fragment {
     public boolean entryGood(String entry) {
         String[] dashSplits = entry.split("-");
         boolean containsTripleDigits = false;
+        boolean containsDuplicates = false;
         if (dashSplits.length < 2) {
             Toast.makeText(getContext(), "Invalid Entry", Toast.LENGTH_LONG).show();
             return false;
@@ -220,6 +232,14 @@ public class InOrderFragment extends Fragment {
         for (int i = 0; i < dashSplits.length; i++) {
             if (dashSplits[i].length() > 2) {
                 containsTripleDigits = true;
+            }
+        }
+
+        for (int i = 0; i < dashSplits.length; i++) {
+            for (int j = i + 1; j < dashSplits.length; j++) {
+                if (dashSplits[i].equals(dashSplits[j])) {
+                    containsDuplicates = true;
+                }
             }
         }
 
@@ -234,6 +254,9 @@ public class InOrderFragment extends Fragment {
         } else if (containsTripleDigits) {
             Toast.makeText(getContext(), "Inputs must not be larger than 99.", Toast.LENGTH_LONG).show();
 
+            return false;
+        } else if (containsDuplicates) {
+            Toast.makeText(getContext(), "Input must not contain duplicate number(s).", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
@@ -457,12 +480,12 @@ public class InOrderFragment extends Fragment {
         }
     }
 
-    public void setUpViewPager(){
+    public void setUpViewPager() {
         LinearLayout dotsView = view.findViewById(R.id.sliderDots);
         HashMap<Integer, Fragment> steps = getViewFragments();
         viewPager = view.findViewById(R.id.viewpager);
         dots = new ImageView[steps.size()];
-        for(int i = 0; i < dots.length; i++){
+        for (int i = 0; i < dots.length; i++) {
             dots[i] = new ImageView(getContext());
             dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
 
@@ -475,7 +498,7 @@ public class InOrderFragment extends Fragment {
         }
         dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager(),steps.size(),steps);
+        PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager(), steps.size(), steps);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -485,7 +508,7 @@ public class InOrderFragment extends Fragment {
 
             @Override
             public void onPageSelected(int i) {
-                for(int j = 0; j< dots.length; j++){
+                for (int j = 0; j < dots.length; j++) {
                     dots[j].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
                 }
                 dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
@@ -499,19 +522,34 @@ public class InOrderFragment extends Fragment {
         });
     }
 
-    public HashMap<Integer, Fragment> getViewFragments(){
+    public HashMap<Integer, Fragment> getViewFragments() {
         HashMap<Integer, Fragment> steps = new HashMap<>();
+
         StepsFragment stepsFragment = new StepsFragment();
         String[] strArr = getResources().getStringArray(R.array.inOrder);
         Bundle bundle = new Bundle();
         bundle.putStringArray("string array", strArr);
         stepsFragment.setArguments(bundle);
 
+        Steps2Fragment steps2Fragment1 = new Steps2Fragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("step", strArr[1]);
+        bundle1.putInt("image", R.drawable.tree_creation_pic);
+        steps2Fragment1.setArguments(bundle1);
+
+        Steps2Fragment steps2Fragment2 = new Steps2Fragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("step", strArr[2]);
+        bundle2.putInt("image", R.drawable.inorder_pic);
+        steps2Fragment2.setArguments(bundle2);
+
         TextView textView = view.findViewById(R.id.definitionText);
         textView.setText("Definition: " + strArr[0]);
 
 
         steps.put(0, stepsFragment);
+        steps.put(1, steps2Fragment1);
+        steps.put(2, steps2Fragment2);
 
         return steps;
     }

@@ -89,21 +89,33 @@
     <string-array name="string_replace">
         <item>A method used to search a string for a specified value, or a regular expression, and returns a new string where the
         specified values are replaced.</item>
+        <item>Instantiate a string if necessary.</item>
+        <item>Call the replace() method on the string.</item>
+        <item>exampleString.replace("replace this","with this")</item>
     </string-array>
 
     <string-array name="string_concat">
-        <item>A method used to return a string replacing all the old char or CharSequence to new char or CharSequence.</item>
+        <item>A method used to return a new string using a combination of two ore more strings.</item>
+        <item>Instantiate two strings if necessary.</item>
+        <item>Use the "+" operator to concatenate.</item>
+        <item>String resultString = "exampleString1" + "exampleString2"</item>
     </string-array>
 
     <string-array name="inOrder">
         <item>A method used to traverse a tree by first visiting the left node, followed by root and finally right node.</item>
+        <item>Create a binary tree if necessary.</item>
+        <item>Visit the left node, the root, and finally the right node.</item>
     </string-array>
 
     <string-array name="preOrder">
         <item>A method used to traverse a tree by first visiting the root, followed by the left subtree and the right subtree.</item>
+        <item>Create a binary tree if necessary.</item>
+        <item>Visit the node, the left subtree, and the right subtree.</item>
     </string-array>
     <string-array name="postOrder">
         <item>A method used to traverse a tree by first visiting the left subtree, followed by the right subtree.</item>
+        <item>Create a binary tree if necessary.</item>
+        <item>Visit the left subtree then the right subtree.</item>
     </string-array>
     <string-array name="hash_function">
         <item>A hash function is any function that can be used to map data of arbitrary size to fixed-size values. The values returned by a hash function are called hash values, hash codes, digests, or simply hashes. The values are used to index a fixed-size table called a hash table</item>
