@@ -126,6 +126,7 @@
                 android:gravity="left|center"
                 android:hint="Enter a string"
                 android:imeOptions="actionDone"
+                android:maxLength="8"
                 android:inputType="textShortMessage"
                 android:paddingLeft="10dp"
                 android:textSize="18dp"

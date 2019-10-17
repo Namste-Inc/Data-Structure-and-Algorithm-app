@@ -53,7 +53,6 @@ public class LinearSearchFragment extends Fragment {
     final int bottomMargin = 0;
     int w;
     Button pointerButton;
-    SwitchCompat switchStatus;
     private ImageView[] dots;
     boolean hasStopped = false;
     ViewPager viewPager;

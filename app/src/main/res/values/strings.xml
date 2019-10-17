@@ -105,6 +105,14 @@
     <string-array name="postOrder">
         <item>A method used to traverse a tree by first visiting the left subtree, followed by the right subtree.</item>
     </string-array>
+    <string-array name="hash_function">
+        <item>A hash function is any function that can be used to map data of arbitrary size to fixed-size values. The values returned by a hash function are called hash values, hash codes, digests, or simply hashes. The values are used to index a fixed-size table called a hash table</item>
+        <item>A well written hash function does a good job at minimizing collisions</item>
+        <item>A Collision is when two different strings for example, have the same hash values</item>
+        <item>A Simple hash function would be to get the unicode for  each character in the string</item>
+        <item>This does not help the fact that the different permutations of the same string will have the same hash value</item>
+        <item>We can optimize this method or function by simply multiple each char value in the string by a constant to the power of the position of the character in the string</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

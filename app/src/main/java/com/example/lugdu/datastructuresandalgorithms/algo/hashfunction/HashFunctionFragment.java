@@ -5,6 +5,8 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -47,6 +49,9 @@ public class HashFunctionFragment extends Fragment {
     final int bottomMargin = 0;
     EditText stringInput;
     TextView explanationText;
+    private ImageView[] dots;
+    boolean hasStopped = false;
+    ViewPager viewPager;
 
     Button hashButton;
     boolean running = false;
@@ -68,6 +73,7 @@ public class HashFunctionFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlgorithmFragment()).commit();
             }
         });
+        setUpViewPager();
         TextView def = view.findViewById(R.id.definitionText);
         GradientDrawable gradientDrawable = new GradientDrawable();
         insertPoint = view.findViewById(R.id.animationView);
@@ -130,79 +136,79 @@ public class HashFunctionFragment extends Fragment {
 //        }
 //    }
 
-//    public void setUpViewPager(){
-//        LinearLayout dotsView = view.findViewById(R.id.sliderDots);
-//        HashMap<Integer, Fragment> steps =  getViewFragments();
-//        viewPager = view.findViewById(R.id.viewpager);
-//        dots = new ImageView[steps.size()];
-//        for(int i = 0; i < dots.length; i++){
-//            dots[i] = new ImageView(getContext());
-//            dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
-//
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//
-//            params.setMargins(8, 0, 8, 0);
-//
-//            dotsView.addView(dots[i], params);
-//
-//        }
-//        dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
-//
-//        PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager(),steps.size(),steps);
-//        viewPager.setAdapter(pagerAdapter);
-//        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int i, float v, int i1) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int i) {
-//                for(int j = 0; j< dots.length; j++){
-//                    dots[j].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
-//                }
-//                dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int i) {
-//
-//            }
-//        });
-//    }
+    public void setUpViewPager(){
+        LinearLayout dotsView = view.findViewById(R.id.sliderDots);
+        HashMap<Integer, Fragment> steps =  getViewFragments();
+        viewPager = view.findViewById(R.id.viewpager);
+        dots = new ImageView[steps.size()];
+        for(int i = 0; i < dots.length; i++){
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            params.setMargins(8, 0, 8, 0);
+
+            dotsView.addView(dots[i], params);
+
+        }
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
+
+        PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager(),steps.size(),steps);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                for(int j = 0; j< dots.length; j++){
+                    dots[j].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.inactive_dot));
+                }
+                dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+    }
 
     public HashMap<Integer, Fragment> getViewFragments(){
         HashMap<Integer, Fragment> steps = new HashMap<>();
         StepsFragment stepsFragment = new StepsFragment();
-        String[] strArr = getResources().getStringArray(R.array.binary_search);
+        String[] strArr = getResources().getStringArray(R.array.hash_function);
         Bundle bundle = new Bundle();
         System.out.println(strArr.toString());
         bundle.putStringArray("string array", strArr);
         stepsFragment.setArguments(bundle);
 
         TextView textView = view.findViewById(R.id.definitionText);
-        textView.setText("Definition: " + strArr[0]);
+        textView.setText(strArr[0]);
 
         Steps2Fragment StepsFragment2 = new Steps2Fragment();
         Bundle bundle2 = new Bundle();
-        bundle2.putString("step", strArr[2]);
-        //bundle2.putInt("image", R.drawable.for2);
+        bundle2.putString("step", strArr[3]);
+        bundle2.putInt("image", R.drawable.hash_f_collision);
         StepsFragment2.setArguments(bundle2);
 
         Steps2Fragment StepsFragment3 = new Steps2Fragment();
         Bundle bundle3 = new Bundle();
-        bundle3.putString("step", strArr[3]);
-        bundle3.putInt("image", R.drawable.b_search2);
+        bundle3.putString("step", strArr[4]);
+        bundle3.putInt("image", R.drawable.hash_f_collision1);
         StepsFragment3.setArguments(bundle3);
 
         Steps2Fragment StepsFragment4 = new Steps2Fragment();
         Bundle bundle4 = new Bundle();
-        bundle4.putString("step", strArr[4]);
-        bundle4.putInt("image", R.drawable.b_search3);
+        bundle4.putString("step", strArr[5]);
+        bundle4.putInt("image", R.drawable.hash_f_collision_fixed);
         StepsFragment4.setArguments(bundle4);
 
-        Steps2Fragment StepsFragment5 = new Steps2Fragment();
+        /*Steps2Fragment StepsFragment5 = new Steps2Fragment();
         Bundle bundle5 = new Bundle();
         bundle5.putString("step", strArr[5]);
         bundle5.putInt("image", R.drawable.b_search4);
@@ -213,14 +219,14 @@ public class HashFunctionFragment extends Fragment {
         bundle7.putString("step", strArr[7]);
         bundle7.putInt("image", R.drawable.b_search5);
         StepsFragment7.setArguments(bundle7);
+        */
 
         steps.put(0, stepsFragment);
         steps.put(1, StepsFragment2);
         steps.put(2, StepsFragment3);
         steps.put(3, StepsFragment4);
-        steps.put(4, StepsFragment5);
-        steps.put(5, StepsFragment7);
-
+//        steps.put(4, StepsFragment5);
+//        steps.put(5, StepsFragment7);
         return steps;
     }
 
@@ -254,9 +260,10 @@ public class HashFunctionFragment extends Fragment {
     }
 
     public int hashingStrAni(String str, int arraySize){
+        Handler handler = new Handler(Looper.getMainLooper());
         int hash = 0;
         for(int i = 0; i < str.length(); i++) {
-            final int constantInt = 31;
+            final int constantInt = 3;
             final char charAtI = str.charAt(i);
             final int charIntAtI = str.charAt(i);
             final int subHash = (int)(charIntAtI * Math.pow(constantInt,i));
@@ -264,7 +271,7 @@ public class HashFunctionFragment extends Fragment {
             final int finalI = i;
             if(i == 0){
                 final TextView textView = new TextView(getContext());
-                getActivity().runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
 
@@ -279,42 +286,42 @@ public class HashFunctionFragment extends Fragment {
                     }
                 });
                 pause(Thread.currentThread(), 3000);
-                getActivity().runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         textView.append(" = " + charIntAtI);
                     }
                 });
                 pause(Thread.currentThread(),1000);
-                getActivity().runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         explanationText.setText("multiply a constant to the power of the characters current position in the string");
                     }
                 });
                 pause(Thread.currentThread(), 2000);
-                getActivity().runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        textView.append(" x 31^" + finalI );
+                        textView.append(" x " + constantInt + "^" + finalI );
                     }
                 });
                 pause(Thread.currentThread(), 1000);
-                getActivity().runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         explanationText.setText("The hash value for character '"+ charAtI + "' is " + subHash);
                     }
                 });
                 pause(Thread.currentThread(), 2000);
-                getActivity().runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         textView.append(" = " + subHash);
                     }
                 });
                 if(str.length() > 1){
-                    getActivity().runOnUiThread(new Runnable() {
+                    handler.post(new Runnable() {
                         @Override
                         public void run() {
                             explanationText.setText("Do this for the rest of the characters");
@@ -323,34 +330,36 @@ public class HashFunctionFragment extends Fragment {
                 }
             }
             else{
-                getActivity().runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        TextView textView = new TextView(getContext());
-                        textView.setText(charAtI + " = " + charIntAtI + " x 31^" + finalI + " = " + subHash);
-                        textView.setPadding(20,0,0,0);
-                        //textView.setBackgroundColor(Color.GRAY);
-                        //textView.setY((finalI * 100));
-                        //RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(700,80);
-                        //layoutParams.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
-                        insertPoint.addView(textView);
+                        if(getActivity() != null){
+                            TextView textView = new TextView(getContext());
+                            textView.setText(charAtI + " = " + charIntAtI + " x " + constantInt + "^" + finalI + " = " + subHash);
+                            textView.setPadding(20,0,0,0);
+                            insertPoint.addView(textView);
+                        }
                     }
                 });}
                 pause(Thread.currentThread(), 1000);
         }
         final int finalHash = hash;
-        getActivity().runOnUiThread(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 explanationText.setText("The summation of these values gives us the hash for the string: " + finalHash);
-                TextView textView = new TextView(getContext());
-                textView.setPadding(20,30,0,0);
-                textView.setText("hash: " + finalHash);
+                if(getActivity() != null){
+                    TextView textView = new TextView(getContext());
+                    textView.setPadding(20,30,0,0);
+                    textView.setText("hash: " + finalHash);
+                    insertPoint.addView(textView);
+                }
             }
         });
 
         return hash % arraySize;
     }
+
     public void pause(Thread thread, int time){
         synchronized (thread){
             try {

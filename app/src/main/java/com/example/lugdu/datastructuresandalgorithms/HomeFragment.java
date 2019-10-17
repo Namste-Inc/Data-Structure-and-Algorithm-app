@@ -2,6 +2,8 @@ package com.example.lugdu.datastructuresandalgorithms;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -35,14 +37,15 @@ public class HomeFragment extends Fragment {
     public void runWelcomeAni(final TextView txt, final String message){
         for(int i = 0; i < 5; i ++){
             final int finalI = i;
-            getActivity().runOnUiThread(new Runnable() {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
                     txt.setText("|");
                 }
             });
             pause(Thread.currentThread(), 400);
-            getActivity().runOnUiThread(new Runnable() {
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
                     txt.setText("");
@@ -53,9 +56,10 @@ public class HomeFragment extends Fragment {
         }
         for(int i = 0; i < message.length(); i++){
             final int finalI = i;
-            getActivity().runOnUiThread(new Runnable() {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable(){
                 @Override
-                public void run() {
+                public void run(){
                     txt.append(message.charAt(finalI) + "");
                 }
             });
